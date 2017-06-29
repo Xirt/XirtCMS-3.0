@@ -11,7 +11,7 @@
 class AttributesModel extends CI_Model {
 
     /**
-     * @var    int
+     * @var int
      * Internal reference (ID) to the related model
      */
     private $_ref = -1;
