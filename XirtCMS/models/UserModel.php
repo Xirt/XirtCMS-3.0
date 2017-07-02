@@ -89,7 +89,7 @@ class UserModel extends XCMS_Model {
 
             // Load attributes
             $this->attributes->init(Query::TABLE_USERS_ATTR, "user");
-            $this->attributes->load($id);
+            $this->attributes->load($this->get("id"));
 
             return $this;
 
