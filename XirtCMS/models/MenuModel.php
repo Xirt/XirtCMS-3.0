@@ -28,7 +28,7 @@ class MenuModel extends XCMS_Model {
     public function load($id) {
 
         // Retrieve data from DB
-        $result = $this->db->get_where(Query::TABLE_MENUS, array("id" => $id))
+        $result = $this->db->get_where(Query::TABLE_MENUS, array("id" => $id));
         if ($result->num_rows()) {
 
             // Populate model
