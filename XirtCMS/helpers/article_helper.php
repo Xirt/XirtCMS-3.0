@@ -25,8 +25,9 @@ class ArticleHelper {
 
         return null;
 
-}
+    }
 
+    
     /**
      * Returns the DateTime at which the article is scheduled as published
      *
@@ -43,6 +44,7 @@ class ArticleHelper {
 
     }
 
+    
     /**
      * Returns the DateTime at which the article is scheduled as unpublished
      *
