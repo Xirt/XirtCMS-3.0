@@ -31,8 +31,6 @@ class XCMS_Controller extends CI_Controller {
 
         parent::__construct();
         XCMS_Hooks::init($isBackend);
-
-        $this->_getQueries();
         $this->load->library("XCMS_Authentication");
 
         if ($auth_level && !XCMS_Authentication::check()) {
@@ -65,23 +63,7 @@ class XCMS_Controller extends CI_Controller {
 
     }
 
-
-    /**
-     * Creates global reference to XirtCMS queries
-     */
-    private function _getQueries() {
-
-        if (file_exists(APPPATH . "config/queries.php")) {
-            include(APPPATH . "config/queries.php");
-        }
-
-        if (file_exists(APPPATH . "config/" . ENVIRONMENT . "/queries.php")) {
-            include(APPPATH . "config/" . ENVIRONMENT . "/queries.php");
-        }
-
-    }
-
-
+    
     /**
      * Additional validition callback (allows alphanumerical, dashes and periods)
      *
