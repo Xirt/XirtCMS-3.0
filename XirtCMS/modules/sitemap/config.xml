@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xinstall type="module">
+	<name>Sitemap</name>
+	<version>1.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<params>
+		<param name="css_name" type="text" default="" label="CSS Class name" description="Used for module identification" />
+		<param name="show_title" type="select" default="1" label="Show title">
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+	</params>
+</xinstall>

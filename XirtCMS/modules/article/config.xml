@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xinstall type="module">
+	<name>Article Viewer</name>
+	<version>1.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<params>
+		<param name="css_name" type="text" default="" label="CSS Class name" description="Used for module identification" />
+		<param name="show_title" type="select" default="1" label="Show title">
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+		<param name="show_author" type="select" default="0" label="Show author">
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+		<param name="use_username" type="select" default="0" label="Author source">
+			<option name="Username" value="1" />
+			<option name="Real name" value="0" />
+		</param>
+		<param name="show_created" type="select" default="0" label="Creation date/time">
+			<option name="Show" value="1" />
+			<option name="Hide" value="0" />
+		</param>
+	</params>
+</xinstall>
