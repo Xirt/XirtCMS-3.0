@@ -19,13 +19,11 @@ class XCMS_Hooks {
     
     /**
      * Initializes the instance with all known hooks
-     * 
-     * @param   boolean     $isBackend      Toggless backend vs. frontend initialization
      */
-    public static function init($isBackend = false) {
+    public static function init() {
         
         log_message("info", "[XCMS] Loading all known hooks.");
-        self::_load(APPPATH . ($isBackend ? "hooks/backend/" : "hooks/"));
+        self::_load(APPPATH . "hooks/");
         
     }
 
