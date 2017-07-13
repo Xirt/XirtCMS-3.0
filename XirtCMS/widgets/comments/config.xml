@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE xirtcms>
+<xirtcms type="module">
+	<name>Comments section</name>
+	<module>author</module>
+	<version>1.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<description><![CDATA[ Shows a comments section for the article displayed. ]]></description>
+	<params>
+		<param name="css_name" type="text" default="" label="CSS Class name" description="Used for module identification" />
+		<param name="authorization_required" type="select" default="0" label="Require authorization">
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+		<param name="insert_honeypot" type="select" default="1" label="Enable honeypot" description="Toggles anti-spam measures">
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+		<param name="dt_format" type="text" default="j F Y H:i" label="Date/time format" description="For e.g. ('j F Y H:i')" />
+		<param name="use_gravatar" type="select" default="1" label="Enable Gravatar usage" >
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+		<param name="gravatar_size" type="text" default="30" label="Gravatar dimensions" description="Gravatar size in pixels" />
+		<param name="gravatar_default" type="text" default="" label="Gravatar default" description="Fallback image location" />
+	</params>
+</xirtcms>

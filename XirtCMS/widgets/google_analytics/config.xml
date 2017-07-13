@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE xirtcms>
+<xirtcms type="module">
+	<name>Google Analytics (Tracking Code)</name>
+	<module>google_analytics</module>
+	<version>3.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<description><![CDATA[ Includes the GA tracking code on a website (not visible). ]]></description>
+	<params>
+		<param name="account_id" type="text" default="" label="Tracking ID" description="As provided by Google Analytics" />
+	</params>
+</xirtcms>
