@@ -78,7 +78,7 @@ class Article extends XCMS_Controller {
 
         // Check unpublish date
         $article->setAttribute("unpublish_date", ArticleHelper::getUnpublished($article));
-        if (($dt = $article->getAttribute("unpublish_date", true)) & $dt < new DateTime()) {
+        if (($dt = $article->getAttribute("unpublish_date", true)) && $dt < new DateTime()) {
             return false;
         }
 
