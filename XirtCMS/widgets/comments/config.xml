@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE xirtcms>
-<xirtcms type="module">
+<xirtcms type="widget">
 	<name>Comments section</name>
 	<module>author</module>
 	<version>1.0</version>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE xirtcms>
-<xirtcms type="module">
+<xirtcms type="widget">
 	<name>Google Analytics (Tracking Code)</name>
 	<module>google_analytics</module>
 	<version>3.0</version>
