@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xinstall type="module">
+<!DOCTYPE xirtcms>
+<xirtcms type="module">
 	<name>Sitemap</name>
 	<version>1.0</version>
 	<authorName>A.G. Gideonse</authorName>
@@ -13,4 +14,4 @@
 			<option name="No" value="0" />
 		</param>
 	</params>
-</xinstall>
+</xirtcms>

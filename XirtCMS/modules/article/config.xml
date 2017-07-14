@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xinstall type="module">
+<!DOCTYPE xirtcms>
+<xirtcms type="module">
 	<name>Article Viewer</name>
 	<version>1.0</version>
 	<authorName>A.G. Gideonse</authorName>
@@ -25,4 +26,4 @@
 			<option name="Hide" value="0" />
 		</param>
 	</params>
-</xinstall>
+</xirtcms>
