@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xirtcms>
+<xirtcms type="module">
+	<name>Articles Overview</name>
+	<version>1.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<params>
+		<param name="css_name" type="text" default="" label="CSS name" description="A class that will be added to the main container for module identification." />
+		<param name="show_title" type="select" default="1" label="Show title" description="Toggle showing the title of this module.">
+			<option name="Show" value="1" />
+			<option name="Hide" value="0" />
+		</param>
+		<param name="category_id" type="category" default="" label="Category" description="The category for which to display the articles." />
+		<param name="count" type="text" default="" label="Article Count" description="The number of articles to display." />
+		<param name="module_config" type="text" default="" label="Article Configuration" description="The configuration to use when displaying articles." />
+		<param name="max_length" type="text" default="500" label="Max. length" description="The maximum of characters for the text to show." />
+	</params>
+</xirtcms>
