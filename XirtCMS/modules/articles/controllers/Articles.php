@@ -14,7 +14,7 @@ class Articles extends XCMS_Controller {
      * @var string
      * Base URL for viewing articles
      */
-    private const ARTICLE_URL = "article/view/";
+    const ARTICLE_URL = "article/view/";
 
     
     /*
