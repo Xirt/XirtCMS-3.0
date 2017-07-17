@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE xirtcms>
+<xirtcms type="module">
+	<name>Image showcase</name>
+	<module>showcase</module>
+	<version>1.1</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<description><![CDATA[ Shows a collection of images using Slimbox (a lightbox clone). ]]></description>
+	<params>
+		<param name="css_name" type="text" default="" label="CSS Class name" description="Used for module identification" />
+		<param name="folder" type="text" default="" label="Image folder" />
+		<param name="prefix_ori" type="text" default="" label="Image prefix" />
+		<param name="prefix_thumb" type="text" default="" label="Thumbnail prefix" />
+		<param name="thumb_size" type="text" default="" label="Thumbnail size" description="Thumbnail size in pixels" />
+		<param name="amount" type="text" default="" label="Amount of images" />
+		<param name="ext" type="text" default="10" label="Image extension" description="(e.g. 'jpg|png|gif')." />
+		<param name="alt" type="text" default="" label="Alt-value" />
+	</params>
+</xirtcms>

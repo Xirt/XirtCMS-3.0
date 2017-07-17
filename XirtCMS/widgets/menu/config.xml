@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE xirtcms>
+<xirtcms type="module">
+	<name>Menu</name>
+	<module>menu</module>
+	<version>1.1</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<description><![CDATA[ Displays available languages for the website. ]]></description>
+	<params>
+		<param name="css_name" type="text" default="" label="CSS Class name" description="Used for module identification" />
+		<param name="menu_id" type="menu" default="" label="Menu" />
+		<param name="show_type" type="select" default="0" label="Display type">
+			<option name="List of plain links" value="0" />
+			<option name="List of DIV-containers" value="1" />
+			<option name="UL-list with leveling (tree structure)" value="2" />
+		</param>
+		<param name="title" type="text" default="" label="Title" description="(Optionally) displayed" />
+		<param name="parent_id" type="text" default="" label="Parent id" description="Only children will be shown" />
+		<param name="level_start" type="text" default="1" label="Starting level" />
+		<param name="level_end" type="text" default="1" label="Ending level" />
+		<param name="separator_style" type="select" default="0" label="Separator style" >
+			<option name="No separators" value="0" />
+			<option name="separators (between)" value="1" />
+			<option name="separators (all)" value="2" />
+		</param>
+		<param name="separator" type="text" default="|" label="Separator" />
+	</params>
+</xirtcms>

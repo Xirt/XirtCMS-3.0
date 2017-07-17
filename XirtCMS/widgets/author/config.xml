@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE xirtcms>
+<xirtcms type="module">
+	<name>Author details</name>
+	<module>author</module>
+	<version>1.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<description><![CDATA[ Shows a box with information on the author of the article displayed. ]]></description>
+	<params>
+		<param name="css_name" type="text" default="" label="CSS Class name" description="Used for module identification" />
+		<param name="show_name" type="select" default="1" label="Show author name">
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+		<param name="use_username" type="select" default="0" label="Author source">
+			<option name="Username" value="1" />
+			<option name="Real name" value="0" />
+		</param>
+		<param name="use_gravatar" type="select" default="0" label="Enable Gravatar usage" >
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+	</params>
+</xirtcms>
