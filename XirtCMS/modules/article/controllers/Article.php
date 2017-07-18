@@ -50,7 +50,7 @@ class Article extends XCMS_Controller {
 
         // Show content
         $this->_setHeaders($this->article);
-        $this->load->view("default", array(
+        $this->load->view("default.tpl", array(
             "author"       => $this->_getAuthorObject($this->article),
             "article"      => $this->_getArticleObject($this->article),
             "css_name"     => $this->config("css_name", ""),
