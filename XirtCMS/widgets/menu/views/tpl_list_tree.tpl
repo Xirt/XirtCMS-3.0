@@ -5,7 +5,7 @@
 	<label class="menu-toggle" for="x-mod-menu-<?php echo $config->css_name; ?>"></label>
 	<input type="checkbox" id="x-mod-menu-<?php echo $config->css_name; ?>" />
 
-	<?php $this->view("tpl_list_level"); ?>
+	<?php $this->view("tpl_list_level.tpl"); ?>
 
 </nav>
 <!-- xMenu [End] //-->
