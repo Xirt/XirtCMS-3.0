@@ -130,16 +130,16 @@ class xwidget_showcase extends XCMS_Widget {
     private function _getThumbnail($path, $file) {
 
         // Check for existing thumbnail (without prefix)
-        if (file_exists($path . $name)) {
-            return $path . $name;
+        if (file_exists($path . $file)) {
+            return $path . $file;
         }
 
         // Check for existing thumbnail (with prefix)
         if ($this->config("prefix_thumb")) {
 
-            $name = $this->config("prefix_thumb") . $name;
-            if (file_exists($path . $name)) {
-                return $path . $name;
+            $file = $this->config("prefix_thumb") . $file;
+            if (file_exists($path . $file)) {
+                return $path . $file;
             }
 
         }
