@@ -98,6 +98,30 @@ class UserModel extends XCMS_Model {
         return null;
 
     }
+    
+    
+    /**
+     * Setter for model attributes
+     *
+     * @param   mixed       $attr           The key of the attribute to be set or array/object with attributes (key/value)
+     * @param   mixed       $value          The value for the attribute to be set
+     * @param   mixed       $isComplex      Toggles allowance of complex (array / object) values
+     * @return  Object                      Always this instance
+     */
+    public function set($attr, $value = null, $isComplex = false) {
+
+        if ($attr == "password") {
+
+            parent::set("salt", XCMS_Authentication::generateSalt());
+            parent::set("password", XCMS_Authentication::hash($value, $this->get("salt")));
+
+            return $this;
+
+        }
+
+        return parent::set($attr, $value, $isComplex);
+
+    }
 
 
     /**
