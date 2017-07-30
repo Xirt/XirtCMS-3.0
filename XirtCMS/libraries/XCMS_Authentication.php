@@ -196,10 +196,10 @@ class XCMS_Authentication {
     public static function check() {
 
         $userData = array(
-            "user_ip"    => $_SERVER["REMOTE_ADDR"],
-            self::REF_ID    => self::_getUserId(),
-            self::REF_NAME  => self::_getUsername(),
-            "secret_key" => XCMS_Config::get("AUTH_SECRET")
+            "user_ip"      => $_SERVER["REMOTE_ADDR"],
+            self::REF_ID   => self::_getUserId(),
+            self::REF_NAME => self::_getUsername(),
+            "secret_key"   => XCMS_Config::get("AUTH_SECRET")
         );
 
         $candidate = hash(XCMS_Config::get("AUTH_HASH_TYPE"), implode($userData));
@@ -211,12 +211,12 @@ class XCMS_Authentication {
     /**
     * Attempts to authenticate the current visitor
     *
-    * @param    String      $username       The username of the user to authenticate
+    * @param    UserModel   $user           The user to authenticate
     * @param    String      $password       The password of the user to authenticate
     * @param    boolean     $cookies        Toggles the use of cookies (defaults to false)
     * @return   int                         1 on success, error code otherwise
     */
-    public static function create($user, $password, $cookies = false) {
+    public static function create(UserModel $user, string $password, bool $cookies = false) {
 
         self::destroy();
 
@@ -227,10 +227,10 @@ class XCMS_Authentication {
         $sessionId   = $user->get("id");
         $sessionUser = self::hash($user->get("username"));
         $sessionHash = hash(XCMS_Config::get("AUTH_HASH_TYPE"), implode(array(
-            "user_ip"    => $_SERVER["REMOTE_ADDR"],
+            "user_ip"       => $_SERVER["REMOTE_ADDR"],
             self::REF_ID    => $sessionId,
             self::REF_NAME  => $sessionUser,
-            "secret_key" => XCMS_Config::get("AUTH_SECRET")
+            "secret_key"    => XCMS_Config::get("AUTH_SECRET")
         )));
 
         if ($cookies) {
@@ -247,7 +247,7 @@ class XCMS_Authentication {
             self::REF_HASH => $sessionHash
         ));
 
-        self::_track($username, true);
+        self::_track($user, true);
         return true;
 
     }
@@ -256,10 +256,10 @@ class XCMS_Authentication {
    /**
     * Update account to track (failed) login attempts
     *
-    * @param    String      $username       The username of the account to update
+    * @param    UserModel   $user           The user to authenticate
     * @param    boolean     $resetCounter   Toggles resetting of the tracker (default: false)
     */
-   private static function _track($username, $resetCounter = false) {
+   private static function _track(UserModel $user, bool $resetCounter = false) {
       global $xDb;
 
       if ($resetCounter) {
@@ -282,7 +282,7 @@ class XCMS_Authentication {
 
       // Query execution
       //$stmt = $xDb->prepare($query);
-      //$stmt->bindParam(":username", $username, PDO::PARAM_STR);
+      //$stmt->bindParam(":username", $user->get("username"), PDO::PARAM_STR);
       //$stmt->execute();
 
    }
