@@ -31,7 +31,10 @@ class Articles extends XCMS_Controller {
         $this->load->helper("db_search");
 
         // Load models
-        $this->load->model("ArticlesModel", "articles");
+        $this->load->model("ArticlesModel", false);
+        $this->load->model("ExtArticlesModel", "articles");
+        
+        RouteHelper::init();
 
     }
 
@@ -39,19 +42,11 @@ class Articles extends XCMS_Controller {
     /**
      * Placeholder for invalid requests
      */
-    public function index() {
-
-        RouteHelper::init();
-        $attr = new SearchAttributes();
-
-        // Retrieve parameter (article count)
-        if (($count = abs($this->config("count"))) && $count > 0) {
-            $attr->rowCount = $count;
-        }
+    public function index($number = 1) {
 
         // Populate models
         $articles = array();
-        foreach ($this->_retrieveArticles($attr) as $article) {
+        foreach ($this->_retrieveArticles($number) as $article) {
 
             // Enrich article
             $article = $article->getObject();
@@ -61,13 +56,28 @@ class Articles extends XCMS_Controller {
 
         }
 
-        $this->load->view("default.tpl", array(
-            "show_title" => $this->config("show_title", true),
-            "css_name"   => $this->config("css_name", ""),
-            "articles"   => $articles,
-            "title"      => $this->_getTitle()
-        ));
-
+        // Handles are regular request...
+        if (!$this->input->is_ajax_request()) {
+        
+            return $this->load->view("default.tpl", array(
+                "show_title" => $this->config("show_title", true),
+                "css_name"   => $this->config("css_name", ""),
+                "title"      => $this->_getTitle(),
+                "articles"   => $articles
+            ));
+        
+        }
+        
+        // ... or provide response as JSON
+        $this->output->set_content_type("application/json");
+        $this->output->set_output(json_encode($articles));
+        
+    }
+    
+    
+    
+    public function page($number) {
+        $this->index($number);
     }
 
 
@@ -107,23 +117,25 @@ class Articles extends XCMS_Controller {
     /**
      * Retrieves articles using given search attributes
      *
-     * @param   Object      $attr           Object containing search parameters for query customization
+     * @param   int         $page           The page for which articles should be loaded
      * @return  Array                       List containing all loaded articles
      */
-    private function _retrieveArticles($attr) {
-
-        // Retrieve categorized articles...
-        if (($category = abs($this->config("category_id"))) && $category > 0) {
-
-            $this->articles->loadFromCategory($category, $attr)->sort();
-            return $this->articles->toArray();
-
+    private function _retrieveArticles($page) {
+        
+        // Validate page integrity
+        if (!($page = round($page)) || $page < 0) {
+            $page = 1;
         }
+        
+        $articles = (new ExtArticlesModel())->init()
+            ->set("page",     $page)
+            ->set("limit",    $this->config("limit"))
+            ->set("category", $this->config("category_id"))
+            ->set("sorting",  $this->config("sorting") ?? "dt_publish DESC")
+            ->load();
 
-        // ... or consider all articles
-        $this->articles->load($attr)->toArray()->sort();
-        return $this->articles->toArray();
-
+        return $articles->toArray();
+        
     }
 
 
@@ -136,7 +148,7 @@ class Articles extends XCMS_Controller {
     private function _getIntroduction($content) {
 
         // Retrieve introduction
-        if (!($introduction = strip_tags(ArticleHelper::getSummary($content)))) {
+        if (!($introduction = ArticleHelper::getSummary($content))) {
             $introduction = strip_tags($content);
         }
 

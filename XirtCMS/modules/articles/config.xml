@@ -14,7 +14,17 @@
 			<option name="Hide" value="0" />
 		</param>
 		<param name="category_id" type="category" default="" label="Category" description="The category for which to display the articles." />
-		<param name="count" type="text" default="" label="Article Count" description="The number of articles to display." />
+		<param name="sorting" type="select" default="dt_publish DESC" label="Final sorting" description="Sorting after DB retrieval.">
+			<option name="Creation Date (asc)" value="dt_created ASC" />
+			<option name="Creation Date (desc)" value="dt_created DESC" />
+			<option name="Publish date (asc)" value="dt_publish ASC" />
+			<option name="Publish date (desc)" value="dt_publish DESC" />
+			<option name="Unpublish date (asc)" value="dt_unpublish ASC" />
+			<option name="Unpublish date (desc)" value="dt_unpublish DESC" />
+			<option name="Title (asc)" value="title ASC" />
+			<option name="Title (desc)" value="title DESC" />
+		</param>
+		<param name="limit" type="text" default="" label="Article Count" description="Limits loaded articles." />
 		<param name="module_config" type="text" default="" label="Article Configuration" description="The configuration to use when displaying articles." />
 		<param name="max_length" type="text" default="500" label="Max. length" description="The maximum of characters for the text to show." />
 	</params>
