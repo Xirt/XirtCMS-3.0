@@ -20,7 +20,7 @@ class ArticleHelper {
 
         $doc = new DOMDocument("1.0", "utf-8");
         if (@$doc->loadHTML($html) && ($summary = $doc->getElementById("introduction"))) {
-            return $summary->nodeValue;
+            return strip_tags($summary->nodeValue);
         }
 
         return null;
