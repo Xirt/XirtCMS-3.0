@@ -43,13 +43,15 @@ class AttributesModel extends CI_Model {
      *
      * @param   String      $table          The DB to be used to retrieve the data
      * @param   String      $type           The model for which the attributes are to be retrieved
+     * @param   boolean     $validations     Toggles validation of given values against known fields
      * @return  Object                      Always this instance
      */
-    public function init($table, $modelType) {
+    public function init($table, $modelType, $validations = true) {
 
-        $this->_table    = $table;
-        $this->_type    = $modelType;
-        $this->_attr     = $this->_getFields();
+        $this->_table       = $table;
+        $this->_type        = $modelType;
+        $this->_validations = $validations;
+        $this->_attr        = $this->_getFields();
 
         return $this;
 
@@ -66,21 +68,8 @@ class AttributesModel extends CI_Model {
 
         // Retrieve data from DB and populate instance
         $query = $this->db->get_where($this->_table, array("ref_id" => $id));
-        foreach ($query->result_array() as $metaInfo) {
-
-            // Check existence
-            foreach ($this->_attr as $attr) {
-
-                // Update if required
-                if ($attr->name == $metaInfo["name"]) {
-
-                    $attr->value = $metaInfo["value"];
-                    continue;
-
-                }
-
-            }
-
+        foreach ($query->result() as $row) {
+            $this->set($row->name, $row->value);
         }
 
         $this->_ref = $id;
@@ -101,8 +90,8 @@ class AttributesModel extends CI_Model {
 
             $this->db->replace($this->_table, array(
                 "ref_id" => $this->_ref,
-                "name"     => $attribute->name,
-                "value"     => $attribute->value
+                "name"   => $attribute->name,
+                "value"  => $attribute->value
             ));
 
         }
@@ -126,6 +115,18 @@ class AttributesModel extends CI_Model {
             if ($attribute->name == $name) {
                 return ($attribute->value = $value);
             }
+
+        }
+
+        if (!$this->validations) {
+
+            $this->_attr[] = (Object) [
+                "name"  => $name,
+                "value" => $value,
+                "type"  => (strlen($value) > 150) ? "text" : "textarea"
+            ];
+
+            return true;
 
         }
 
