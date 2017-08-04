@@ -76,7 +76,7 @@ class Articles extends XCMS_Controller {
         $searchObj->total = $this->articles->getTotalCount($searchObj);
         foreach ($this->articles->toArray() as $article) {
 
-            $searchObj->rows[] = (Object)array(
+            $searchObj->rows[] = (Object) array(
                 "id"         => $article->get("id"),
                 "title"      => $article->get("title"),
                 "author"     => $article->get("username"),

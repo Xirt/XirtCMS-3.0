@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controller for showing a viewing / modifying XirtCMS article (back end)
+ * Controller for showing a viewing / modifying a XirtCMS article (back end)
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -36,7 +36,7 @@ class Article extends XCMS_Controller {
 
 
     /**
-     * "View Article"-Page for this controller.
+     * "View Article"-functionality for this controller.
      *
      * @param   int         $id             The ID of the requested article
      */
@@ -78,7 +78,7 @@ class Article extends XCMS_Controller {
                 throw new UnexpectedValueException(null);
             }
 
-            // Update model...
+            // Set & save new updates
             $this->load->library("XCMS_Authentication");
             $this->article->set("title",  $this->input->post("article_title"));
             $this->article->set("author", XCMS_Authentication::getUserId());
@@ -171,7 +171,7 @@ class Article extends XCMS_Controller {
 
             }
 
-            // Set & save new categories
+            // Set & save category updates
             $this->article->setCategories($categories);
             $this->article->validate();
             $this->article->save();
@@ -204,7 +204,7 @@ class Article extends XCMS_Controller {
 
         try {
 
-            // Save updates in the model...
+            // Set & save new attribute values
             foreach ($this->article->getAttributes() as $attribute) {
 
                 $this->article->setAttribute($attribute->name, "");
@@ -214,6 +214,7 @@ class Article extends XCMS_Controller {
 
             }
 
+            $this->article->validate();
             $this->article->save();
 
             // Inform user
