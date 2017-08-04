@@ -98,8 +98,8 @@ class UserModel extends XCMS_Model {
         return null;
 
     }
-    
-    
+
+
     /**
      * Setter for model attributes
      *
