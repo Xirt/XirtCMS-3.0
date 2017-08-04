@@ -6,4 +6,5 @@
 .settings/org.eclipse.wst.validation.prefs
 .settings/org.sonarlint.eclipse.core.prefs
 .project
+assets/images/articles
 .buildpath
