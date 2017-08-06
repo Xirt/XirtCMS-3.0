@@ -38,15 +38,12 @@ class Articles extends XCMS_Controller {
         // Add page scripts
         XCMS_Page::getInstance()->addScript(array(
             "assets/scripts/backend/mng_articles.js",
-            "assets/third-party/tinymce/tinymce.js",
-            "assets/third-party/datepicker/bootstrap-datepicker.min.js",
-            "assets/third-party/datepicker/locales/bootstrap-datepicker.en-GB.min.js"
+            "assets/third-party/tinymce/tinymce.js"
         ));
 
         // Add page stylesheets
         XCMS_Page::getInstance()->addStylesheet(array(
-            "assets/css/backend/mng_articles.css",
-            "assets/third-party/datepicker/bootstrap-datepicker.min.css"
+            "assets/css/backend/mng_articles.css"
         ));
 
         // Show template
