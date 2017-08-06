@@ -102,7 +102,7 @@ class Article extends XCMS_Controller {
      */
     public function modify() {
 
-        // Validate given user ID
+        // Validate given article ID
         $id = $this->input->post("article_id");
         if (!is_numeric($id) || !$this->article->load($id)) {
 
