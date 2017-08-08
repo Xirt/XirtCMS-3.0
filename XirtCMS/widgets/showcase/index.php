@@ -15,12 +15,18 @@ class xwidget_showcase extends XCMS_Widget {
      */
     public function show() {
 
-        // Prepare variables
-        $this->setConfig("ext", explode(",", $this->config("ext")));
+        // Check instance validity
+        if (!is_dir($this->config("folder"))) {
 
-        // Validate configuration for thumbnail size
+            log_message("error", "[W-Showcase] Configured directory not accessible.");
+            return;
+
+        }
+
+        // Prepare variables
         $size = round($this->config("thumb_size", XCMS_CONFIG::get("THUMBS_DIMS")));
         $this->setConfig("thumb_size", $size ? $size : 150);
+        $this->setConfig("ext", explode(",", $this->config("ext")));
 
         // Show template
         $this->view("template.tpl", array(
