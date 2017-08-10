@@ -28,11 +28,11 @@ class CategoryModel extends XCMS_Model {
     public function load($id) {
 
         // Retrieve data from DB
-        $query = $this->db->_buildQuery($attr)->get_where(Query::TABLE_CATEGORIES);
+        $result = $this->_buildQuery($id)->get_where(Query::TABLE_CATEGORIES);
         if ($result->num_rows()) {
 
             // Populate model
-            $this->set($query->row());
+            $this->set($result->row());
             return $this;
 
         }
@@ -80,9 +80,10 @@ class CategoryModel extends XCMS_Model {
     /**
      * Creates query (using CI QueryBuilder) for retrieving model content
      *
+	 * @param   int         $id             The ID of the requested category
      * @return  Object                      CI Database Instance for chaining purposes
      */
-    private function _buildQuery() {
+    private function _buildQuery($id) {
 
         $this->db->join(Query::TABLE_CATEGORIES_RELATIONS, "id = node_id");
         $this->db->where(array("id" => $id));
