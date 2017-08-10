@@ -15,7 +15,7 @@ class XCMS_JSON {
      *
      * @param   String      $title          The title to be used for the JSON message
      * @param   String      $message        The meesage to be used for the JSON message
-     * @param   String      $type           The type of the message (optional)
+     * @param   String      $type           The type of the message
      */
     public static function customContentMessage($title, $message, $type = "info") {
 
@@ -40,7 +40,7 @@ class XCMS_JSON {
         
         self::customContentMessage(
             "Loading failure",
-            $message ?? "The targetted item could not be found.",
+            ($message ? $message : null) ?? "The targetted item could not be found.",
             "error"
         );
         
@@ -50,13 +50,13 @@ class XCMS_JSON {
     /**
      * Replaces the output buffer with a default XirtCMS "Creation Success"-message in JSON format
      *
-     * @param   String      $message        A customized message replacing the default XirtCMS message (optional)
+     * @param   String      $message        A customized message replacing the default XirtCMS message
      */
     public static function creationSuccessMessage($message = null) {
 
         self::customContentMessage(
             "Creation succesful",
-            $message ?? "The new item has been created successfully.",
+            ($message ? $message : null) ?? "The new item has been created successfully.",
             "info"
         );
 
@@ -66,13 +66,13 @@ class XCMS_JSON {
     /**
      * Replaces the output buffer with a default XirtCMS "Creation Failure"-message in JSON format
      *
-     * @param   String      $message        A customized message replacing the default XirtCMS message (optional)
+     * @param   String      $message        A customized message replacing the default XirtCMS message
      */
     public static function creationFailureMessage($message = null) {
 
         self::customContentMessage(
             "Creation failure",
-            $message ?? "The new item could not be created.",
+            ($message ? $message : null) ?? "The new item could not be created.",
             "error"
         );
 
@@ -82,13 +82,13 @@ class XCMS_JSON {
     /**
      * Replaces the output buffer with a default XirtCMS "Modification Success"-message in JSON format
      *
-     * @param   String      $message        A customized message replacing the default XirtCMS message (optional)
+     * @param   String      $message        A customized message replacing the default XirtCMS message
      */
     public static function modificationSuccessMessage($message = null) {
 
         self::customContentMessage(
             "Modification succesful",
-            $message ?? "The modifications have been saved succesfully.",
+            ($message ? $message : null) ?? "The modifications have been saved succesfully.",
             "info"
         );
 
@@ -98,13 +98,13 @@ class XCMS_JSON {
     /**
      * Replaces the output buffer with a default XirtCMS "Modification Failure"-message in JSON format
      *
-     * @param   String      $message        A customized message replacing the default XirtCMS message (optional)
+     * @param   String      $message        A customized message replacing the default XirtCMS message
      */
     public static function modificationFailureMessage($message = null) {
 
         self::customContentMessage(
             "Modification failure",
-            $message ?? "The modifications could not be succesfully saved. Please try again later.",
+            ($message ? $message : null) ?? "The modifications could not be succesfully saved. Please try again later.",
             "error"
         );
 
@@ -114,13 +114,13 @@ class XCMS_JSON {
     /**
      * Replaces the output buffer with a default XirtCMS "Validation Failure"-message in JSON format
      *
-     * @param   String      $message        A customized message replacing the default XirtCMS message (optional)
+     * @param   String      $message        A customized message replacing the default XirtCMS message
      */
     public static function validationFailureMessage($message = null) {
-
+	
         self::customContentMessage(
-            "Modification succesful",
-            $message ?? "The supplied data could not be processed (validation failed).",
+            "Validation failure",
+            ($message ? $message : null) ?? "The supplied data could not be processed (validation failed).",
             "error"
         );
 
