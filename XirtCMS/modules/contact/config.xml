@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xinstall type="module">
+	<name>Contact</name>
+	<version>1.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<params>
+		<param name="email" type="text" default="" label="Recipient address" description="1" />
+		<param name="subject" type="text" default="" label="Subject" description="2" />
+	</params>
+</xinstall>
