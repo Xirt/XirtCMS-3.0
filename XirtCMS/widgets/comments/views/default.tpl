@@ -61,7 +61,7 @@
 
 	<?php if (!$config->authorization_required || $authenticated): ?>
 
-		<form method="post" id="commentBox">
+		<form method="post" action="comment" id="commentBox">
 
 			<label for="comment_content">Leave response:</label>
 
