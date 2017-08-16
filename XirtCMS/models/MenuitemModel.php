@@ -81,7 +81,7 @@ class MenuitemModel extends XCMS_Model {
         }
 
         // Optional additional info
-        if ($ext_rel && $menu->route_id) {
+        if ($ext_rel && $this->get("route_id")) {
 
             $this->db->where("route_id", $this->get("route_id"));
             $count = $this->db->count_all_results(Query::TABLE_MENUITEMS_ROUTES);
