@@ -74,8 +74,8 @@ class Article extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
-                throw new UnexpectedValueException(null);
+            if (!$this->form_validation->run()) {
+                throw new UnexpectedValueException();
             }
 
             // Set & save new updates
@@ -102,7 +102,7 @@ class Article extends XCMS_Controller {
      */
     public function modify() {
 
-        // Validate given article ID
+        // Validate given user ID
         $id = $this->input->post("article_id");
         if (!is_numeric($id) || !$this->article->load($id)) {
 
