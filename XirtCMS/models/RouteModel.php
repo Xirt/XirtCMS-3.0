@@ -69,10 +69,10 @@ class RouteModel extends XCMS_Model {
 
         // Upsert into database...
         $this->db->replace(Query::TABLE_ROUTES, array(
-            "id"             => $this->get("id"),
+            "id"            => $this->get("id"),
             "source_url"    => $this->get("source_url"),
             "target_url"    => $this->get("target_url"),
-            "module_config"    => $this->get("module_config"),
+            "module_config" => $this->get("module_config"),
             "master"        => $this->get("master") ? $this->get("master") : NULL
         ));
 
