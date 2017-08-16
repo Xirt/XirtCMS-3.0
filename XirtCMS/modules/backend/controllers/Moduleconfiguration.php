@@ -23,6 +23,7 @@ class Moduleconfiguration extends XCMS_Controller {
         }
 
         // Load helpers
+        $this->load->helper("attribute");
         $this->load->helper("moduleconfiguration");
 
         // Load libraries
@@ -69,7 +70,7 @@ class Moduleconfiguration extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
+            if (!$this->form_validation->run()) {
                 throw new UnexpectedValueException(null);
             }
 
