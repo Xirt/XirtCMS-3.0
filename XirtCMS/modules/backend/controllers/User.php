@@ -23,6 +23,9 @@ class User extends XCMS_Controller {
             return show_404();
         }
 
+        // Load helpers
+        $this->load->helper('user');
+
         // Load libraries
         $this->load->library("email");
         $this->load->library("form_validation");
@@ -71,22 +74,22 @@ class User extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
+            if (!$this->form_validation->run()) {
                 throw new UnexpectedValueException(null);
             }
 
             // Set & save new updates
+            $password = XCMS_Authentication::generatePassword();
             $this->user->set("real_name",    $this->input->post("user_real_name"));
             $this->user->set("username",     $this->input->post("user_username"));
             $this->user->set("usergroup_id", $this->input->post("user_usergroup_id"));
             $this->user->set("email",        $this->input->post("user_email"));
+            $this->user->set("password",     $password);
             $this->user->validate();
             $this->user->save();
 
-            // Reset password for convenience
-            $this->_resetPasswordAndInformUser(XCMS_Authentication::generatePassword());
-
-            // Inform user
+            // Inform the user (e-mail)
+            UserHelper::commmunicatePassword($this->user, $password);
             XCMS_JSON::creationSuccessMessage();
 
         } catch (Exception $e) {

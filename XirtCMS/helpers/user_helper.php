@@ -18,7 +18,7 @@ class UserHelper {
      */
     public static function commmunicatePassword($user, $password) {
 
-        $CI &= get_instance();
+        $CI = get_instance();
         $CI->load->library("email");
         $email = $CI->email->initialize(
             array("mailtype" => "html"
@@ -30,7 +30,7 @@ class UserHelper {
             ->to($user->get("email"));
 
         // Set e-mail content and send
-        $email->message($this->load->view('emails/reset_password.tpl', array(
+        $email->message($CI->load->view('emails/reset_password.tpl', array(
             "name"     => $user->get("real_name"),
             "username" => $user->get("username"),
             "password" => $password,
