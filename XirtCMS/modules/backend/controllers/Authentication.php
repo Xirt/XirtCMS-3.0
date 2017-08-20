@@ -89,11 +89,8 @@ class Authentication extends XCMS_Controller {
      */
     public function reset_password() {
 
-        $username = $this->input->post("request_name");
-        $this->user->loadByUsername($username);
-
         // Validate given username
-        if (!$this->user->initialized()) {
+        if (!$this->user->loadByUsername($this->input->post("request_name"))) {
 
             $this->output->set_content_type("application/json");
             $this->output->set_output(json_encode((object)array(
