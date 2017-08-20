@@ -24,21 +24,21 @@
 			<div class="form-group row">
 				<label for="name" class="col-sm-5 col-form-label">Name<b>*</b></label>
 				<div class="col-sm-7">
-					<input type="text" class="form-control" id="name" name="name" maxlength="50" class="required" />
+					<input type="text" class="form-control" id="name" name="name" maxlength="50" required />
 				</div>
 			</div>
 
 			<div class="form-group row">
 				<label for="company" class="col-sm-5 col-form-label">Company</label>
 				<div class="col-sm-7">
-					<input type="text" class="form-control" id="company" name="company" maxlength="50" />
+					<input type="text" class="form-control" id="company" name="company" maxlength="50" required />
 				</div>
 			</div>
 
 			<div class="form-group row">
 				<label for="email" class="col-sm-5 col-form-label">E-mail address<b>*</b></label>
 				<div class="col-sm-7">
-					<input type="text" class="form-control" id="mail" name="email" maxlength="50" class="required email" />
+					<input type="email" class="form-control" id="mail" name="email" maxlength="50" required />
 				</div>
 			</div>
 
@@ -52,14 +52,14 @@
 			<div class="form-group row">
 				<label for="subject" class="col-sm-5 col-form-label">Subject<b>*</b></label>
 				<div class="col-sm-7">
-					<input type="text" class="form-control" id="subject" name="subject" maxlength="50" class="required" />
+					<input type="text" class="form-control" id="subject" name="subject" maxlength="50" required />
 				</div>
 			</div>
 
 			<div class="form-group row col-sm-12">
 				<label for="content">Your message<b>*</b></label><br/>
 				<div>
-					<textarea id="content" name="content" class="form-control required"></textarea>
+					<textarea id="content" name="content" class="form-control" required></textarea>
 				</div>
 			</div>
 
