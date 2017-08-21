@@ -66,8 +66,8 @@ class Contact extends XCMS_Controller {
 
         return (Object) [
             "name"    => $this->input->post("name"),
-            "email"   => $this->input->post("email"),
             "company" => $this->input->post("company"),
+            "email"   => $this->input->post("email"),
             "phone"   => $this->input->post("phone"),
             "subject" => $this->input->post("subject"),
             "content" => $this->input->post("content")
@@ -149,8 +149,10 @@ class Contact extends XCMS_Controller {
         ->to($this->config("email"));
 
         // Set e-mail content and send
-        $this->email->message($this->load->view("mail.tpl", array(
-            "data" => $data
+		// TODO :: Use field 'title' in e-mail to identify man vs woman
+        $this->email->message($this->load->view("email.tpl", array(
+            "data"   => $this->_escapeData($data),
+            "target" => base_url()
         ), true))->send();
 
     }
@@ -198,6 +200,23 @@ class Contact extends XCMS_Controller {
         $this->load->view("success", array(
             "data" => $data
         ));
+
+    }
+
+
+    /**
+     * Returns the given list with applicable characters converted to HTML entities
+     *
+     * @param   array       $data           The list with data to parse
+     * @return  array                       The parsed list (with HTML entities)
+     */
+    private function _escapeData($data) {
+
+        foreach ($data as $field => $value) {
+            $data->$field = htmlentities($value);
+        }
+
+        return $data;
 
     }
 
