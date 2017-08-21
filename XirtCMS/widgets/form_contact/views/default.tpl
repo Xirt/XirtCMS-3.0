@@ -31,7 +31,7 @@
 			<div class="form-group row">
 				<label for="company" class="col-sm-5 col-form-label">Company</label>
 				<div class="col-sm-7">
-					<input type="text" class="form-control" id="company" name="company" maxlength="50" required />
+					<input type="text" class="form-control" id="company" name="company" maxlength="50" />
 				</div>
 			</div>
 
@@ -45,7 +45,7 @@
 			<div class="form-group row">
 				<label for="phone" class="col-sm-5 col-form-label">Phone number</label>
 				<div class="col-sm-7">
-					<input type="text" class="form-control" id="phone" name="phone" maxlength="25" class="phone" />
+					<input type="tel" class="form-control" id="phone" name="phone" maxlength="25" />
 				</div>
 			</div>
 

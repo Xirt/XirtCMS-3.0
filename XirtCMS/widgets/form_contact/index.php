@@ -31,9 +31,11 @@ class xwidget_form_contact extends XCMS_Widget {
      * Handles any normal requests
      */
     public function show() {
+
         $this->view("default.tpl", array(
             "config" => $this->getConfig()
         ));
+
     }
 
 }
