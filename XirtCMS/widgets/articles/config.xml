@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xirtcms>
+<xirtcms type="widget">
+	<name>Article Overview</name>
+	<module>author</module>
+	<version>1.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<params>
+		<param name="css_name" type="text" default="" label="CSS name" description="A class that will be added to the main container for module identification." />
+		<param name="title" type="text" default="Articles" label="Title" />
+		<param name="show_title" type="select" default="1" label="Show title" description="Toggle showing the title of this module.">
+			<option name="Show" value="1" />
+			<option name="Hide" value="0" />
+		</param>
+		<param name="category_id" type="category" default="" label="Category" description="The category for which to display the articles." />
+		<param name="sorting" type="select" default="dt_publish DESC" label="Final sorting" description="Sorting after DB retrieval.">
+			<option name="Creation Date (asc)" value="dt_created ASC" />
+			<option name="Creation Date (desc)" value="dt_created DESC" />
+			<option name="Publish date (asc)" value="dt_publish ASC" />
+			<option name="Publish date (desc)" value="dt_publish DESC" />
+			<option name="Unpublish date (asc)" value="dt_unpublish ASC" />
+			<option name="Unpublish date (desc)" value="dt_unpublish DESC" />
+			<option name="Title (asc)" value="title ASC" />
+			<option name="Title (desc)" value="title DESC" />
+		</param>
+		<param name="dt_format" type="text" default="d/m/Y" label="Date format" description="Overrides the system parameter." />
+		<param name="count" type="text" default="" label="Article Count" description="Limits loaded articles." />
+		<param name="module_config" type="text" default="" label="Article Configuration" description="The configuration to use when displaying articles." />
+	</params>
+</xirtcms>
