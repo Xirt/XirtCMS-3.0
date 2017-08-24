@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xinstall type="module">
+	<name>Comments</name>
+	<version>1.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<params>
+		<param name="authorization_required" type="select" default="0" label="Require authorization" description="Toggles posting by non-authorized users.">
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+	</params>
+</xinstall>
