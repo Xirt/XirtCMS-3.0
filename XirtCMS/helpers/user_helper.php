@@ -23,9 +23,9 @@ class UserHelper {
         $email = $CI->email->initialize(
             array("mailtype" => "html"
         ));
-
+		
         // Set e-mail headers
-        $email->from(XCMS_Config::get("EMAIL_SENDER_NAME"), XCMS_Config::get("EMAIL_SENDER_EMAIL"))
+        $email->from(XCMS_Config::get("EMAIL_SENDER_EMAIL"), XCMS_Config::get("EMAIL_SENDER_NAME"))
             ->subject("Your new password")
             ->to($user->get("email"));
 
