@@ -32,6 +32,13 @@ class AttributesModel extends CI_Model {
 
 
     /**
+     * @var boolean
+     * Toggles validation of attributes
+     */
+    private $_validations = null;
+
+
+    /**
      * @var array
      * Internal reference to actual attributes
      */
@@ -43,7 +50,7 @@ class AttributesModel extends CI_Model {
      *
      * @param   String      $table          The DB to be used to retrieve the data
      * @param   String      $type           The model for which the attributes are to be retrieved
-     * @param   boolean     $validations     Toggles validation of given values against known fields
+     * @param   boolean     $validations    Toggles validation of given values against known fields
      * @return  Object                      Always this instance
      */
     public function init($table, $modelType, $validations = true) {
@@ -118,7 +125,7 @@ class AttributesModel extends CI_Model {
 
         }
 
-        if (!$this->validations) {
+        if (!$this->_validations) {
 
             $this->_attr[] = (Object) [
                 "name"  => $name,

@@ -123,12 +123,12 @@ class ArticlesModel extends XCMS_Model {
 
         // Front-end filter for unpublished items
         if (!XCMS_Config::get("XCMS_BACKEND")) {
-            
+
             $this->db
                 ->where("dt_unpublish >", "NOW()", false)
                 ->where("dt_publish <" , "NOW()", false);
-            
-        }       
+
+        }
 
         // Hook for customized filtering
         XCMS_Hooks::execute("articles.build_article_query", array(
