@@ -63,31 +63,6 @@ class Article extends XCMS_Controller {
 
 
     /**
-     * Checks whether the article is published
-     *
-     * @param   Object      $article        Reference to the ArticleModel to use for this request
-     * @return  boolean                     True if the article has been published, false otherwise
-     */
-    private function _isArticlePublished($article) {
-
-        // Check publish date
-        $article->setAttribute("publish_date", ArticleHelper::getPublished($article));
-        if ($article->getAttribute("publish_date", true) > new DateTime()) {
-            return false;
-        }
-
-        // Check unpublish date
-        $article->setAttribute("unpublish_date", ArticleHelper::getUnpublished($article));
-        if (($dt = $article->getAttribute("unpublish_date", true)) && $dt < new DateTime()) {
-            return false;
-        }
-
-        return true;
-
-    }
-
-
-    /**
      * Attempts to load requested article
      *
      * @param   mixed      $id              The ID of the requested article (non validated)
@@ -112,7 +87,7 @@ class Article extends XCMS_Controller {
         }
 
         // Check article publish status
-        if (!$this->_isArticlePublished($this->article)) {
+        if (!ArticleHelper::isArticlePublished($this->article)) {
 
             log_message("info", "[XCMS] Requested article '{$id}' has been unpublished.");
             return false;
