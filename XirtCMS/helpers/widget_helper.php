@@ -44,7 +44,7 @@ class WidgetHelper {
 
     
     /**
-     * Returns a list with all widgets for a given position
+     * Returns a list with all widgets for a given position on the current page
      *
      * @param   String      $position       The position for which to retrieve the widgets
      * @return  array                       A list with all widgets for the given position
