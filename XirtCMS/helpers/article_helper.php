@@ -32,15 +32,15 @@ class ArticleHelper {
      * Returns the DateTime at which the article is scheduled as published
      *
      * @param   Object      $article        The ArticleModel for which the information should be returned
-     * @return  mixed                       The unpublish DateTime if set, otherwise the creation DateTime
+     * @return  mixed                       The publish DateTime if set, otherwise null
      */
     public static function getPublished($article) {
 
-        if (!($date = $article->getAttribute("publish_date", true))) {
-            return new DateTime($article->get("dt_created"));
+        if (!($date = $article->get("dt_publish"))) {
+            return null;
         }
-
-        return DateTime::createFromFormat("d/m/Y", $date);
+        
+        return new DateTime($date);
 
     }
 
@@ -53,12 +53,35 @@ class ArticleHelper {
      */
     public static function getUnpublished($article) {
 
-        if (!($date = $article->getAttribute("unpublish_date", true))) {
+        if (!($date = $article->get("dt_unpublish"))) {
             return null;
         }
 
-        return DateTime::createFromFormat("d/m/Y", $date);
+        return new DateTime($date);
 
+    }
+    
+    
+    /**
+     * Checks whether the article is published
+     *
+     * @param   Object      $article        Reference to the ArticleModel to use for this request
+     * @return  boolean                     True if the article has been published, false otherwise
+     */
+    public static function isArticlePublished($article) {
+        
+        // Check publish date
+        if (!($dt = ArticleHelper::getPublished($article)) || $dt > new DateTime()) {
+            return false;
+        }
+        
+        // Check unpublish date
+        if (!($dt = ArticleHelper::getUnpublished($article)) || $dt < new DateTime()) {
+            return false;
+        }
+        
+        return true;
+        
     }
 
 }
