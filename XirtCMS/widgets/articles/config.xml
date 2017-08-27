@@ -27,7 +27,8 @@
 			<option name="Title (desc)" value="title DESC" />
 		</param>
 		<param name="dt_format" type="text" default="d/m/Y" label="Date format" description="Overrides the system parameter." />
-		<param name="count" type="text" default="" label="Article Count" description="Limits loaded articles." />
 		<param name="module_config" type="text" default="" label="Article Configuration" description="The configuration to use when displaying articles." />
+		<param name="count" type="text" default="" label="Article Count" description="Limits loaded articles." />
+		<param name="show_more" type="text" default="" label="Category link" description="Optional 'show more' link." />
 	</params>
 </xirtcms>

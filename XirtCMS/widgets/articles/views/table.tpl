@@ -14,6 +14,10 @@
 	</tr>
 	<?php endforeach; ?>
 	</table>
+    
+	<?php if ($show_more): ?>
+	<a href="<?php echo $show_more; ?>" title="Show more articles" class="show-more">Show more articles &raquo;</a>
+	<?php endif; ?>
 	
 </div>
 <!-- xWidget-Articles [End] //-->

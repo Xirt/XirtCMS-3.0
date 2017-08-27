@@ -20,31 +20,6 @@ class xwidget_articles extends XCMS_Widget {
     /**
      * Shows the content
      */
-    public function show123() {
-        
-        // Show template
-        switch ($this->config("show_type")) {
-            
-            case 1:
-                $this->displayDivList($menu->toArray());
-                break;
-                
-            case 2:
-                $this->displayTreeList($menu);
-                break;
-                
-            default:
-                $this->displayPlainLinks($menu->toArray());
-                break;
-                
-        }
-        
-    }
-
-    
-    /**
-     * Shows the content
-     */
     public function show() {
         
         // Load helpers
@@ -72,7 +47,8 @@ class xwidget_articles extends XCMS_Widget {
         $this->view("table.tpl", array(
             "show_title" => $this->config("show_title", true),
             "css_name"   => $this->config("css_name", ""),
-            "title"      => $this->config("title", true),
+            "show_more"  => $this->config("show_more"),
+            "title"      => $this->config("title"),
             "articles"   => $articles
         ));
 
