@@ -68,7 +68,6 @@ class XCMS_Hooks {
      * @param   String      $funcName       The name of the function to be called
      * @param   int         $priority       The priority (ordering) of the hook
      * @param   int         $argCount       The maximum amount of arguments for this hook
-     * @return  boolean                     Always true
      */
     public static function add($id, $funcName, $priority = 10, $argCount = 1) {
 
@@ -81,7 +80,6 @@ class XCMS_Hooks {
         );
         
         ksort(self::$_list[$id]);
-        return true;
 
     }
 
@@ -116,6 +114,30 @@ class XCMS_Hooks {
 
         } while (next(self::$_list[$id]) !== false);
 
+    }
+    
+    
+    /**
+     * Removes all references from the XirtCMS hooks stack for the given hook ID
+     *
+     * @param   String      $id             The unique ID of this hook
+     */
+    public static function reset($id) {
+        
+        log_message("info", "[XCMS] Unregistering all hooks with id '{$id}'.");
+        unset(self::$_list[$id]);
+        
+    }
+    
+    
+    /**
+     * Count all references from the XirtCMS hooks stack for the given hook ID
+     *
+     * @param   String      $id             The unique ID of this hook
+     * @return  int                         The amount of references for this hook
+     */
+    public static function count($id) {
+        return count(self::$_list[$id]);
     }
 
 }
