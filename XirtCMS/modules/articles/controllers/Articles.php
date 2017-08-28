@@ -33,8 +33,6 @@ class Articles extends XCMS_Controller {
         // Load models
         $this->load->model("ArticlesModel", false);
         $this->load->model("ExtArticlesModel", "articles");
-        
-        RouteHelper::init();
 
     }
 
@@ -42,11 +40,13 @@ class Articles extends XCMS_Controller {
     /**
      * Placeholder for invalid requests
      */
-    public function index($number = 1) {
+    public function index() {
+
+        RouteHelper::init();
 
         // Populate models
         $articles = array();
-        foreach ($this->_retrieveArticles($number) as $article) {
+        foreach ($this->_retrieveArticles() as $article) {
 
             // Enrich article
             $article = $article->getObject();
@@ -56,28 +56,13 @@ class Articles extends XCMS_Controller {
 
         }
 
-        // Handles are regular request...
-        if (!$this->input->is_ajax_request()) {
-        
-            return $this->load->view("default.tpl", array(
-                "show_title" => $this->config("show_title", true),
-                "css_name"   => $this->config("css_name", ""),
-                "title"      => $this->_getTitle(),
-                "articles"   => $articles
-            ));
-        
-        }
-        
-        // ... or provide response as JSON
-        $this->output->set_content_type("application/json");
-        $this->output->set_output(json_encode($articles));
-        
-    }
-    
-    
-    
-    public function page($number) {
-        $this->index($number);
+        $this->load->view("default.tpl", array(
+            "show_title" => $this->config("show_title", true),
+            "css_name"   => $this->config("css_name", ""),
+            "articles"   => $articles,
+            "title"      => $this->_getTitle()
+        ));
+
     }
 
 
@@ -117,18 +102,11 @@ class Articles extends XCMS_Controller {
     /**
      * Retrieves articles using given search attributes
      *
-     * @param   int         $page           The page for which articles should be loaded
      * @return  Array                       List containing all loaded articles
      */
-    private function _retrieveArticles($page) {
-        
-        // Validate page integrity
-        if (!($page = round($page)) || $page < 0) {
-            $page = 1;
-        }
+    private function _retrieveArticles() {
         
         $articles = (new ExtArticlesModel())->init()
-            ->set("page",     $page)
             ->set("limit",    $this->config("limit"))
             ->set("category", $this->config("category_id"))
             ->set("sorting",  $this->config("sorting") ?? "dt_publish DESC")
@@ -148,7 +126,7 @@ class Articles extends XCMS_Controller {
     private function _getIntroduction($content) {
 
         // Retrieve introduction
-        if (!($introduction = ArticleHelper::getSummary($content))) {
+        if (!($introduction = strip_tags(ArticleHelper::getSummary($content)))) {
             $introduction = strip_tags($content);
         }
 

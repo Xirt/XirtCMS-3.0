@@ -27,7 +27,7 @@ class ArticleHelper {
 
     }
 
-    
+
     /**
      * Returns the DateTime at which the article is scheduled as published
      *
@@ -39,12 +39,12 @@ class ArticleHelper {
         if (!($date = $article->get("dt_publish"))) {
             return null;
         }
-        
+
         return new DateTime($date);
 
     }
 
-    
+
     /**
      * Returns the DateTime at which the article is scheduled as unpublished
      *
@@ -60,28 +60,45 @@ class ArticleHelper {
         return new DateTime($date);
 
     }
-    
-    
+
+
+    /**
+     * Checks whether the article is published
+     *
+	 * @deprecated
+     * @param   Object      $article        Reference to the ArticleModel to use for this request
+     * @return  boolean                     True if the article has been published, false otherwise
+     */
+	public static function isArticlePublished($article) {
+		return self::isPublished($article);
+	}
+
+
     /**
      * Checks whether the article is published
      *
      * @param   Object      $article        Reference to the ArticleModel to use for this request
      * @return  boolean                     True if the article has been published, false otherwise
      */
-    public static function isArticlePublished($article) {
-        
+    public static function isPublished($article) {
+
+		// Check publish toggle
+		if (!$article->get("published")) {
+			return false;
+		}
+
         // Check publish date
         if (!($dt = ArticleHelper::getPublished($article)) || $dt > new DateTime()) {
             return false;
         }
-        
+
         // Check unpublish date
         if (!($dt = ArticleHelper::getUnpublished($article)) || $dt < new DateTime()) {
             return false;
         }
-        
+
         return true;
-        
+
     }
 
 }

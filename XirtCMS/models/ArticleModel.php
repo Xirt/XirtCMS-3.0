@@ -15,7 +15,7 @@ class ArticleModel extends XCMS_Model {
      * Attribute array for this model (valid attributes)
      */
     protected $_attr = array(
-        "id", "title", "content", "author", "dt_created", "dt_publish", "dt_unpublish", "version"
+        "id", "title", "content", "author", "dt_created", "published", "dt_publish", "dt_unpublish", "version"
     );
 
 

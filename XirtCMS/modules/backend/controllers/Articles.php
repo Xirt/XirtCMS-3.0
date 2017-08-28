@@ -74,10 +74,13 @@ class Articles extends XCMS_Controller {
         foreach ($this->articles->toArray() as $article) {
 
             $searchObj->rows[] = (Object) array(
-                "id"         => $article->get("id"),
-                "title"      => $article->get("title"),
-                "author"     => $article->get("username"),
-                "dt_created" => $article->get("dt_created")
+                "id"           => $article->get("id"),
+                "title"        => $article->get("title"),
+                "author"       => $article->get("username"),
+                "dt_created"   => $article->get("dt_created"),
+                "dt_publish"   => $article->get("dt_publish"),
+                "dt_unpublish" => $article->get("dt_unpublish"),
+				"published"    => ArticleHelper::isPublished($article)
             );
 
         }

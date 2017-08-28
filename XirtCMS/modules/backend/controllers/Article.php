@@ -23,6 +23,7 @@ class Article extends XCMS_Controller {
         }
 
         // Load helpers
+        $this->load->helper("article");
         $this->load->helper("db_search");
 
         // Load libaries
@@ -52,11 +53,14 @@ class Article extends XCMS_Controller {
 
         // Prepare data...
         $data = (Object)array(
-            "id"          => $this->article->get("id"),
-            "title"       => $this->article->get("title"),
-            "content"     => $this->article->get("content"),
-            "categories"  => $this->article->getCategories(),
-            "attributes"  => $this->article->getAttributes()
+            "id"           => $this->article->get("id"),
+            "title"        => $this->article->get("title"),
+			"content"      => $this->article->get("content"),
+			"published"    => $this->article->get("published"),
+			"dt_publish"   => $this->article->get("dt_publish"),
+			"dt_unpublish" => $this->article->get("dt_unpublish"),
+            "categories"   => $this->article->getCategories(),
+            "attributes"   => $this->article->getAttributes()
         );
 
         // ...and output it as JSON
@@ -214,6 +218,49 @@ class Article extends XCMS_Controller {
 
             }
 
+            $this->article->validate();
+            $this->article->save();
+
+            // Inform user
+            XCMS_JSON::modificationSuccessMessage();
+
+        } catch (Exception $e) {
+
+            XCMS_JSON::validationFailureMessage($e->getMessage());
+
+        }
+
+    }
+
+
+    /**
+     * "Modify Publification Status"-functionality for this controller
+     */
+    public function modify_publish() {
+
+        // Validate given user ID
+        $id = $this->input->post("article_id");
+        if (!is_numeric($id) || !$this->article->load($id)) {
+
+            XCMS_JSON::loadingFailureMessage();
+            return;
+
+        }
+
+        try {
+
+            // Validate provided input
+            if (!$this->form_validation->run()) {
+                throw new UnexpectedValueException(null);
+            }
+			
+			// Prepare data
+			$dtPublish   = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_publish"));
+			$dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_unpublish"));
+            // Set & save new updates
+            $this->article->set("published",    is_null($this->input->post("article_published")) ? "0" : "1");
+            $this->article->set("dt_publish",   $dtPublish->format("Y-m-d H:i:s"));
+            $this->article->set("dt_unpublish", $dtUnpublish->format("Y-m-d H:i:s"));
             $this->article->validate();
             $this->article->save();
 

@@ -14,7 +14,7 @@ class ExtArticlesModel extends ArticlesModel {
      * @var array
      * Attribute array for this model (valid attributes)
      */
-    protected $_attr = array("category", "page", "limit", "sorting");
+    protected $_attr = array("category", "limit", "sorting");
     
     
     /**
@@ -23,13 +23,12 @@ class ExtArticlesModel extends ArticlesModel {
     public function init() {
         
         // Hook for article query
+        XCMS_Hooks::reset("articles.build_article_query");
         XCMS_Hooks::add("articles.build_article_query", function($stmt) {
-            
+
             // Default query
             $stmt->select(Query::TABLE_ARTICLES . ".*", Query::TABLE_USERS . ".username")
                 ->join(Query::TABLE_USERS, Query::TABLE_USERS . ".id = author")
-                ->where("dt_unpublish >", "NOW()", false)
-                ->where("dt_publish <"  , "NOW()", false)
                 ->order_by($this->get("sorting"));
 
             // Optional: Specific category ID
@@ -42,7 +41,7 @@ class ExtArticlesModel extends ArticlesModel {
 
             // Optional: Limit amount of rows
             if (($limit = $this->get("limit")) && is_numeric($limit)) {
-                $stmt->limit($limit, ($this->get("page") - 1) * $limit);
+                $stmt->limit($limit);
             }
             
         });

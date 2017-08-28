@@ -24,7 +24,7 @@
 			<option name="Title (asc)" value="title ASC" />
 			<option name="Title (desc)" value="title DESC" />
 		</param>
-		<param name="limit" type="text" default="" label="Article Count" description="Limits loaded articles." />
+		<param name="count" type="text" default="" label="Article Count" description="Limits loaded articles." />
 		<param name="module_config" type="text" default="" label="Article Configuration" description="The configuration to use when displaying articles." />
 		<param name="max_length" type="text" default="500" label="Max. length" description="The maximum of characters for the text to show." />
 	</params>

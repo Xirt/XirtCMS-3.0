@@ -5,8 +5,9 @@
 	<tr>
 		<th data-column-id="id" data-header-css-class="table-row-id" data-css-class="table-row-id" data-converter="identifier" data-order="asc">ID #</th>
 		<th data-column-id="title" data-header-css-class="table-row-title" data-css-class="table-row-title">Title</th>
-		<th data-column-id="dt_created" data-header-css-class="table-row-dt_created" data-css-class="table-row-dt_created">Created</th>
+		<th data-column-id="dt_created" data-header-css-class="table-row-dt_created" data-css-class="table-row-dt_created" data-visible="false">Created</th>
 		<th data-column-id="author" data-header-css-class="table-row-author" data-css-class="table-row-author">Author</th>
+		<th data-column-id="published" data-header-css-class="table-row-published" data-css-class="table-row-published" data-formatter="published" data-sortable="false">Status</th>
 		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands" data-formatter="commands" data-visible-in-selection="false" data-sortable="false">&nbsp;</th>
 	</tr>
 </thead>
@@ -77,7 +78,7 @@
 
 					<div class="box-article-header">
 
-							<input id="modify_title" name="article_title" class="form-control" />
+						<input id="modify_title" name="article_title" class="form-control" />
 					
 					</div>
 
@@ -216,6 +217,97 @@
 
 					<button type='submit' class="btn btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
 					<button type="button" class="btn btn-primary" id='configClose' aria-hidden="true">Close</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
+
+<div id="publishModal" class="modal fade bootstrap-dialog type-primary size-normal in" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<form id="form-publish" class="form-horizontal" action="backend/article/modify_publish" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<div class="bootstrap-dialog-header">
+
+						<div class="bootstrap-dialog-title">Article Publishment</div>
+
+					</div>
+
+				</div>
+				<div class="modal-body">
+
+					<div class="form-group">
+
+						<label class="col-sm-4 control-label">ID #</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" name="article_id" required disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group">
+
+						<label class="col-sm-4 control-label">Title</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" name="article_title" disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group">
+
+						<label class="col-sm-4 control-label">Published</label>
+						<div class="col-sm-7">
+							<input type="checkbox" name="article_published" id="article_published" data-on="Yes" data-off="No" data-onstyle="info" data-toggle="toggle" />
+						</div>
+
+					</div>
+
+					<div class="form-group publish-dates">
+
+						<label class="col-sm-4 control-label">Publish date</label>
+						<div class="col-sm-7">
+
+							<div class='input-group date'>
+								<input type="text" class="form-control datepicker" name="article_dt_publish" id="article_dt_publish" readonly />
+								<div class='input-group-addon'><i class='fa fa-calendar'></i></div>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="form-group publish-dates">
+
+						<label class="col-sm-4 control-label">Unpublish date</label>
+						<div class="col-sm-7">
+
+							<div class='input-group date'>
+								<input type="text" class="form-control datepicker" name="article_dt_unpublish" id="article_dt_unpublish" readonly />
+								<div class='input-group-addon'><i class='fa fa-calendar'></i></div>
+							</div>
+
+						</div>
+
+					</div>
+					
+				</div>
+
+				<div class="modal-footer">
+
+					<button type='submit' class="btn btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
+					<button type="button" class="btn btn-primary" id='publishClose' aria-hidden="true">Close</button>
 
 				</div>
 
