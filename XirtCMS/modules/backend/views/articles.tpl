@@ -6,7 +6,7 @@
 		<th data-column-id="id" data-header-css-class="table-row-id" data-css-class="table-row-id" data-converter="identifier" data-order="asc">ID #</th>
 		<th data-column-id="title" data-header-css-class="table-row-title" data-css-class="table-row-title">Title</th>
 		<th data-column-id="dt_created" data-header-css-class="table-row-dt_created" data-css-class="table-row-dt_created" data-visible="false">Created</th>
-		<th data-column-id="author" data-header-css-class="table-row-author" data-css-class="table-row-author">Author</th>
+		<th data-column-id="author" data-header-css-class="table-row-author" data-css-class="table-row-author" data-visible="false">Author</th>
 		<th data-column-id="published" data-header-css-class="table-row-published" data-css-class="table-row-published" data-formatter="published" data-sortable="false">Status</th>
 		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands" data-formatter="commands" data-visible-in-selection="false" data-sortable="false">&nbsp;</th>
 	</tr>
