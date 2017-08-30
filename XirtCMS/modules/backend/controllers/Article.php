@@ -253,10 +253,11 @@ class Article extends XCMS_Controller {
             if (!$this->form_validation->run()) {
                 throw new UnexpectedValueException(null);
             }
-			
+
 			// Prepare data
 			$dtPublish   = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_publish"));
 			$dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_unpublish"));
+
             // Set & save new updates
             $this->article->set("published",    is_null($this->input->post("article_published")) ? "0" : "1");
             $this->article->set("dt_publish",   $dtPublish->format("Y-m-d H:i:s"));

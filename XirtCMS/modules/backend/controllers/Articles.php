@@ -21,7 +21,8 @@ class Articles extends XCMS_Controller {
         $this->load->helper("db_search");
 
         // Load models
-        $this->load->model("ArticlesModel", "articles");
+        $this->load->model("ArticlesModel", false);
+        $this->load->model("ExtArticlesModel", "articles");
         $this->load->model("CategoriesModel", "categories");
 
     }
@@ -66,7 +67,7 @@ class Articles extends XCMS_Controller {
 
         // Load requested data
         $searchObj = new SearchAttributes();
-        $this->articles->load($searchObj->retrieveFromBootgrid($this->input));
+        $this->articles->init()->load($searchObj->retrieveFromBootgrid($this->input));
 
         // Enrich object...
         $searchObj->rows = array();
@@ -76,7 +77,7 @@ class Articles extends XCMS_Controller {
             $searchObj->rows[] = (Object) array(
                 "id"           => $article->get("id"),
                 "title"        => $article->get("title"),
-                "author"       => $article->get("username"),
+                "author"       => $article->get("author"),
                 "dt_created"   => $article->get("dt_created"),
                 "dt_publish"   => $article->get("dt_publish"),
                 "dt_unpublish" => $article->get("dt_unpublish"),
