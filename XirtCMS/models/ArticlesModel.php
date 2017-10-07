@@ -58,7 +58,7 @@ class ArticlesModel extends XCMS_Model {
      * @return  int                         The total number of articles in the DB
      */
     public function getTotalCount() {
-        return $this->_buildArticleQuery()->count_all_results(Query::TABLE_ARTICLES);
+        return $this->_buildArticleQuery(true)->count_all_results(Query::TABLE_ARTICLES);
     }
 
 
@@ -79,7 +79,7 @@ class ArticlesModel extends XCMS_Model {
      */
     protected function _loadArticles() {
 
-        $query = $this->_buildArticleQuery(func_get_args())->get(Query::TABLE_ARTICLES);
+        $query = $this->_buildArticleQuery()->get(Query::TABLE_ARTICLES);
         foreach ($query->result() as $row) {
             $this->_list[$row->id] = (new ArticleModel())->set((array)$row);
         }
@@ -94,7 +94,7 @@ class ArticlesModel extends XCMS_Model {
      */
     protected function _loadAttributes() {
 
-        $query = $this->_buildAttributeQuery(func_get_args())->get(Query::TABLE_ARTICLES_ATTR);
+        $query = $this->_buildAttributeQuery()->get(Query::TABLE_ARTICLES_ATTR);
         foreach ($query->result() as $row) {
             $this->_list[$row->ref_id]->setAttribute($row->name, $row->value);
         }
@@ -117,9 +117,10 @@ class ArticlesModel extends XCMS_Model {
     /**
      * Creates query (using CI QueryBuilder) for retrieving relevant articles
      *
+     * @param   boolean     $filterOnly     Indicates the query type to be returned (retrieve vs. count)
      * @return  Object                      CI Database Instance for chaining purposes
      */
-    protected function _buildArticleQuery() {
+    protected function _buildArticleQuery($filterOnly = false) {
 
         // Front-end filter for unpublished items
         if (!XCMS_Config::get("XCMS_BACKEND")) {
@@ -132,8 +133,8 @@ class ArticlesModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("articles.build_article_query", array(
-            &$this->db)
-        );
+            &$this->db, $filterOnly
+        ));
 
         return $this->db;
 
