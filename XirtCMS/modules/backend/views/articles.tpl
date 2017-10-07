@@ -1,4 +1,10 @@
-<h1>Articles</h1>
+<h1>
+	Articles
+	<div class='btn-group create' />
+		<button class="btn btn-sm btn-success btn-create">Add New</button>
+	</div>
+
+</h1>
 
 <table id="grid-basic" class="table table-condensed table-hover table-striped" data-toggle="bootgrid">
 <thead>
@@ -45,7 +51,7 @@
 
 				<div class="modal-footer">
 					<button type='submit' class="btn btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Create article</button>
-					<button type='button'  class="btn btn-primary" id='createClose' aria-hidden="true">Close</button>
+					<button type='button'  class="btn btn-primary btn-close" aria-hidden="true">Close</button>
 				</div>
 
 			</div>
@@ -91,7 +97,7 @@
 					<input type="hidden" class="form-control" name="article_id" />
 
 					<button type='submit' class="btn btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-primary" id='articleClose' aria-hidden="true">Close</button>
+					<button type="button" class="btn btn-primary btn-close" aria-hidden="true">Close</button>
 
 				</div>
 
@@ -160,7 +166,7 @@
 				<div class="modal-footer">
 
 					<button type='submit' class="btn btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-primary" id='categoriesClose' aria-hidden="true">Close</button>
+					<button type="button" class="btn btn-primary btn-close" aria-hidden="true">Close</button>
 
 				</div>
 
@@ -216,7 +222,7 @@
 				<div class="modal-footer">
 
 					<button type='submit' class="btn btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-primary" id='configClose' aria-hidden="true">Close</button>
+					<button type="button" class="btn btn-primary btn-close" aria-hidden="true">Close</button>
 
 				</div>
 
@@ -280,7 +286,7 @@
 						<div class="col-sm-7">
 
 							<div class='input-group date'>
-								<input type="text" class="form-control datepicker" name="article_dt_publish" id="article_dt_publish" readonly />
+								<input type="text" class="form-control datepicker" name="article_dt_publish" id="article_dt_publish" maxlength="10" readonly />
 								<div class='input-group-addon'><i class='fa fa-calendar'></i></div>
 							</div>
 
@@ -294,7 +300,7 @@
 						<div class="col-sm-7">
 
 							<div class='input-group date'>
-								<input type="text" class="form-control datepicker" name="article_dt_unpublish" id="article_dt_unpublish" readonly />
+								<input type="text" class="form-control datepicker" name="article_dt_unpublish" id="article_dt_unpublish" maxlength="10" readonly />
 								<div class='input-group-addon'><i class='fa fa-calendar'></i></div>
 							</div>
 
@@ -307,7 +313,7 @@
 				<div class="modal-footer">
 
 					<button type='submit' class="btn btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-primary" id='publishClose' aria-hidden="true">Close</button>
+					<button type="button" class="btn btn-primary btn-close" aria-hidden="true">Close</button>
 
 				</div>
 
