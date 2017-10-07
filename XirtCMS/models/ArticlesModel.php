@@ -42,6 +42,7 @@ class ArticlesModel extends XCMS_Model {
 
         if ($this->_loadArticles()) {
 
+            $this->_loadUsers();
             $this->_loadAttributes();
             $this->_parseAndFilterArticles();
 
@@ -85,6 +86,27 @@ class ArticlesModel extends XCMS_Model {
         }
 
         return count($this->_list);
+
+    }
+
+
+    /**
+     * Loads users for all items currently in the list
+     */
+    protected function _loadUsers() {
+
+        $authors = array();
+
+        // Retrieve authors
+        $query = $this->_buildUsersQuery()->get(Query::TABLE_USERS);
+        foreach ($query->result() as $row) {
+            $authors[$row->id] = (new UserModel())->set("username", $row->username);
+        }
+
+        // Merge authors into articles
+        foreach ($this->_list as $id => $article) {
+            $this->_list[$id]->setAuthor($authors[$article->get("author_id")]);
+        }
 
     }
 
@@ -135,6 +157,29 @@ class ArticlesModel extends XCMS_Model {
         XCMS_Hooks::execute("articles.build_article_query", array(
             &$this->db, $filterOnly
         ));
+
+        return $this->db;
+
+    }
+
+
+    /**
+     * Creates query (using CI QueryBuilder) for retrieving relevant users (authors)
+     *
+     * @return  Object                      CI Database Instance for chaining purposes
+     */
+    protected function _buildUsersQuery() {
+
+        $authors = array();
+        foreach ($this->_list as $article) {
+            $authors[] = $article->get("author_id");
+        }
+
+        // Create requested query
+        $this->db->where_in("id", array_unique($authors));
+        XCMS_Hooks::execute("articles.build_users_query", array(
+            &$this->db)
+        );
 
         return $this->db;
 
