@@ -16,21 +16,21 @@ class XCMS_Hooks {
      */
     private static $_list = array();
 
-    
+
     /**
      * Initializes the instance with all known hooks
      */
     public static function init() {
-        
+
         log_message("info", "[XCMS] Loading all known hooks.");
         self::_load(APPPATH . "hooks/");
-        
+
     }
 
 
     /**
      * Loads all hooks in internal list for usage during hook calls
-     * 
+     *
      * @param   String      $path          The path to the folder containing the hooks
      */
     private static function _load($path) {
@@ -69,16 +69,16 @@ class XCMS_Hooks {
      * @param   int         $priority       The priority (ordering) of the hook
      * @param   int         $argCount       The maximum amount of arguments for this hook
      */
-    public static function add($id, $funcName, $priority = 10, $argCount = 1) {
+    public static function add($id, $funcName, $priority = 10, $argCount = -1) {
 
         log_message("info", "[XCMS] Registering hook with id '{$id}'.");
-        
+
         self::$_list[$id][$priority][] = array(
             "valid_args" => $argCount,
             "function"   => $funcName,
             "prio"       => $priority
         );
-        
+
         ksort(self::$_list[$id]);
 
     }
@@ -93,7 +93,7 @@ class XCMS_Hooks {
     public static function execute($id, $args = array()) {
 
         log_message("info", "[XCMS] Calling hook with id '{$id}'.");
-        
+
         // Nothing to process
         if (!array_key_exists($id, self::$_list)) {
             return;
@@ -107,7 +107,10 @@ class XCMS_Hooks {
             foreach (current(self::$_list[$id]) as $the_) {
 
                 if (!is_null($the_["function"])) {
-                    call_user_func_array($the_["function"], array_slice($args, 0, (int) $the_["valid_args"]));
+
+                    $args = ($args == abs($args)) ? array_slice($args, 0, (int) $the_["valid_args"]) : $args;
+                    call_user_func_array($the_["function"], $args);
+
                 }
 
             }
@@ -115,21 +118,21 @@ class XCMS_Hooks {
         } while (next(self::$_list[$id]) !== false);
 
     }
-    
-    
+
+
     /**
      * Removes all references from the XirtCMS hooks stack for the given hook ID
      *
      * @param   String      $id             The unique ID of this hook
      */
     public static function reset($id) {
-        
+
         log_message("info", "[XCMS] Unregistering all hooks with id '{$id}'.");
         unset(self::$_list[$id]);
-        
+
     }
-    
-    
+
+
     /**
      * Count all references from the XirtCMS hooks stack for the given hook ID
      *
