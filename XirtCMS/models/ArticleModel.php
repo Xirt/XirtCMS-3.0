@@ -15,7 +15,7 @@ class ArticleModel extends XCMS_Model {
      * Attribute array for this model (valid attributes)
      */
     protected $_attr = array(
-        "id", "title", "content", "author", "dt_created", "published", "dt_publish", "dt_unpublish", "version"
+        "id", "title", "content", "author_id", "dt_created", "published", "dt_publish", "dt_unpublish", "version"
     );
 
 
@@ -84,7 +84,7 @@ class ArticleModel extends XCMS_Model {
 
                 // Load additional data
                 $this->_attributes->load($this->get("id"));
-                $this->_author->load($this->get("author"));
+                $this->_author->load($this->get("author_id"));
                 $this->_loadCategories();
 
             }

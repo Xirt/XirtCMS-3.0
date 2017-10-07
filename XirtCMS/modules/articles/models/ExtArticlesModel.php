@@ -28,7 +28,7 @@ class ExtArticlesModel extends ArticlesModel {
 
             // Default query
             $stmt->select(Query::TABLE_ARTICLES . ".*", Query::TABLE_USERS . ".username")
-                ->join(Query::TABLE_USERS, Query::TABLE_USERS . ".id = author")
+                ->join(Query::TABLE_USERS, Query::TABLE_USERS . ".id = author_id")
                 ->order_by($this->get("sorting"));
 
             // Optional: Specific category ID
