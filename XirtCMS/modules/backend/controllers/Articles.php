@@ -22,7 +22,7 @@ class Articles extends XCMS_Controller {
 
         // Load models
         $this->load->model("ArticlesModel", false);
-        $this->load->model("ExtArticlesModel", "articles");
+        $this->load->model("ExtArticlesModel", false);
         $this->load->model("CategoriesModel", "categories");
 
     }
@@ -39,7 +39,8 @@ class Articles extends XCMS_Controller {
         // Add page scripts
         XCMS_Page::getInstance()->addScript(array(
             "assets/scripts/backend/mng_articles.js",
-            "assets/third-party/tinymce/tinymce.js"
+            "assets/third-party/tinymce/tinymce.js",
+            "assets/scripts/tinymce_config.js"
         ));
 
         // Add page stylesheets
@@ -65,23 +66,29 @@ class Articles extends XCMS_Controller {
             return show_404();
         }
 
+        $searchObj = (new SearchAttributes())->retrieveFromBootgrid($this->input); // Rename to GridManager? Use array for setting
         // Load requested data
-        $searchObj = new SearchAttributes();
-        $this->articles->init()->load($searchObj->retrieveFromBootgrid($this->input));
+        $articles = (new ExtArticlesModel())->init()
+            ->set("limit",      $searchObj->rowCount)
+            ->set("page",       $searchObj->current)
+            ->set("filter",     $searchObj->searchPhrase)
+            ->set("sortColumn", $searchObj->sortColumn)
+            ->set("sortOrder",  $searchObj->sortOrder)
+            ->load();
 
         // Enrich object...
         $searchObj->rows = array();
-        $searchObj->total = $this->articles->getTotalCount($searchObj);
-        foreach ($this->articles->toArray() as $article) {
+        $searchObj->total = $articles->getTotalCount($searchObj);
+        foreach ($articles->toArray() as $article) {
 
             $searchObj->rows[] = (Object) array(
                 "id"           => $article->get("id"),
                 "title"        => $article->get("title"),
-                "author"       => $article->get("author"),
                 "dt_created"   => $article->get("dt_created"),
                 "dt_publish"   => $article->get("dt_publish"),
                 "dt_unpublish" => $article->get("dt_unpublish"),
-				"published"    => ArticleHelper::isPublished($article)
+				"published"    => ArticleHelper::isPublished($article),
+                "author"       => $article->getAuthor()->get("username")
             );
 
         }
