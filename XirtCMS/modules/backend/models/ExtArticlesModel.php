@@ -25,10 +25,6 @@ class ExtArticlesModel extends ArticlesModel {
         XCMS_Hooks::reset("articles.build_article_query");
         XCMS_Hooks::add("articles.build_article_query", function($stmt, $filterOnly) {
 
-            // Default query
-            $stmt->select(Query::TABLE_ARTICLES . ".*, " . Query::TABLE_USERS . ".username AS author")
-                ->join(Query::TABLE_USERS, Query::TABLE_USERS . ".id = author_id");
-
             // Optional: Filter result
             if ($filter = trim($this->get("filter"))) {
 
@@ -42,7 +38,7 @@ class ExtArticlesModel extends ArticlesModel {
             if (!$filterOnly) {
 
                  // Optional: Limit amount of rows
-                if (($limit = $this->get("limit")) && is_numeric($limit) && ($page = $this->get("page")) && is_numeric($page)) {
+                if (($limit = $this->get("limit")) && is_numeric($limit) && $limit > 0 && ($page = $this->get("page")) && is_numeric($page)) {
                     $stmt->limit($limit, ($page - 1) * $limit);
                 }
 
