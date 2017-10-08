@@ -14,7 +14,8 @@ class ExtArticlesModel extends ArticlesModel {
      * @var array
      * Attribute array for this model (valid attributes)
      */
-    protected $_attr = array("filter", "page", "limit", "sortColumn", "sortOrder");
+    protected $_attr = array("searchPhrase", "current", "rowCount", "sortColumn", "sortOrder");
+
 
     /**
      * Add hooks to influence parent behaviour
@@ -25,8 +26,7 @@ class ExtArticlesModel extends ArticlesModel {
         XCMS_Hooks::reset("articles.build_article_query");
         XCMS_Hooks::add("articles.build_article_query", function($stmt, $filterOnly) {
 
-            // Optional: Filter result
-            if ($filter = trim($this->get("filter"))) {
+            if ($filter = trim($this->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
                     Query::TABLE_ARTICLES . ".id"    => $filter,
@@ -37,12 +37,10 @@ class ExtArticlesModel extends ArticlesModel {
 
             if (!$filterOnly) {
 
-                 // Optional: Limit amount of rows
-                if (($limit = $this->get("limit")) && is_numeric($limit) && $limit > 0 && ($page = $this->get("page")) && is_numeric($page)) {
-                    $stmt->limit($limit, ($page - 1) * $limit);
+                if (($rowCount = $this->get("rowCount")) > 0) {
+                    $stmt->limit($rowCount, ($this->get("current") - 1) * $rowCount);
                 }
 
-                // Optional: Sort result
                 $stmt->order_by($this->get("sortColumn"), $this->get("sortOrder"));
 
             }

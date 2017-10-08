@@ -18,7 +18,7 @@ class Articles extends XCMS_Controller {
         parent::__construct(75, true);
 
         // Load helpers
-        $this->load->helper("db_search");
+        $this->load->helper("grid");
 
         // Load models
         $this->load->model("ArticlesModel", false);
@@ -66,22 +66,20 @@ class Articles extends XCMS_Controller {
             return show_404();
         }
 
-        $searchObj = (new SearchAttributes())->retrieveFromBootgrid($this->input); // Rename to GridManager? Use array for setting
+        // Retrieve request
+        $gridIO = (new GridHelper())
+            ->parseRequest($this->input);
+ 
         // Load requested data
         $articles = (new ExtArticlesModel())->init()
-            ->set("limit",      $searchObj->rowCount)
-            ->set("page",       $searchObj->current)
-            ->set("filter",     $searchObj->searchPhrase)
-            ->set("sortColumn", $searchObj->sortColumn)
-            ->set("sortOrder",  $searchObj->sortOrder)
+            ->set($gridIO->getRequest())
             ->load();
 
-        // Enrich object...
-        $searchObj->rows = array();
-        $searchObj->total = $articles->getTotalCount($searchObj);
+        // Prepare response ...
+        $gridIO->setTotal($articles->getTotalCount($gridIO));
         foreach ($articles->toArray() as $article) {
 
-            $searchObj->rows[] = (Object) array(
+            $gridIO->addRow([
                 "id"           => $article->get("id"),
                 "title"        => $article->get("title"),
                 "dt_created"   => $article->get("dt_created"),
@@ -89,13 +87,12 @@ class Articles extends XCMS_Controller {
                 "dt_unpublish" => $article->get("dt_unpublish"),
 				"published"    => ArticleHelper::isPublished($article),
                 "author"       => $article->getAuthor()->get("username")
-            );
+            ]);
 
         }
 
-        // ...and output it as JSON
-        $this->output->set_content_type("application/json");
-        $this->output->set_output(json_encode($searchObj));
+        // ... and output it
+        $gridIO->generateResponse($this->output);
 
     }
 
