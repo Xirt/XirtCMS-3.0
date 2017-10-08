@@ -16,24 +16,20 @@ $(function() {
 
 		init: function() {
 
-			var that = this;
-
 			this._initGrid();
 			this._initForms();
 			this._initEditor();
+			this._initButtons();
 			this._initDatepickers();
 
-			// Activate publishing button
-			$("#article_published").on("change", function() {
-				$(".publish-dates").toggle(this.checked);
-			});
-
-			// Activate creation button
-			$('.btn-create').click(function(e) {
-				createModal.show();
-			});
-
 			return this;
+
+		},
+
+
+		_initGrid: function() {
+
+			this.grid = (new $.GridManager($("#grid-basic"))).init();
 
 		},
 
@@ -48,24 +44,6 @@ $(function() {
 			})).then(function(editors) {
 				that._initModals(editors);
 			});
-
-			return this;
-
-		},
-
-
-		_initModals: function(initializedEditors) {
-
-			createModal		= new $.XirtModal($("#createModal")).init();
-			configModal		= new $.XirtModal($("#configModal")).init();
-			publishModal	= new $.XirtModal($("#publishModal")).init();
-			categoriesModal = new $.XirtModal($("#categoriesModal")).init();
-
-			modifyModal	= new $.XirtModal($("#modifyModal"), {
-				editors : initializedEditors
-			}).init();
-
-			return this;
 
 		},
 
@@ -119,6 +97,35 @@ $(function() {
 		},
 
 
+		_initModals: function(initializedEditors) {
+
+			createModal		= new $.XirtModal($("#createModal")).init();
+			configModal		= new $.XirtModal($("#configModal")).init();
+			publishModal	= new $.XirtModal($("#publishModal")).init();
+			categoriesModal = new $.XirtModal($("#categoriesModal")).init();
+
+			modifyModal	= new $.XirtModal($("#modifyModal"), {
+				editors : initializedEditors
+			}).init();
+
+		},
+
+
+		_initButtons: function() {
+
+			// Activate publishing button
+			$("#article_published").on("change", function() {
+				$(".publish-dates").toggle(this.checked);
+			});
+
+			// Activate creation button
+			$('.btn-create').click(function(e) {
+				createModal.show();
+			});
+
+		},
+
+
 		_initDatepickers: function() {
 
 			// Activate fields
@@ -138,13 +145,6 @@ $(function() {
 				e.stopImmediatePropagation();
 
 			});
-
-		},
-
-
-		_initGrid: function() {
-
-			this.grid = (new $.GridManager($("#grid-basic"))).init();
 
 		}
 
