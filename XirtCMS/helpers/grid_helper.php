@@ -56,7 +56,7 @@ class GridHelper {
      * The sort order to be used for sorting on $sortColumn
      * @var String
      */
-    private $_sortOrder = "DESC";
+    private $_sortOrder = "ASC";
 
 
     /**
