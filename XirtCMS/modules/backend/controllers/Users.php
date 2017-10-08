@@ -19,11 +19,12 @@ class Users extends XCMS_Controller {
         parent::__construct(75, true);
 
         // Load helpers
-        $this->load->helper("db_search");
+        $this->load->helper("grid");
 
         // Load models
-        $this->load->model("UsersModel", "users");
-        $this->load->model("UsergroupsModel", "usergroups");
+        $this->load->model("UsersModel", false);
+        $this->load->model("ExtUsersModel", false);
+        $this->load->model("UsergroupsModel", false);
 
     }
 
@@ -32,9 +33,6 @@ class Users extends XCMS_Controller {
      * Index page for this controller (main GUI)
      */
     public function index() {
-
-        $this->usergroups->load(new SearchAttributes());
-        $usergroups = $this->usergroups->toArray();
 
         // Add page scripts
         XCMS_Page::getInstance()->addScript(array(
@@ -48,7 +46,7 @@ class Users extends XCMS_Controller {
 
         // Show template
         $this->load->view("users", array(
-            "usergroups" => $usergroups
+            "usergroups" => (new UserGroupsModel())->load()->toArray()
         ));
 
     }
@@ -64,29 +62,32 @@ class Users extends XCMS_Controller {
             return show_404();
         }
 
+        // Retrieve request
+        $gridIO = (new GridHelper())
+            ->parseRequest($this->input);
+
         // Load requested data
-        $searchObj = new SearchAttributes();
-        $this->users->load($searchObj->retrieveFromBootgrid($this->input));
+        $users = (new ExtUsersModel())->init()
+            ->set($gridIO->getRequest())
+            ->load();
 
         // Enrich object...
-        $searchObj->rows = array();
-        $searchObj->total = $this->users->getTotalCount($searchObj);
-        foreach ($this->users->toArray() as $user) {
+        $gridIO->setTotal($users->getTotalCount($gridIO));
+        foreach ($users->toArray() as $user) {
 
-            $searchObj->rows[] = (Object) [
+            $gridIO->addRow([
                 "id"         => $user->id,
                 "username"   => $user->username,
                 "email"      => $user->email,
                 "real_name"  => $user->real_name,
                 "usergroup"  => $user->usergroup,
                 "dt_created" => $user->dt_created
-            ];
+            ]);
 
         }
 
-        // ...and output it as JSON
-        $this->output->set_content_type("application/json");
-        $this->output->set_output(json_encode($searchObj));
+        // ... and output it
+        $gridIO->generateResponse($this->output);
 
     }
 

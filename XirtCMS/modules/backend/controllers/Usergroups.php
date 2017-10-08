@@ -19,10 +19,11 @@ class Usergroups extends XCMS_Controller {
         parent::__construct(75, true);
 
         // Load helpers
-        $this->load->helper("db_search");
+        $this->load->helper("grid");
 
         // Load models
-        $this->load->model("UsergroupsModel", "usergroups");
+        $this->load->model("UsergroupsModel", false);
+        $this->load->model("ExtUsergroupsModel", false);
 
     }
 
@@ -58,27 +59,30 @@ class Usergroups extends XCMS_Controller {
             return show_404();
         }
 
+        // Retrieve request
+        $gridIO = (new GridHelper())
+            ->parseRequest($this->input);
+
         // Load requested data
-        $searchObj = new SearchAttributes();
-        $this->usergroups->load($searchObj->retrieveFromBootgrid($this->input));
+        $usergroups = (new ExtUsergroupsModel())->init()
+            ->set($gridIO->getRequest())
+            ->load();
 
         // Enrich object...
-        $searchObj->rows = array();
-        $searchObj->total = $this->usergroups->getTotalCount($searchObj);
-        foreach ($this->usergroups->toArray() as $usergroup) {
+        $gridIO->setTotal($usergroups->getTotalCount($gridIO));
+        foreach ($usergroups->toArray() as $usergroup) {
 
-            $searchObj->rows[] = (object)[
+            $gridIO->addRow([
                 "id"                  => $usergroup->id,
                 "name"                => $usergroup->name,
                 "authorization_level" => $usergroup->authorization_level,
                 "users"               => $usergroup->users
-            ];
+            ]);
 
         }
 
-        // ...and output it as JSON
-        $this->output->set_content_type("application/json");
-        $this->output->set_output(json_encode($searchObj));
+        // ... and output it
+        $gridIO->generateResponse($this->output);
 
     }
 
