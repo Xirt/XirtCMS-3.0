@@ -10,53 +10,53 @@
  */
 class GridHelper {
 
-	/**
-	 * The rows to be returned for the request
+    /**
+     * The rows to be returned for the request
      * @var Array
-	 */
-	private $_rows = array();
+     */
+    private $_rows = array();
 
 
-	/**
-	 * The total amount of results for the request
+    /**
+     * The total amount of results for the request
      * @var int
-	 */
-	private $_total = 0;
+     */
+    private $_total = 0;
 
 
-	/**
-	 * The current page to retrieve (for pagination of Bootgrid)
+    /**
+     * The current page to retrieve (for pagination of Bootgrid)
      * @var int
-	 */
-	private $_current = 1;
+     */
+    private $_current = 1;
 
 
-	/**
-	 * The amount of rows to retrieve (default: 9999999, hopefully all)
+    /**
+     * The amount of rows to retrieve (default: 9999999, hopefully all)
      * @var int
-	 */
-	private $_rowCount = 10;
+     */
+    private $_rowCount = 10;
 
 
-	/**
-	 * The filter to apply to the content (e.g. search)
+    /**
+     * The filter to apply to the content (e.g. search)
      * @var String
-	 */
-	private $_searchPhrase = "";
+     */
+    private $_searchPhrase = "";
 
 
-	/**
-	 * The column to be used for sorting
+    /**
+     * The column to be used for sorting
      * @var String
-	 */
-	private $_sortColumn = "id";
+     */
+    private $_sortColumn = "id";
 
 
-	/**
-	 * The sort order to be used for sorting on $sortColumn
+    /**
+     * The sort order to be used for sorting on $sortColumn
      * @var String
-	 */
-	private $_sortOrder = "DESC";
+     */
+    private $_sortOrder = "DESC";
 
 
     /**
@@ -87,45 +87,45 @@ class GridHelper {
     }
 
 
-	/**
-	 * Retrieves and validates relevant Grid parameters from request
+    /**
+     * Retrieves and validates relevant Grid parameters from request
      *
      * @param   Object      $in             The CodeIgniter input object
      * @return  Object                      Always this instance (for chaining)
      */
-	public function parseRequest($in) {
+    public function parseRequest($in) {
 
         // Retrieval (item filtering)
         $this->_searchPhrase = trim($in->post("searchPhrase"));
 
-		// Retrieval & validation (current page)
-		if (!($this->_current = @intval($in->post("current"))) || $this->_current < 1) {
-			$this->_current = 1;
-		}
+        // Retrieval & validation (current page)
+        if (!($this->_current = @intval($in->post("current"))) || $this->_current < 1) {
+            $this->_current = 1;
+        }
 
-		// Retrieval & validation (items per page)
-		if (!($this->_rowCount = @intval($in->post("rowCount")))) {
-			$this->_rowCount = 10;
-		}
+        // Retrieval & validation (items per page)
+        if (!($this->_rowCount = @intval($in->post("rowCount")))) {
+            $this->_rowCount = 10;
+        }
 
-		// Retrieval & validation (ordering)
+        // Retrieval & validation (ordering)
         if (!is_array($in->post("sort"))) {
 
-			$this->_sortColumn = preg_replace('/[^A-Za-z0-9_]/', '', $this->_sortColumn);
+            $this->_sortColumn = preg_replace('/[^A-Za-z0-9_]/', '', $this->_sortColumn);
 
-		} else if (($keys = array_keys($in->post("sort"))) && array_key_exists(0, $keys)) {
+        } else if (($keys = array_keys($in->post("sort"))) && array_key_exists(0, $keys)) {
 
-			$this->_sortOrder  = ($in->post("sort")[$keys[0]] == "desc") ? "DESC" : "ASC";
-			$this->_sortColumn = preg_replace('/[^A-Za-z0-9_]/', '', $keys[0]);
+            $this->_sortOrder  = ($in->post("sort")[$keys[0]] == "desc") ? "DESC" : "ASC";
+            $this->_sortColumn = preg_replace('/[^A-Za-z0-9_]/', '', $keys[0]);
 
-		}
+        }
 
-		return $this;
+        return $this;
 
-	}
+    }
 
     /*
-	 * Retrieves and validates relevant Grid parameters from request
+     * Retrieves and validates relevant Grid parameters from request
      *
      * @param   Object      $out            The CodeIgniter out object
      * @return  Object                      Always this instance (for chaining)
