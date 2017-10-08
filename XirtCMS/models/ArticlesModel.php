@@ -137,7 +137,7 @@ class ArticlesModel extends XCMS_Model {
 
 
     /**
-     * Creates query (using CI QueryBuilder) for retrieving relevant articles
+     * Creates query (using CI QueryBuilder) for retrieving model content (articles)
      *
      * @param   boolean     $filterOnly     Indicates the query type to be returned (retrieve vs. count)
      * @return  Object                      CI Database Instance for chaining purposes
