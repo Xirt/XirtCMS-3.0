@@ -71,7 +71,7 @@ class Users extends XCMS_Controller {
             ->set($gridIO->getRequest())
             ->load();
 
-        // Enrich object...
+        // Prepare response ...
         $gridIO->setTotal($users->getTotalCount($gridIO));
         foreach ($users->toArray() as $user) {
 

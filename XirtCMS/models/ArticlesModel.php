@@ -12,6 +12,7 @@ class ArticlesModel extends XCMS_Model {
 
     /**
      * Internal list of items
+     * @var array
      */
     protected $_list = array();
 

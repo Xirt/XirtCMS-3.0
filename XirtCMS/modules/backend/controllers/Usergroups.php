@@ -68,7 +68,7 @@ class Usergroups extends XCMS_Controller {
             ->set($gridIO->getRequest())
             ->load();
 
-        // Enrich object...
+        // Prepare response ...
         $gridIO->setTotal($usergroups->getTotalCount($gridIO));
         foreach ($usergroups->toArray() as $usergroup) {
 
