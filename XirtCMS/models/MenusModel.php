@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Base model for retrieving XirtCMS Menus in frontend
+ * Base model for retrieving XirtCMS menus
  *
  * @author      A.G. Gideonse
  * @version     3.0
