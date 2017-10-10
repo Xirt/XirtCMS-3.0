@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Base model for retrieving XirtCMS Articles in frontend
+ * Base model for retrieving XirtCMS articles
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -57,7 +57,7 @@ class ArticlesModel extends XCMS_Model {
     /**
      * Returns the total numbers of rows in the db for the current list (e.g. without limitations)
      *
-     * @return  int                         The total number of articles in the DB
+     * @return  int                         The total number of items in the DB
      */
     public function getTotalCount() {
         return $this->_buildArticleQuery(true)->count_all_results(Query::TABLE_ARTICLES);
@@ -77,7 +77,7 @@ class ArticlesModel extends XCMS_Model {
     /**
      * Loads all requested items
      *
-     * @return  int                         The number of articles loaded
+     * @return  int                         The number of items loaded
      */
     protected function _loadArticles() {
 
