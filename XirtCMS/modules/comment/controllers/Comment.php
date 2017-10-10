@@ -42,6 +42,7 @@ class Comment extends XCMS_Controller {
         }
 
         // Check user authorization
+		// TODO :: Input validation using CodeIgniter framework instead of custom PHP
         if (($authorId = XCMS_Authentication::getUserId()) !== null) {
 
             // Registered comment author
@@ -53,9 +54,9 @@ class Comment extends XCMS_Controller {
             // Unregistered comment author
             $authorName = $this->input->post("comment_name");
             $authorMail = $this->input->post("comment_email");
-            $authorId    = 0;
+            $authorId   = 0;
 
-            // TODO :: Name validation
+            // Name validation
             if (!trim($authorName)) {
 
                 XCMS_JSON::validationFailureMessage("Please enter your name.");
@@ -63,7 +64,7 @@ class Comment extends XCMS_Controller {
 
             }
 
-            // TODO :: E-mail validation
+            // E-mail validation
             if (!trim($authorMail)) {
 
                 XCMS_JSON::validationFailureMessage("Please enter your e-mail address.");
@@ -73,7 +74,7 @@ class Comment extends XCMS_Controller {
 
         }
 
-        // TODO :: Honeypot validation
+        // Honeypot validation
         if ($this->input->post("comment_website")) {
 
             XCMS_JSON::validationFailureMessage("Honeypot filled: potential spambot.");
@@ -81,7 +82,7 @@ class Comment extends XCMS_Controller {
 
         }
 
-        // TODO :: Comment validation
+        // Comment validation using CodeIgniter framework
         if (trim($this->input->post("comment_content"))) {
 
             // Set item values and save
