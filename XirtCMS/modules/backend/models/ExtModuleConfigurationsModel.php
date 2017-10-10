@@ -46,7 +46,6 @@ class ExtModuleConfigurationsModel extends ModuleConfigurationsModel {
 
             }
 
-
         });
 
         return $this;

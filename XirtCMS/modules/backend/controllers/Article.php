@@ -55,10 +55,10 @@ class Article extends XCMS_Controller {
         $data = (Object)array(
             "id"           => $this->article->get("id"),
             "title"        => $this->article->get("title"),
-			"content"      => $this->article->get("content"),
-			"published"    => $this->article->get("published"),
-			"dt_publish"   => $this->article->get("dt_publish"),
-			"dt_unpublish" => $this->article->get("dt_unpublish"),
+            "content"      => $this->article->get("content"),
+            "published"    => $this->article->get("published"),
+            "dt_publish"   => $this->article->get("dt_publish"),
+            "dt_unpublish" => $this->article->get("dt_unpublish"),
             "categories"   => $this->article->getCategories(),
             "attributes"   => $this->article->getAttributes()
         );
@@ -254,9 +254,9 @@ class Article extends XCMS_Controller {
                 throw new UnexpectedValueException(null);
             }
 
-			// Prepare data
-			$dtPublish   = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_publish"));
-			$dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_unpublish"));
+            // Prepare data
+            $dtPublish   = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_publish"));
+            $dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_unpublish"));
 
             // Set & save new updates
             $this->article->set("published",    is_null($this->input->post("article_published")) ? "0" : "1");
