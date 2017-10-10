@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controller for showing a multiple XirtCMS articles
+ * Back end extension of BaseModel for retrieving multiple XirtCMS articles
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -22,7 +22,7 @@ class ExtArticlesModel extends ArticlesModel {
      */
     public function init() {
 
-        // Hook for article query
+        // Hook for retrieval query
         XCMS_Hooks::reset("articles.build_article_query");
         XCMS_Hooks::add("articles.build_article_query", function($stmt, $filterOnly) {
 

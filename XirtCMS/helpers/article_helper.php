@@ -65,13 +65,13 @@ class ArticleHelper {
     /**
      * Checks whether the article is published
      *
-	 * @deprecated
+     * @deprecated
      * @param   Object      $article        Reference to the ArticleModel to use for this request
      * @return  boolean                     True if the article has been published, false otherwise
      */
-	public static function isArticlePublished($article) {
-		return self::isPublished($article);
-	}
+    public static function isArticlePublished($article) {
+        return self::isPublished($article);
+    }
 
 
     /**
@@ -82,10 +82,10 @@ class ArticleHelper {
      */
     public static function isPublished($article) {
 
-		// Check publish toggle
-		if (!$article->get("published")) {
-			return false;
-		}
+        // Check publish toggle
+        if (!$article->get("published")) {
+            return false;
+        }
 
         // Check publish date
         if (!($dt = ArticleHelper::getPublished($article)) || $dt > new DateTime()) {

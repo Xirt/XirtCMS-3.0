@@ -194,6 +194,7 @@ class ArticlesModel extends XCMS_Model {
      */
     protected function _buildAttributeQuery() {
 
+        // Hook for customized filtering
         $this->db->where_in("ref_id", array_keys($this->_list));
         XCMS_Hooks::execute("articles.build_attribute_query", array(
             &$this->db)

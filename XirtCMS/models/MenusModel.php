@@ -63,7 +63,7 @@ class MenusModel extends XCMS_Model {
     function _buildQuery($filterOnly = false) {
 
         $this->db->order_by("ordering", "ASC");
-        
+
         // Hook for customized filtering
         XCMS_Hooks::execute("menus.build_article_query", array(
             &$this->db, $filterOnly

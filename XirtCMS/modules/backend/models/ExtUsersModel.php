@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controller for showing a multiple XirtCMS users
+ * Back end extension of BaseModel for retrieving multiple XirtCMS users
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -22,7 +22,7 @@ class ExtUsersModel extends UsersModel {
      */
     public function init() {
 
-        // Hook for users query
+        // Hook for retrieval query
         XCMS_Hooks::reset("users.build_query");
         XCMS_Hooks::add("users.build_query", function($stmt, $filterOnly) {
 

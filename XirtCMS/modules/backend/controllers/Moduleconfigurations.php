@@ -11,8 +11,8 @@
 class Moduleconfigurations extends XCMS_Controller {
 
     /**
-	 * CONSTRUCTOR
-	 * Instantiates controller with required helpers, libraries and models
+     * CONSTRUCTOR
+     * Instantiates controller with required helpers, libraries and models
      */
     public function __construct() {
 

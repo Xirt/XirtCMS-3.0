@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controller for showing a multiple XirtCMS usergroups
+ * Back end extension of BaseModel for retrieving multiple XirtCMS usergroups
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -22,7 +22,7 @@ class ExtUsergroupsModel extends UsergroupsModel {
      */
     public function init() {
 
-        // Hook for usergroups query
+        // Hook for retrieval query
         XCMS_Hooks::reset("usergroups.build_query");
         XCMS_Hooks::add("usergroups.build_query", function($stmt, $filterOnly) {
 

@@ -11,8 +11,8 @@
 class Articles extends XCMS_Controller {
 
     /**
-	 * CONSTRUCTOR
-	 * Instantiates controller with required helpers, libraries and models
+     * CONSTRUCTOR
+     * Instantiates controller with required helpers, libraries and models
      */
     public function __construct() {
 
@@ -24,7 +24,7 @@ class Articles extends XCMS_Controller {
         // Load models
         $this->load->model("ArticlesModel", false);
         $this->load->model("ExtArticlesModel", false);
-        $this->load->model("CategoriesModel", "categories");
+        $this->load->model("CategoriesModel", false);
 
     }
 
@@ -33,10 +33,6 @@ class Articles extends XCMS_Controller {
      * Index page for this controller (main GUI)
      */
     public function index() {
-
-        // Retrieve categories
-		// TODO :: Remove usage of SearchAttributes
-        $this->categories->load(new SearchAttributes());
 
         // Add page scripts
         XCMS_Page::getInstance()->addScript(array(
@@ -52,7 +48,7 @@ class Articles extends XCMS_Controller {
 
         // Show template
         $this->load->view("articles.tpl", array(
-            "categories" => $this->categories->toArray()
+            "categories" => (new CategoriesModel)->load()->toArray()
         ));
 
     }
@@ -87,7 +83,7 @@ class Articles extends XCMS_Controller {
                 "dt_created"   => $article->get("dt_created"),
                 "dt_publish"   => $article->get("dt_publish"),
                 "dt_unpublish" => $article->get("dt_unpublish"),
-				"published"    => ArticleHelper::isPublished($article),
+                "published"    => ArticleHelper::isPublished($article),
                 "author"       => $article->getAuthor()->get("username")
             ]);
 

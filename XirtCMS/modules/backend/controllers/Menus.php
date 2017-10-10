@@ -61,7 +61,7 @@ class Menus extends XCMS_Controller {
         // Retrieve request
         $gridIO = (new GridHelper())
             ->parseRequest($this->input);
- 
+
         // Load requested data
         $menus = (new MenusModel())
             ->set($gridIO->getRequest())
