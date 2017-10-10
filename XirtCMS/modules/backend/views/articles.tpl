@@ -153,7 +153,7 @@
 								<select class="form-control" id="categorySelector" name="article_categories[]" multiple="multiple" size="10">
 
 									<?php foreach ($categories as $category): ?>
-									<option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+									<option value="<?php echo $category->get("id"); ?>"><?php echo $category->get("name"); ?></option>
 									<?php endforeach; ?>
 
 								</select>
