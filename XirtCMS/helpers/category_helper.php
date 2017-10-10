@@ -99,12 +99,12 @@ class CategoryHelper {
         foreach ($CI->categories->toArray() as $category) {
 
             $tree->add(new XCMS_Node((object)[
-                "node_id"   => $category->id,
-                "name"      => $category->name,
-                "level"     => $category->level,
-                "ordering"  => $category->ordering,
-                "published" => $category->published,
-                "parent_id" => $category->parent_id
+                "node_id"   => $category->get("id"),
+                "name"      => $category->get("name"),
+                "level"     => $category->get("level"),
+                "ordering"  => $category->get("ordering"),
+                "published" => $category->get("published"),
+                "parent_id" => $category->get("parent_id")
             ]));
 
         }
