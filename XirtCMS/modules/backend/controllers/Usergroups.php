@@ -73,10 +73,10 @@ class Usergroups extends XCMS_Controller {
         foreach ($usergroups->toArray() as $usergroup) {
 
             $gridIO->addRow([
-                "id"                  => $usergroup->id,
-                "name"                => $usergroup->name,
-                "authorization_level" => $usergroup->authorization_level,
-                "users"               => $usergroup->users
+                "id"                  => $usergroup->get("id"),
+                "name"                => $usergroup->get("name"),
+                "authorization_level" => $usergroup->get("authorization_level"),
+                "users"               => $usergroup->get("users")
             ]);
 
         }

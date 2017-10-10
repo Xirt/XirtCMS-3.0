@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controller for the "Module Configurations"-GUI and related processes
+ * Controller for the "Module Configurations"-GUI and related processes (back end)
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -10,16 +10,20 @@
  */
 class Moduleconfigurations extends XCMS_Controller {
 
-
     /**
-     * Constructs the controller with associated model
+	 * CONSTRUCTOR
+	 * Instantiates controller with required helpers, libraries and models
      */
     public function __construct() {
 
         parent::__construct(75, true);
 
+        // Load helpers
+        $this->load->helper("grid");
+
         // Load models
-        $this->load->model("ModuleConfigurationsModel", "configurations");
+        $this->load->model("ModuleConfigurationsModel", false);
+        $this->load->model("ExtModuleConfigurationsModel", false);
         $this->load->model("ModuleTypesModel", "modules");
 
     }
@@ -61,35 +65,31 @@ class Moduleconfigurations extends XCMS_Controller {
             return show_404();
         }
 
-        // Retrieve BootGrid parameters
-        $this->load->helper("db_search");
-        $searchObj = new SearchAttributes();
-        $searchObj->retrieveFromBootgrid($this->input, (object) array(
-            "sortColumn" => "id"
-        ));
+        // Retrieve request
+        $gridIO = (new GridHelper())
+            ->parseRequest($this->input);
 
         // Load requested data
-        $this->configurations->load($searchObj);
+        $moduleConfigurations = (new ExtModuleConfigurationsModel())->init()
+            ->set($gridIO->getRequest())
+            ->load();
 
-        // Enrich object...
-        $searchObj->rows = array();
-        $searchObj->total = $this->configurations->getTotalCount($searchObj);
-        foreach ($this->configurations->toArray() as $configuration) {
+        // Prepare response ...
+        $gridIO->setTotal($moduleConfigurations->getTotalCount($gridIO));
+        foreach ($moduleConfigurations->toArray() as $configuration) {
 
-            $searchObj->rows[] = (Object)array(
-                "id"      => $configuration->id,
-                "name"    => $configuration->name,
-                "default" => $configuration->default,
-                "type"    => $configuration->type
-            );
+            $gridIO->addRow([
+                "id"      => $configuration->get("id"),
+                "name"    => $configuration->get("name"),
+                "default" => $configuration->get("default"),
+                "type"    => $configuration->get("type")
+            ]);
 
         }
 
-        // ...and output it as JSON
-        $this->output->set_content_type("application/json");
-        $this->output->set_output(json_encode($searchObj));
+        // ... and output it
+        $gridIO->generateResponse($this->output);
 
     }
 
 }
-?>

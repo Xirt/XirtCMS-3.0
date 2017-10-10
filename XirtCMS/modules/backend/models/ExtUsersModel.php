@@ -22,9 +22,9 @@ class ExtUsersModel extends UsersModel {
      */
     public function init() {
 
-        // Hook for article query
-        XCMS_Hooks::reset("users.build_article_query");
-        XCMS_Hooks::add("users.build_article_query", function($stmt, $filterOnly) {
+        // Hook for users query
+        XCMS_Hooks::reset("users.build_query");
+        XCMS_Hooks::add("users.build_query", function($stmt, $filterOnly) {
 
             if ($filter = trim($this->get("searchPhrase"))) {
 

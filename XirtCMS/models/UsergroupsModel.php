@@ -1,8 +1,7 @@
 <?php
-defined("BASEPATH") OR exit("No direct script access allowed");
 
 /**
- * Model for list of usergroups
+ * Base model for retrieving XirtCMS usergroups
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -12,10 +11,24 @@ defined("BASEPATH") OR exit("No direct script access allowed");
 class UsergroupsModel extends XCMS_Model {
 
     /**
-     * @var array
      * Internal list of items
+     * @var array
      */
     private $_list = array();
+
+
+    /**
+     * CONSTRUCTOR
+     * Instantiates controller with required helpers, libraries and models
+     */
+    public function __construct() {
+
+        parent::__construct();
+
+        // Load models
+        $this->load->model("UsergroupModel", false);
+
+    }
 
 
     /**
@@ -27,7 +40,7 @@ class UsergroupsModel extends XCMS_Model {
 
         $query = $this->_buildQuery()->get(Query::TABLE_USERGROUPS);
         foreach ($query->result() as $row) {
-            $this->_list[] = $row;
+            $this->_list[] = (new UsergroupModel())->set((array)$row);
         }
 
         return $this;
@@ -65,11 +78,10 @@ class UsergroupsModel extends XCMS_Model {
 
         $this->db->select(Query::TABLE_USERGROUPS . ".*, count(usergroup_id) as users")
             ->join(Query::TABLE_USERS, Query::TABLE_USERGROUPS . ".id = usergroup_id", "left")
-            ->group_by("id, authorization_level, name")
-            ->order_by("authorization_level", "ASC");
+            ->group_by("id, authorization_level, name");
 
         // Hook for customized filtering
-        XCMS_Hooks::execute("usergroups.build_article_query", array(
+        XCMS_Hooks::execute("usergroups.build_query", array(
             &$this->db, $filterOnly
         ));
 

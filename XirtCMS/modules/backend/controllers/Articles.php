@@ -11,7 +11,8 @@
 class Articles extends XCMS_Controller {
 
     /**
-     * Constructs the controller with associated model
+	 * CONSTRUCTOR
+	 * Instantiates controller with required helpers, libraries and models
      */
     public function __construct() {
 
@@ -34,6 +35,7 @@ class Articles extends XCMS_Controller {
     public function index() {
 
         // Retrieve categories
+		// TODO :: Remove usage of SearchAttributes
         $this->categories->load(new SearchAttributes());
 
         // Add page scripts
@@ -69,7 +71,7 @@ class Articles extends XCMS_Controller {
         // Retrieve request
         $gridIO = (new GridHelper())
             ->parseRequest($this->input);
- 
+
         // Load requested data
         $articles = (new ExtArticlesModel())->init()
             ->set($gridIO->getRequest())

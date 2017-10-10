@@ -1,8 +1,7 @@
 <?php
-defined("BASEPATH") OR exit("No direct script access allowed");
 
 /**
- * Model for list of users
+ * Base model for retrieving XirtCMS users
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -12,10 +11,24 @@ defined("BASEPATH") OR exit("No direct script access allowed");
 class UsersModel extends XCMS_Model {
 
     /**
-     * @var array
      * Internal list of items
+     * @var array
      */
     private $_list = array();
+
+
+    /**
+     * CONSTRUCTOR
+     * Instantiates controller with required helpers, libraries and models
+     */
+    public function __construct() {
+
+        parent::__construct();
+
+        // Load models
+        $this->load->model("UserModel", false);
+
+    }
 
 
     /**
@@ -27,7 +40,7 @@ class UsersModel extends XCMS_Model {
 
         $query = $this->_buildQuery()->get(Query::TABLE_USERS);
         foreach ($query->result() as $row) {
-            $this->_list[] = $row;
+            $this->_list[] = (new UserModel())->set((array)$row);
         }
 
         return $this;
@@ -67,7 +80,7 @@ class UsersModel extends XCMS_Model {
             ->join(Query::TABLE_USERGROUPS, Query::TABLE_USERGROUPS . ".id = usergroup_id");
 
         // Hook for customized filtering
-        XCMS_Hooks::execute("users.build_article_query", array(
+        XCMS_Hooks::execute("users.build_query", array(
             &$this->db, $filterOnly
         ));
 

@@ -76,12 +76,12 @@ class Users extends XCMS_Controller {
         foreach ($users->toArray() as $user) {
 
             $gridIO->addRow([
-                "id"         => $user->id,
-                "username"   => $user->username,
-                "email"      => $user->email,
-                "real_name"  => $user->real_name,
-                "usergroup"  => $user->usergroup,
-                "dt_created" => $user->dt_created
+                "id"         => $user->get("id"),
+                "username"   => $user->get("username"),
+                "email"      => $user->get("email"),
+                "real_name"  => $user->get("real_name"),
+                "usergroup"  => $user->get("usergroup"),
+                "dt_created" => $user->get("dt_created")
             ]);
 
         }

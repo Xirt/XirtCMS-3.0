@@ -22,9 +22,9 @@ class ExtUsergroupsModel extends UsergroupsModel {
      */
     public function init() {
 
-        // Hook for article query
-        XCMS_Hooks::reset("usergroups.build_article_query");
-        XCMS_Hooks::add("usergroups.build_article_query", function($stmt, $filterOnly) {
+        // Hook for usergroups query
+        XCMS_Hooks::reset("usergroups.build_query");
+        XCMS_Hooks::add("usergroups.build_query", function($stmt, $filterOnly) {
 
             if ($filter = trim($this->get("searchPhrase"))) {
 
