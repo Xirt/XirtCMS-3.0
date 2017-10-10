@@ -166,12 +166,12 @@ class GridHelper {
 
         return array(
             "rows"         => $this->_rows,
-            "total"        => $this->_total,
             "current"      => $this->_current,
             "rowCount"     => $this->_rowCount,
             "sortOrder"    => $this->_sortOrder,
             "sortColumn"   => $this->_sortColumn,
-            "searchPhrase" => $this->_searchPhrase
+            "searchPhrase" => $this->_searchPhrase,
+            "total"        => (count($this->_rows) > $this->_total) ? count($this->_rows) : $this->_total
         );
 
     }
