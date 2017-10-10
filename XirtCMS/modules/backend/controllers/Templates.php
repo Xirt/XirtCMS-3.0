@@ -19,10 +19,11 @@ class Templates extends XCMS_Controller {
         parent::__construct(75, true);
 
         // Load helpers
-        $this->load->helper("db_search");
+        $this->load->helper("grid");
 
         // Load models
-        $this->load->model("TemplatesModel", "templates");
+        $this->load->model("TemplatesModel", false);
+        $this->load->model("ExtTemplatesModel", false);
 
     }
 
@@ -58,30 +59,30 @@ class Templates extends XCMS_Controller {
             return show_404();
         }
 
+        // Retrieve request
+        $gridIO = (new GridHelper())
+        ->parseRequest($this->input);
+
         // Load requested data
-        $searchObj = new SearchAttributes();
-        $this->templates->load($searchObj->retrieveFromBootgrid($this->input, (object) array(
-            "sortColumn" => "id"
-        )));
+        $templates = (new ExtTemplatesModel())->init()
+        ->set($gridIO->getRequest())
+        ->load();
 
-        // Enrich object...
-        $searchObj->rows = array();
-        $searchObj->total = $this->templates->getTotalCount($searchObj);
-        foreach ($this->templates->toArray() as $module) {
+        // Prepare response ...
+        $gridIO->setTotal($templates->getTotalCount($gridIO));
+        foreach ($templates->toArray() as $template) {
 
-            $searchObj->rows[] = (Object)array(
-                "id"        => $module->id,
-                "name"      => $module->name,
-                "folder"    => $module->folder,
-                "published" => $module->published
-
-            );
+            $gridIO->addRow([
+                "id"        => $template->get("id"),
+                "name"      => $template->get("name"),
+                "folder"    => $template->get("folder"),
+                "published" => $template->get("published")
+            ]);
 
         }
 
-        // ...and output it as JSON
-        $this->output->set_content_type("application/json");
-        $this->output->set_output(json_encode($searchObj));
+        // ... and output it
+        $gridIO->generateResponse($this->output);
 
     }
 
