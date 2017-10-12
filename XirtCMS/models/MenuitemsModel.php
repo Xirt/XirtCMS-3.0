@@ -18,6 +18,20 @@ class MenuitemsModel extends XCMS_Model {
 
 
     /**
+     * CONSTRUCTOR
+     * Instantiates controller with required helpers, libraries and models
+     */
+    public function __construct() {
+
+        parent::__construct();
+
+        // Load models
+        $this->load->model("MenuitemModel", false);
+
+    }
+
+
+    /**
      * Loads all requested items
      *
      * @param   $id                         The ID of the requested menu
@@ -26,13 +40,11 @@ class MenuitemsModel extends XCMS_Model {
      */
     public function load($id, $activeOnly = false) {
 
-        $this->_list = array();
-
         $query = $this->_buildQuery($id)->get(Query::TABLE_MENUITEMS);
         foreach ($query->result() as $row) {
 
             if (!$activeOnly || $row->published) {
-                $this->_list[] = $row;
+                $this->_list[] = (new MenuitemModel())->set((array)$row);
             }
 
         }
@@ -45,7 +57,7 @@ class MenuitemsModel extends XCMS_Model {
     /**
      * Retrieves the current list of items
      *
-     * @return  array                       A list with all items currently populated
+     * @return  Array                       List with the current items
      */
     public function toArray() {
         return $this->_list;
@@ -53,7 +65,7 @@ class MenuitemsModel extends XCMS_Model {
 
 
     /**
-     * Creates query (using CI QueryBuilder) for retrieving model content
+     * Creates query (using CI QueryBuilder) for retrieving model content (articles)
      *
      * @param   $id                         The ID of the requested menu
      * @return  Object                      CI Database Instance for chaining purposes
@@ -67,6 +79,11 @@ class MenuitemsModel extends XCMS_Model {
         $this->db->join(Query::TABLE_ROUTES, "xcms_routes.id = route_id", "left");
         $this->db->where(array("menu_id" => $id));
         $this->db->order_by("level", "ASC");
+
+        // Hook for customized filtering
+        XCMS_Hooks::execute("menuitems.build_query", array(
+            &$this->db)
+        );
 
         return $this->db;
 
