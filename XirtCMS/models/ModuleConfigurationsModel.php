@@ -38,10 +38,14 @@ class ModuleConfigurationsModel extends XCMS_Model {
      */
     public function load() {
 
+        // Reset
+        $this->_list = array();
+    
+        // Populate list from database
         $query = $this->_buildQuery()->get(Query::TABLE_MODULES);
-foreach ($query->result() as $row) {
-$this->_list[] = (new ModuleConfigurationModel())->set((array)$row);
-}
+        foreach ($query->result() as $row) {
+            $this->_list[] = (new ModuleConfigurationModel())->set((array)$row);
+        }
 
         return $this;
 

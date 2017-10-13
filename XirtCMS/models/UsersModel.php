@@ -38,6 +38,10 @@ class UsersModel extends XCMS_Model {
      */
     public function load() {
 
+        // Reset
+        $this->_list = array();
+    
+        // Populate list from database
         $query = $this->_buildQuery()->get(Query::TABLE_USERS);
         foreach ($query->result() as $row) {
             $this->_list[] = (new UserModel())->set((array)$row);

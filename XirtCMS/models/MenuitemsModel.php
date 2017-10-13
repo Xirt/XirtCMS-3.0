@@ -40,6 +40,8 @@ class MenuitemsModel extends XCMS_Model {
      */
     public function load($id, $activeOnly = false) {
 
+        $this->_list = array();
+        
         $query = $this->_buildQuery($id)->get(Query::TABLE_MENUITEMS);
         foreach ($query->result() as $row) {
 

@@ -41,6 +41,10 @@ class WidgetsModel extends XCMS_Model {
      */
     public function load() {
 
+        // Reset
+        $this->_list = array();
+    
+        // Populate list from database
         $query = $this->_buildQuery()->get(Query::TABLE_WIDGETS);
         foreach ($query->result() as $row) {
             $this->_list[] = (new WidgetModel())->set((array)$row);;

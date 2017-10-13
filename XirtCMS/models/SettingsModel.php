@@ -38,6 +38,10 @@ class SettingsModel extends XCMS_Model {
      */
     public function load() {
 
+        // Reset
+        $this->_list = array();
+    
+        // Populate list from database
         $query = $this->_buildQuery()->get(Query::TABLE_CONFIGURATION);
         foreach ($query->result() as $row) {
             $this->_list[] = (new SettingModel())->set((array)$row);

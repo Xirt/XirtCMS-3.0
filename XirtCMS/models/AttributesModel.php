@@ -73,7 +73,10 @@ class AttributesModel extends CI_Model {
      */
     public function load($id) {
 
-        // Retrieve data from DB and populate instance
+        // Reset
+        $this->_list = array();
+    
+        // Populate list from database
         $query = $this->db->get_where($this->_table, array("ref_id" => $id));
         foreach ($query->result() as $row) {
             $this->set($row->name, $row->value);
