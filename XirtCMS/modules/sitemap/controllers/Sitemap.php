@@ -19,7 +19,6 @@ class Sitemap extends XCMS_Controller {
         parent::__construct();
 
         // Load helpers
-        $this->load->helper("db_search");
         $this->load->helper("menu");
         $this->load->helper("url");
 
@@ -84,7 +83,7 @@ class Sitemap extends XCMS_Controller {
      */
     private function _getContent() {
 
-        $this->menus->load(new SearchAttributes());
+        $this->menus->load();
         $menus = $this->menus->toArray();
 
         foreach ($menus as $index => $menu) {

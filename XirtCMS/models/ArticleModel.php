@@ -11,8 +11,8 @@
 class ArticleModel extends XCMS_Model {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array(
         "id", "title", "content", "author_id", "dt_created", "published", "dt_publish", "dt_unpublish", "version"
@@ -20,22 +20,22 @@ class ArticleModel extends XCMS_Model {
 
 
     /**
-     * @var UserModel|null
      * The author of the article (UserModel)
+     * @var UserModel|null
      */
     private $_author = null;
 
 
     /**
-     * @var AttributesModel|null
      * The attributes of the article (AttributesModel)
+     * @var AttributesModel|null
      */
     private $_attributes = null;
 
 
     /**
-     * @var array
      * List of categories for this article
+     * @var array
      */
     private $_categories = array();
 
@@ -47,9 +47,6 @@ class ArticleModel extends XCMS_Model {
     public function __construct() {
 
         parent::__construct();
-
-        // Load helpers
-        $this->load->helper("db_search");
 
         // Load models
         $this->load->model("UserModel", false);

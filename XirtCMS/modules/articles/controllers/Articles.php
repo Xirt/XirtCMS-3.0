@@ -28,7 +28,6 @@ class Articles extends XCMS_Controller {
         // Load helpers
         $this->load->helper("route");
         $this->load->helper("article");
-        $this->load->helper("db_search");
 
         // Load models
         $this->load->model("ArticlesModel", false);

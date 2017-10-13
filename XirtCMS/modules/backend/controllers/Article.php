@@ -24,7 +24,6 @@ class Article extends XCMS_Controller {
 
         // Load helpers
         $this->load->helper("article");
-        $this->load->helper("db_search");
 
         // Load libaries
         $this->load->library("form_validation");
