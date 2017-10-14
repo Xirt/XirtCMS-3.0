@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Model for list of templates
+ * Base model for retrieving XirtCMS templates
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -40,7 +40,7 @@ class TemplatesModel extends XCMS_Model {
 
         // Reset
         $this->_list = array();
-    
+
         // Populate list from database
         $query = $this->_buildQuery()->get(Query::TABLE_TEMPLATES);
         foreach ($query->result() as $row) {
@@ -58,7 +58,7 @@ class TemplatesModel extends XCMS_Model {
      * @return  int                         The total number of items in the DB
      */
     public function getTotalCount() {
-        return $this->_buildQuery(true)->count_all_results(Query::TABLE_MENUS);
+        return $this->_buildQuery(true)->count_all_results(Query::TABLE_TEMPLATES);
     }
 
 
@@ -81,9 +81,8 @@ class TemplatesModel extends XCMS_Model {
     function _buildQuery($filterOnly = false) {
 
         // Hook for customized filtering
-        $this->db->where_in("ref_id", array_keys($this->_list));
         XCMS_Hooks::execute("templates.build_query", array(
-            &$this->db)
+            &$this->db, $filterOnly)
         );
 
         return $this->db;
