@@ -82,21 +82,17 @@ class CategoryHelper {
     /**
      * Returns the category tree as list of category items
      *
-     * @param   boolean     $activeOnly     Toggles between all items vs. published items only
+     * @return  mixed                       The XCMS_Tree with all known categories for the current request
      */
-    public static function getCategoryTree(bool $activeOnly = true) {
+    public static function getCategoryTree() {
 
         // Prerequisites
         $CI =& get_instance();
-        $CI->load->helper("db_search");
-        $CI->load->model("CategoriesModel", "categories");
+        $CI->load->model("CategoriesModel", false);
 
+        // Retrieve data
         $tree = new XCMS_Tree();
-
-        // Start creating menu
-        $attr = new searchAttributes();
-        $CI->categories->load($attr->setFilter("published", $activeOnly));
-        foreach ($CI->categories->toArray() as $category) {
+        foreach ((new CategoriesModel())->load()->toArray() as $category) {
 
             $tree->add(new XCMS_Node((object)[
                 "node_id"   => $category->get("id"),
