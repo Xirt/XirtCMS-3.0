@@ -1,7 +1,7 @@
 <?php
 
 /**
- * MenuitemModel for XirtCMS (single route)
+ * Base model for retrieving single XirtCMS route
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -11,8 +11,8 @@
 class RouteModel extends XCMS_Model {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array(
         "id", "source_url", "target_url", "menu_items", "module_config", "master"
@@ -42,14 +42,9 @@ class RouteModel extends XCMS_Model {
     public function load($id) {
 
         // Retrieve data
-        // TODO :: Use _buildQuery
-        $this->db->select("id, source_url, target_url, module_config, master, count(menuitem_id) as menu_items");
-        $this->db->join(Query::TABLE_MENUITEMS_ROUTES, "route_id = id", "left");
-        $this->db->group_by("id, source_url, target_url, module_config, master");
-        $result = $this->db->get_where(Query::TABLE_ROUTES, array("id" => intval($id)));
+        $result = $this->_buildQuery($id)->get(Query::TABLE_ROUTES);
         if ($result->num_rows()) {
 
-            // Populate model
             $this->set($result->row());
             return $this;
 
@@ -93,6 +88,31 @@ class RouteModel extends XCMS_Model {
         $this->db->delete(Query::TABLE_ROUTES,  array(
             "id" => $this->get("id")
         ));
+
+    }
+
+
+    /**
+     * Creates query (using CI QueryBuilder) for retrieving model content (route)
+     *
+     * @param   int         $id             The id of the route to load
+     * @return  Object                      CI Database Instance for chaining purposes
+     */
+    protected function _buildQuery($id) {
+
+        ($id !== null) ? $this->db->where("id", $id) : $this->db->where("active", 1);
+
+        $this->db->select("id, source_url, target_url, module_config, master, count(menuitem_id) as menu_items")
+            ->join(Query::TABLE_MENUITEMS_ROUTES, "route_id = id", "left")
+            ->group_by("id, source_url, target_url, module_config, master")
+            ->where("id", intval($id));
+
+        // Hook for customized filtering
+        XCMS_Hooks::execute("route.build_query", array(
+            &$this->db, $id
+        ));
+
+        return $this->db;
 
     }
 
