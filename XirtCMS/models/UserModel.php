@@ -1,7 +1,7 @@
 <?php
 
 /**
- * UserModel for XirtCMS (single user)
+ * Base model for retrieving single XirtCMS user
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -11,8 +11,8 @@
 class UserModel extends XCMS_Model {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array(
         "id", "username", "real_name", "email", "password", "salt", "usergroup_id", "dt_created"
@@ -135,13 +135,13 @@ class UserModel extends XCMS_Model {
         // Validate uniqueness of given username
         $result = $this->db->get_where(Query::TABLE_USERS, array("username" => $this->get("username")));
         if ($result->num_rows() > 0 && (!$this->get("id") || $result->row()->id != $this->get("id"))) {
-            throw new Exception("The chosen username is already in use by a different user.");
+            throw new ValidationException("The chosen username is already in use by a different user.");
         }
 
         // Validate uniqueness of given e-mail address
         $result = $this->db->get_where(Query::TABLE_USERS, array("email" => $this->get("email")));
         if ($result->num_rows() > 0 && (!$this->get("id") || $result->row()->id != $this->get("id"))) {
-            throw new Exception("The chosen e-mail address is already in use by a different user.");
+            throw new ValidationException("The chosen e-mail address is already in use by a different user.");
         }
 
         return $this;
