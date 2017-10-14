@@ -11,8 +11,8 @@
 class MenuitemsModel extends XCMS_Model {
 
     /**
-     * @var array
      * Internal list of items
+     * @var array
      */
     private $_list = array();
 
@@ -34,14 +34,14 @@ class MenuitemsModel extends XCMS_Model {
     /**
      * Loads all requested items
      *
-     * @param   $id                         The ID of the requested menu
-     * @param   $activeOnly                 Toggless loading of unpublished items
+     * @param   int         $id             The ID of the requested menu
+     * @param   boolean     $activeOnly     Toggless loading of unpublished items
      * @return  boolean                     Always true
      */
     public function load($id, $activeOnly = false) {
 
         $this->_list = array();
-        
+
         $query = $this->_buildQuery($id)->get(Query::TABLE_MENUITEMS);
         foreach ($query->result() as $row) {
 
@@ -69,7 +69,7 @@ class MenuitemsModel extends XCMS_Model {
     /**
      * Creates query (using CI QueryBuilder) for retrieving model content (articles)
      *
-     * @param   $id                         The ID of the requested menu
+     * @param   int         $id             The ID of the requested menu
      * @return  Object                      CI Database Instance for chaining purposes
      */
     function _buildQuery($id) {

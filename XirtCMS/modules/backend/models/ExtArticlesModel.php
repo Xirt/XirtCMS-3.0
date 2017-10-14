@@ -11,8 +11,8 @@
 class ExtArticlesModel extends ArticlesModel {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array("searchPhrase", "current", "rowCount", "sortColumn", "sortOrder");
 
@@ -44,7 +44,6 @@ class ExtArticlesModel extends ArticlesModel {
                 $stmt->order_by($this->get("sortColumn"), $this->get("sortOrder"));
 
             }
-
 
         });
 

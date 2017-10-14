@@ -1,7 +1,7 @@
 <?php
 
 /**
- * UsergroupModel for XirtCMS (single usergroup)
+ * Base model for retrieving single XirtCMS usergroup
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -11,8 +11,8 @@
 class UsergroupModel extends XCMS_Model {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array(
         "id", "name", "authorization_level"

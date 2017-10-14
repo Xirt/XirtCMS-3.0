@@ -40,7 +40,7 @@ class RoutesModel extends XCMS_Model {
 
         // Reset
         $this->_list = array();
-    
+
         // Populate list from database
         $query = $this->_buildQuery()->get(Query::TABLE_ROUTES);
         foreach ($query->result() as $row) {

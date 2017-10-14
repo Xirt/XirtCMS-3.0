@@ -11,8 +11,8 @@
 class ExtTemplatesModel extends TemplatesModel {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array("searchPhrase", "current", "rowCount", "sortColumn", "sortOrder");
 
@@ -46,10 +46,9 @@ class ExtTemplatesModel extends TemplatesModel {
 
             }
 
-
         });
 
-            return $this;
+        return $this;
 
     }
 

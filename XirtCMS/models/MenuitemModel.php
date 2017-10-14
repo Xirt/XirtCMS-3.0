@@ -1,7 +1,7 @@
 <?php
 
 /**
- * MenuitemModel for XirtCMS (single menu item)
+ * Base model for retrieving single XirtCMS menu item
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -11,8 +11,8 @@
 class MenuitemModel extends XCMS_Model {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array(
         "id", "menu_id", "name", "type", "level", "ordering", "parent_id", "home", "published", "sitemap", "relations",
@@ -48,9 +48,9 @@ class MenuitemModel extends XCMS_Model {
                 $this->set(array(
                     "source_url"    => $this->get("source_url"),
                     "target_url"    => $this->get("target_url"),
-                    "uri"            => null,
+                    "uri"           => null,
                     "anchor"        => (string)substr($this->get("uri"), 1),
-                    "module_config"    => (int)$this->get("module_config")
+                    "module_config" => (int)$this->get("module_config")
                 ));
 
             break;
@@ -60,9 +60,9 @@ class MenuitemModel extends XCMS_Model {
                 $this->set(array(
                     "source_url"    => null,
                     "target_url"    => null,
-                    "uri"            => $this->get("uri"),
+                    "uri"           => $this->get("uri"),
                     "anchor"        => (string)substr($this->get("uri"), 1),
-                    "module_config"    => -1
+                    "module_config" => -1
                 ));
 
             break;
@@ -71,9 +71,9 @@ class MenuitemModel extends XCMS_Model {
 
                 $this->set(array(
                     "source_url"    => null,
-                    "uri"            => $this->get("uri"),
+                    "uri"           => $this->get("uri"),
                     "anchor"        => "",
-                    "module_config"    => -1
+                    "module_config" => -1
                 ));
 
             break;

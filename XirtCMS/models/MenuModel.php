@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CategoryModel for XirtCMS (single menu)
+ * Base model for retrieving single XirtCMS menu
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -11,8 +11,8 @@
 class MenuModel extends XCMS_Model {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array(
         "id", "name", "ordering", "sitemap"

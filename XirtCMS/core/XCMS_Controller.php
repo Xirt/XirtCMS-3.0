@@ -31,6 +31,7 @@ class XCMS_Controller extends CI_Controller {
 
         parent::__construct();
         XCMS_Hooks::init($isBackend);
+        $this->load->helper("exception");
         $this->load->library("XCMS_Authentication");
 
         if ($auth_level && !XCMS_Authentication::check()) {
@@ -137,6 +138,6 @@ class XCMS_Controller extends CI_Controller {
         }
 
     }
-
+    
 }
 ?>

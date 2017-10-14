@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CategoryModel for XirtCMS (single category)
+ * Base model for retrieving single XirtCMS category
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -11,8 +11,8 @@
 class CategoryModel extends XCMS_Model {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array(
         "id", "node_id", "parent_id", "name", "level", "ordering", "published", "parent_id"
@@ -80,7 +80,7 @@ class CategoryModel extends XCMS_Model {
     /**
      * Creates query (using CI QueryBuilder) for retrieving model content
      *
-	 * @param   int         $id             The ID of the requested category
+     * @param   int         $id             The ID of the requested category
      * @return  Object                      CI Database Instance for chaining purposes
      */
     private function _buildQuery($id) {

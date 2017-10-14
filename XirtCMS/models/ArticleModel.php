@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ArticleModel for XirtCMS (single article)
+ * Base model for retrieving single XirtCMS article
  *
  * @author      A.G. Gideonse
  * @version     3.0

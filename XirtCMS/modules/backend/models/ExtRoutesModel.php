@@ -11,8 +11,8 @@
 class ExtRoutesModel extends RoutesModel {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array("searchPhrase", "current", "rowCount", "sortColumn", "sortOrder");
 
@@ -44,7 +44,6 @@ class ExtRoutesModel extends RoutesModel {
                 $stmt->order_by($this->get("sortColumn"), $this->get("sortOrder"));
 
             }
-
 
         });
 

@@ -40,7 +40,7 @@ class UsersModel extends XCMS_Model {
 
         // Reset
         $this->_list = array();
-    
+
         // Populate list from database
         $query = $this->_buildQuery()->get(Query::TABLE_USERS);
         foreach ($query->result() as $row) {

@@ -11,8 +11,8 @@
 class ExtModuleConfigurationsModel extends ModuleConfigurationsModel {
 
     /**
-     * @var array
      * Attribute array for this model (valid attributes)
+     * @var array
      */
     protected $_attr = array("searchPhrase", "current", "rowCount", "sortColumn", "sortOrder");
 

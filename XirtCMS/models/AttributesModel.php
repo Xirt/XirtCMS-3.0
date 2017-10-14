@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AttributesModel for XirtCMS (generic usage)
+ * Base model for holding XirtCMS attributes (generic usage)
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -11,36 +11,36 @@
 class AttributesModel extends CI_Model {
 
     /**
-     * @var int
      * Internal reference (ID) to the related model
+     * @var int
      */
     private $_ref = -1;
 
 
     /**
-     * @var string|null
      * Internal reference to the source type
+     * @var string|null
      */
     private $_type = null;
 
 
     /**
-     * @var string|null
      * Internal reference to the source table
+     * @var string|null
      */
     private $_table = null;
 
 
     /**
-     * @var boolean
      * Toggles validation of attributes
+     * @var boolean
      */
     private $_validations = null;
 
 
     /**
-     * @var array
      * Internal reference to actual attributes
+     * @var array
      */
     protected $_attr = array();
 
@@ -75,7 +75,7 @@ class AttributesModel extends CI_Model {
 
         // Reset
         $this->_list = array();
-    
+
         // Populate list from database
         $query = $this->db->get_where($this->_table, array("ref_id" => $id));
         foreach ($query->result() as $row) {
@@ -96,7 +96,7 @@ class AttributesModel extends CI_Model {
     public function save() {
 
         // Updates all attributes in DB
-        foreach ($this->_attr as $cur => $attribute) {
+        foreach ($this->_attr as $attribute) {
 
             $this->db->replace($this->_table, array(
                 "ref_id" => $this->_ref,

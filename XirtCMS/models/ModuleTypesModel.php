@@ -11,8 +11,8 @@
 class ModuleTypesModel extends XCMS_Model {
 
     /**
-     * @var array
      * Internal list of items
+     * @var array
      */
     private $_list = array();
 

@@ -130,7 +130,7 @@ class ArticlesModel extends XCMS_Model {
      */
     protected function _parseAndFilterArticles() {
 
-        foreach ($this->_list as $id => $article) {
+        foreach ($this->_list as $article) {
             XCMS_Hooks::execute("articles.parse_article", array($article));
         }
 
