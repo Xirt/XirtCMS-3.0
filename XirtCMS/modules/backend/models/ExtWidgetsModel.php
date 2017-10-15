@@ -29,8 +29,8 @@ class ExtWidgetsModel extends WidgetsModel {
             if ($filter = trim($this->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
-                    Query::TABLE_WIDGETS . ".id"    => $filter,
-                    Query::TABLE_WIDGETS . ".name" => $filter
+                    XCMS_TablesTABLE_WIDGETS . ".id"    => $filter,
+                    XCMS_TablesTABLE_WIDGETS . ".name" => $filter
                 ));
 
             }

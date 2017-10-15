@@ -29,8 +29,8 @@ class ExtRoutesModel extends RoutesModel {
             if ($filter = trim($this->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
-                    Query::TABLE_ROUTES . ".source_url"    => $filter,
-                    Query::TABLE_ROUTES . ".target_url" => $filter
+                    XCMS_TablesTABLE_ROUTES . ".source_url"    => $filter,
+                    XCMS_TablesTABLE_ROUTES . ".target_url" => $filter
                 ));
 
             }

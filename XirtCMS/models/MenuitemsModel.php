@@ -42,7 +42,7 @@ class MenuitemsModel extends XCMS_Model {
 
         $this->_list = array();
 
-        $query = $this->_buildQuery($id)->get(Query::TABLE_MENUITEMS);
+        $query = $this->_buildQuery($id)->get(XCMS_Tables::TABLE_MENUITEMS);
         foreach ($query->result() as $row) {
 
             if (!$activeOnly || $row->published) {
@@ -76,9 +76,9 @@ class MenuitemsModel extends XCMS_Model {
 
         $this->db->select("xcms_menu_items.*, source_url, parent_id, ordering");
 
-        $this->db->join(Query::TABLE_MENUITEMS_RELATIONS, "id = node_id");
-        $this->db->join(Query::TABLE_MENUITEMS_ROUTES, "id = menuitem_id", "left");
-        $this->db->join(Query::TABLE_ROUTES, "xcms_routes.id = route_id", "left");
+        $this->db->join(XCMS_Tables::TABLE_MENUITEMS_RELATIONS, "id = node_id");
+        $this->db->join(XCMS_Tables::TABLE_MENUITEMS_ROUTES, "id = menuitem_id", "left");
+        $this->db->join(XCMS_Tables::TABLE_ROUTES, "xcms_routes.id = route_id", "left");
         $this->db->where(array("menu_id" => $id));
         $this->db->order_by("level", "ASC");
 

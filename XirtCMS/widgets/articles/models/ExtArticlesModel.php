@@ -27,14 +27,14 @@ class ExtArticlesModel extends ArticlesModel {
         XCMS_Hooks::add("articles.build_article_query", function($stmt) {
             
             // Default query
-            $stmt->select(Query::TABLE_ARTICLES . ".*", Query::TABLE_USERS . ".username")
-                ->join(Query::TABLE_USERS, Query::TABLE_USERS . ".id = author")
+            $stmt->select(XCMS_TablesTABLE_ARTICLES . ".*", XCMS_TablesTABLE_USERS . ".username")
+                ->join(XCMS_TablesTABLE_USERS, XCMS_TablesTABLE_USERS . ".id = author")
                 ->order_by($this->get("sorting"));
 
             // Optional: Specific category ID
             if (($id = $this->get("category")) && is_numeric($id)) {
 
-                $stmt->join(Query::TABLE_ARTICLES_CATEGORIES, Query::TABLE_ARTICLES . ".id = article_id")
+                $stmt->join(XCMS_TablesTABLE_ARTICLES_CATEGORIES, XCMS_TablesTABLE_ARTICLES . ".id = article_id")
                     ->where("category_id", $id);
 
             }

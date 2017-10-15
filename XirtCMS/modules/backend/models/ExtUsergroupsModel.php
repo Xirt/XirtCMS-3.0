@@ -29,9 +29,9 @@ class ExtUsergroupsModel extends UsergroupsModel {
             if ($filter = trim($this->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
-                    Query::TABLE_USERGROUPS . ".id"                  => $filter,
-                    Query::TABLE_USERGROUPS . ".name"                => $filter,
-                    Query::TABLE_USERGROUPS . ".authorization_level" => $filter
+                    XCMS_TablesTABLE_USERGROUPS . ".id"                  => $filter,
+                    XCMS_TablesTABLE_USERGROUPS . ".name"                => $filter,
+                    XCMS_TablesTABLE_USERGROUPS . ".authorization_level" => $filter
                 ));
 
             }

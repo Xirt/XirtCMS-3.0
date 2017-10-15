@@ -42,7 +42,7 @@ class RouteModel extends XCMS_Model {
     public function load($id) {
 
         // Retrieve data
-        $result = $this->_buildQuery($id)->get(Query::TABLE_ROUTES);
+        $result = $this->_buildQuery($id)->get(XCMS_Tables::TABLE_ROUTES);
         if ($result->num_rows()) {
 
             $this->set($result->row());
@@ -63,7 +63,7 @@ class RouteModel extends XCMS_Model {
     public function save() {
 
         // Upsert into database...
-        $this->db->replace(Query::TABLE_ROUTES, array(
+        $this->db->replace(XCMS_Tables::TABLE_ROUTES, array(
             "id"            => $this->get("id"),
             "source_url"    => $this->get("source_url"),
             "target_url"    => $this->get("target_url"),
@@ -85,7 +85,7 @@ class RouteModel extends XCMS_Model {
 
         // Remove route
         RouteHelper::removeRelation($this->get("id"));
-        $this->db->delete(Query::TABLE_ROUTES,  array(
+        $this->db->delete(XCMS_Tables::TABLE_ROUTES,  array(
             "id" => $this->get("id")
         ));
 
@@ -103,7 +103,7 @@ class RouteModel extends XCMS_Model {
         ($id !== null) ? $this->db->where("id", $id) : $this->db->where("active", 1);
 
         $this->db->select("id, source_url, target_url, module_config, master, count(menuitem_id) as menu_items")
-            ->join(Query::TABLE_MENUITEMS_ROUTES, "route_id = id", "left")
+            ->join(XCMS_Tables::TABLE_MENUITEMS_ROUTES, "route_id = id", "left")
             ->group_by("id, source_url, target_url, module_config, master")
             ->where("id", intval($id));
 

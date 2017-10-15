@@ -36,59 +36,20 @@ class UserModel extends XCMS_Model {
     /**
      * Loads the requested user by given ID
      *
-     * @param   int         $id             The id of the user to load
+     * @param   mixed         $id           The id or username of the user to load
      * @return  mixed                       This instance on success, null otherwise
      */
     public function load($id) {
-        return $this->loadById($id);
-    }
-
-
-    /**
-     * Loads the requested user by given ID
-     *
-     * @param   int         $id             The id of the user to load
-     * @return  mixed                       This instance on success, null otherwise
-     */
-    public function loadByID($id) {
 
         // Retrieve data
-        $result = $this->db->get_where(Query::TABLE_USERS, array("id" => intval($id)));
+        $result = $this->_buildQuery($id)->get(XCMS_Tables::TABLE_USERS);
         if ($result->num_rows()) {
 
             // Populate model
             $this->set($result->row());
 
             // Load attributes
-            $this->attributes->init(Query::TABLE_USERS_ATTR, "user");
-            $this->attributes->load($id);
-
-            return $this;
-
-        }
-
-        return null;
-
-    }
-
-
-    /**
-     * Loads the requested user by given username
-     *
-     * @param   String      $username       The username of the user to load
-     * @return  mixed                       This instance on success, null otherwise
-     */
-    public function loadByUsername($username) {
-
-        // Retrieve data
-        $result = $this->db->get_where(Query::TABLE_USERS, array("username" => $username));
-        if ($result->num_rows()) {
-
-            // Populate model
-            $this->set($result->row());
-
-            // Load attributes
-            $this->attributes->init(Query::TABLE_USERS_ATTR, "user");
+            $this->attributes->init(XCMS_Tables::TABLE_USERS_ATTR, "user");
             $this->attributes->load($this->get("id"));
 
             return $this;
@@ -97,6 +58,30 @@ class UserModel extends XCMS_Model {
 
         return null;
 
+    }
+
+
+    /**
+     * Loads the requested user by given ID
+     *
+     * @deprecated          3.0             Deprecated in favor of UserModel::load(id)
+     * @param   int         $id             The id of the user to load
+     * @return  mixed                       This instance on success, null otherwise
+     */
+    public function loadByID(int $id) {
+        return $this->load($id);
+    }
+
+
+    /**
+     * Loads the requested user by given username
+     *
+     * @deprecated          3.0             Deprecated in favor of UserModel::load(id)
+     * @param   String      $username       The username of the user to load
+     * @return  mixed                       This instance on success, null otherwise
+     */
+    public function loadByUsername($username) {
+        return $this->load($username);
     }
 
 
@@ -133,13 +118,13 @@ class UserModel extends XCMS_Model {
     public function validate() {
 
         // Validate uniqueness of given username
-        $result = $this->db->get_where(Query::TABLE_USERS, array("username" => $this->get("username")));
+        $result = $this->db->get_where(XCMS_Tables::TABLE_USERS, array("username" => $this->get("username")));
         if ($result->num_rows() > 0 && (!$this->get("id") || $result->row()->id != $this->get("id"))) {
             throw new ValidationException("The chosen username is already in use by a different user.");
         }
 
         // Validate uniqueness of given e-mail address
-        $result = $this->db->get_where(Query::TABLE_USERS, array("email" => $this->get("email")));
+        $result = $this->db->get_where(XCMS_Tables::TABLE_USERS, array("email" => $this->get("email")));
         if ($result->num_rows() > 0 && (!$this->get("id") || $result->row()->id != $this->get("id"))) {
             throw new ValidationException("The chosen e-mail address is already in use by a different user.");
         }
@@ -169,7 +154,7 @@ class UserModel extends XCMS_Model {
 
         // Updates DB (data & metadata)
         $this->attributes->removeAll($this->get("id"));
-        $this->db->delete(Query::TABLE_USERS,  array(
+        $this->db->delete(XCMS_Tables::TABLE_USERS,  array(
             "id" => $this->get("id")
         ));
 
@@ -216,7 +201,7 @@ class UserModel extends XCMS_Model {
      */
     private function _create() {
 
-        $this->db->insert(Query::TABLE_USERS, $this->getArray());
+        $this->db->insert(XCMS_Tables::TABLE_USERS, $this->getArray());
         $this->set("id", $this->db->insert_id());
 
     }
@@ -227,8 +212,28 @@ class UserModel extends XCMS_Model {
      */
     private function _update() {
 
-        $this->db->replace(Query::TABLE_USERS, $this->getArray());
+        $this->db->replace(XCMS_Tables::TABLE_USERS, $this->getArray());
         $this->attributes->save();
+
+    }
+
+
+    /**
+     * Creates query (using CI QueryBuilder) for retrieving model content (user)
+     *
+     * @param   mixed         $id           The id or username of the user to load
+     * @return  Object                      CI Database Instance for chaining purposes
+     */
+    protected function _buildQuery($id) {
+
+        is_numeric($id) ? $this->db->where("id", intval($id)) : $this->db->where("username", $id);
+
+        // Hook for customized filtering
+        XCMS_Hooks::execute("user.build_query", array(
+            &$this->db, $id
+        ));
+
+        return $this->db;
 
     }
 

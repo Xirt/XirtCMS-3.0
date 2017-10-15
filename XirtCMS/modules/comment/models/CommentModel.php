@@ -24,7 +24,7 @@ class CommentModel extends XCMS_Model {
      */
     public function save() {
 
-        $this->db->replace(Query::TABLE_ARTICLES_COMMENTS, $this->getArray());
+        $this->db->replace(XCMS_Tables::TABLE_ARTICLES_COMMENTS, $this->getArray());
         $this->set("id", $this->db->insert_id());
 
     }
@@ -35,7 +35,7 @@ class CommentModel extends XCMS_Model {
      */
     public function remove() {
 
-        $this->db->delete(Query::TABLE_ARTICLES_COMMENTS,  array(
+        $this->db->delete(XCMS_Tables::TABLE_ARTICLES_COMMENTS,  array(
             "id" => $this->get("id")
         ));
 

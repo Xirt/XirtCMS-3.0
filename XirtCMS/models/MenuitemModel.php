@@ -30,10 +30,9 @@ class MenuitemModel extends XCMS_Model {
     public function load($id = null, $ext_rel = false) {
 
         // Retrieve data
-        $query = ($id === null) ? Query::SEL_MENUITEMS_HOME : Query::SEL_MENUITEMS_ID;
-        $result = $this->db->query($query, intval($id));
+        $result = $this->_buildQuery($id)->get(XCMS_Tables::TABLE_MENUITEMS);
         if ($result->num_rows() == 0) {
-            return false;
+            return null;
         }
 
         // Populate model (main)
@@ -84,7 +83,7 @@ class MenuitemModel extends XCMS_Model {
         if ($ext_rel && $this->get("route_id")) {
 
             $this->db->where("route_id", $this->get("route_id"));
-            $count = $this->db->count_all_results(Query::TABLE_MENUITEMS_ROUTES);
+            $count = $this->db->count_all_results(XCMS_Tables::TABLE_MENUITEMS_ROUTES);
             $this->set("relations", $count ? $count - 1 : 0);
 
         }
@@ -112,8 +111,33 @@ class MenuitemModel extends XCMS_Model {
      */
     public function remove() {
 
-        $this->db->delete(Query::TABLE_MENUITEMS_RELATIONS, array("node_id" => $this->get("id")));
-        $this->db->delete(Query::TABLE_MENUITEMS, array("id" => $this->get("id")));
+        $this->db->delete(XCMS_Tables::TABLE_MENUITEMS_RELATIONS, array("node_id" => $this->get("id")));
+        $this->db->delete(XCMS_Tables::TABLE_MENUITEMS, array("id" => $this->get("id")));
+
+    }
+
+
+    /**
+     * Creates query (using CI QueryBuilder) for retrieving model content (module configuration)
+     *
+     * @param   int         $id             The id of the setting to load
+     * @return  Object                      CI Database Instance for chaining purposes
+     */
+    protected function _buildQuery($id) {
+
+        $this->db->select(XCMS_Tables::TABLE_MENUITEMS . ".*, parent_id, level, ordering, source_url, target_url, route_id, module_config")
+        ->join(XCMS_Tables::TABLE_MENUITEMS_RELATIONS, XCMS_Tables::TABLE_MENUITEMS . ".id = node_id", "inner")
+        ->join(XCMS_Tables::TABLE_MENUITEMS_ROUTES, XCMS_Tables::TABLE_MENUITEMS . ".id = menuitem_id", "left")
+        ->join(XCMS_Tables::TABLE_ROUTES, XCMS_Tables::TABLE_ROUTES . ".id = route_id", "left");
+
+        ($id === null) ? $this->db->where("home", 1) : $this->db->where(XCMS_Tables::TABLE_MENUITEMS . ".id", $id);
+
+        // Hook for customized filtering
+        XCMS_Hooks::execute("menuitem.build_query", array(
+            &$this->db, $id
+        ));
+
+        return $this->db;
 
     }
 
@@ -124,22 +148,11 @@ class MenuitemModel extends XCMS_Model {
     private function _create() {
 
         $values = $this->getArray();
-        $this->db->insert(Query::TABLE_MENUITEMS, $this->_filterRelations($values));
+        $this->db->insert(XCMS_Tables::TABLE_MENUITEMS, $this->_filterRelations($values));
 
         if ($values["node_id"] = $this->db->insert_id()) {
-            $this->db->insert(Query::TABLE_MENUITEMS_RELATIONS, $this->_filterContent($values));
+            $this->db->insert(XCMS_Tables::TABLE_MENUITEMS_RELATIONS, $this->_filterContent($values));
         }
-
-    }
-
-
-    /**
-     * Saves the given instance values in the DB as a existing item (update)
-     */
-    private function _update() {
-
-        $this->db->replace(Query::TABLE_MENUITEMS, $this->_filterRelations($this->getArray()));
-        $this->db->replace(Query::TABLE_MENUITEMS_RELATIONS, $this->_filterContent($this->getArray()));
 
     }
 
@@ -186,6 +199,17 @@ class MenuitemModel extends XCMS_Model {
         }
 
         return $data;
+
+    }
+
+
+    /**
+     * Saves the given instance values in the DB as a existing item (update)
+     */
+    private function _update() {
+
+        $this->db->replace(XCMS_Tables::TABLE_MENUITEMS, $this->_filterRelations($this->getArray()));
+        $this->db->replace(XCMS_Tables::TABLE_MENUITEMS_RELATIONS, $this->_filterContent($this->getArray()));
 
     }
 

@@ -93,7 +93,7 @@ class WidgetHelper {
     public static function getValidPositions() {
 
         $positions = array();
-        foreach (self::$_CI->db->get(Query::TABLE_TEMPLATES_POSITIONS)->result() as $row) {
+        foreach (self::$_CI->db->get(XCMS_Tables::TABLE_TEMPLATES_POSITIONS)->result() as $row) {
             $positions[] = $row->position;
         }
 
@@ -110,8 +110,8 @@ class WidgetHelper {
      */
     private static function _load($published, $current) {
 
-        self::$_CI->db->select(Query::TABLE_WIDGETS . ".*");
-        self::$_CI->db->join(Query::TABLE_WIDGETS_PAGES, "id = widget_id", "left");
+        self::$_CI->db->select(XCMS_Tables::TABLE_WIDGETS . ".*");
+        self::$_CI->db->join(XCMS_Tables::TABLE_WIDGETS_PAGES, "id = widget_id", "left");
 
         if ($published) {
             self::$_CI->db->where("published", 1);
@@ -133,7 +133,7 @@ class WidgetHelper {
         }
 
         // Loads the complete list of routes
-        $query = self::$_CI->db->get(Query::TABLE_WIDGETS);
+        $query = self::$_CI->db->get(XCMS_Tables::TABLE_WIDGETS);
         foreach ($query->result() as $row) {
 
             self::$_list[$row->id] = $row;
@@ -143,7 +143,7 @@ class WidgetHelper {
 
         // Enrich with settings
         self::$_CI->db->where_in("widget_id", array_keys(self::$_list));
-        $query = self::$_CI->db->get(Query::TABLE_WIDGETS_SETTINGS);
+        $query = self::$_CI->db->get(XCMS_Tables::TABLE_WIDGETS_SETTINGS);
         foreach ($query->result() as $row) {
             self::$_list[$row->widget_id]->settings[$row->name] = $row->value;
         }

@@ -45,7 +45,7 @@ class WidgetsModel extends XCMS_Model {
         $this->_list = array();
 
         // Populate list from database
-        $query = $this->_buildQuery()->get(Query::TABLE_WIDGETS);
+        $query = $this->_buildQuery()->get(XCMS_Tables::TABLE_WIDGETS);
         foreach ($query->result() as $row) {
             $this->_list[] = (new WidgetModel())->set((array)$row);
         }
@@ -70,7 +70,7 @@ class WidgetsModel extends XCMS_Model {
      * @return  int                         The total number of items in the DB
      */
     public function getTotalCount() {
-        return $this->_buildQuery(true)->count_all_results(Query::TABLE_WIDGETS);
+        return $this->_buildQuery(true)->count_all_results(XCMS_Tables::TABLE_WIDGETS);
     }
 
 

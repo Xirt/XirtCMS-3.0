@@ -16,7 +16,7 @@ class TemplateHelper {
     public static function resetActiveTemplate() {
     
        $CI =& get_instance();
-       $CI->db->update(Query::TABLE_TEMPLATES, array("published" => 0));
+       $CI->db->update(XCMS_Tables::TABLE_TEMPLATES, array("published" => 0));
     
     }
     

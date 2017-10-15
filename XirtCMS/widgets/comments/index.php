@@ -97,10 +97,10 @@ class xwidget_comments extends XCMS_Widget {
         }
 
         // Load comment information
-        $this->db->select(Query::TABLE_ARTICLES_COMMENTS . ".*, username, email");
-        $this->db->join(Query::TABLE_USERS, Query::TABLE_USERS . ".id = author_id", "left");
+        $this->db->select(XCMS_Tables::TABLE_ARTICLES_COMMENTS . ".*, username, email");
+        $this->db->join(XCMS_Tables::TABLE_USERS, XCMS_Tables::TABLE_USERS . ".id = author_id", "left");
         $this->db->order_by("dt_created ASC, parent_id ASC");
-        $query = $this->db->get_where(Query::TABLE_ARTICLES_COMMENTS, array(
+        $query = $this->db->get_where(XCMS_Tables::TABLE_ARTICLES_COMMENTS, array(
             "article_id" => $id
         ));
 

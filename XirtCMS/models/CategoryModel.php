@@ -28,7 +28,7 @@ class CategoryModel extends XCMS_Model {
     public function load($id) {
 
         // Retrieve data from DB
-        $result = $this->_buildQuery($id)->get_where(Query::TABLE_CATEGORIES);
+        $result = $this->_buildQuery($id)->get(XCMS_Tables::TABLE_CATEGORIES);
         if ($result->num_rows()) {
 
             // Populate model
@@ -68,25 +68,30 @@ class CategoryModel extends XCMS_Model {
 
         // Remove relations
         $this->db->where("node_id", $this->get("id"))
-        ->delete(Query::TABLE_CATEGORIES_RELATIONS);
+        ->delete(XCMS_Tables::TABLE_CATEGORIES_RELATIONS);
 
         // Remove item
         $this->db->where("id", $this->get("id"))
-        ->delete(Query::TABLE_CATEGORIES);
+        ->delete(XCMS_Tables::TABLE_CATEGORIES);
 
     }
 
 
     /**
-     * Creates query (using CI QueryBuilder) for retrieving model content
+     * Creates query (using CI QueryBuilder) for retrieving model content (category)
      *
-     * @param   int         $id             The ID of the requested category
+     * @param   int         $id             The id of the category to load
      * @return  Object                      CI Database Instance for chaining purposes
      */
     private function _buildQuery($id) {
 
-        $this->db->join(Query::TABLE_CATEGORIES_RELATIONS, "id = node_id");
+        $this->db->join(XCMS_Tables::TABLE_CATEGORIES_RELATIONS, "id = node_id");
         $this->db->where(array("id" => $id));
+
+        // Hook for customized filtering
+        XCMS_Hooks::execute("category.build_query", array(
+            &$this->db, $id
+        ));
 
         return $this->db;
 
@@ -99,10 +104,10 @@ class CategoryModel extends XCMS_Model {
     private function _create() {
 
         $values = $this->getArray();
-        $this->db->insert(Query::TABLE_CATEGORIES, $this->_filterRelations($values));
+        $this->db->insert(XCMS_Tables::TABLE_CATEGORIES, $this->_filterRelations($values));
 
         if ($values["node_id"] = $this->db->insert_id()) {
-            $this->db->insert(Query::TABLE_CATEGORIES_RELATIONS, $this->_filterContent($values));
+            $this->db->insert(XCMS_Tables::TABLE_CATEGORIES_RELATIONS, $this->_filterContent($values));
         }
 
     }
@@ -113,8 +118,8 @@ class CategoryModel extends XCMS_Model {
      */
     private function _update() {
 
-        $this->db->replace(Query::TABLE_CATEGORIES, $this->_filterRelations($this->getArray()));
-        $this->db->replace(Query::TABLE_CATEGORIES_RELATIONS, $this->_filterContent($this->getArray()));
+        $this->db->replace(XCMS_Tables::TABLE_CATEGORIES, $this->_filterRelations($this->getArray()));
+        $this->db->replace(XCMS_Tables::TABLE_CATEGORIES_RELATIONS, $this->_filterContent($this->getArray()));
 
     }
 

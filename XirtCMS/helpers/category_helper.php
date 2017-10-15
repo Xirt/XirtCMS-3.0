@@ -27,7 +27,7 @@ class CategoryHelper {
             get_instance()->db
                 ->where_in("node_id", $subjects)
                 ->set("level", "level + " . $delta, false)
-                ->update(Query::TABLE_CATEGORIES_RELATIONS);
+                ->update(XCMS_Tables::TABLE_CATEGORIES_RELATIONS);
 
         }
 
@@ -48,7 +48,7 @@ class CategoryHelper {
             get_instance()->db
                 ->where_in("node_id", $subjects)
                 ->set("ordering", "ordering + " . $delta, false)
-                ->update(Query::TABLE_CATEGORIES_RELATIONS);
+                ->update(XCMS_Tables::TABLE_CATEGORIES_RELATIONS);
 
         }
 
@@ -68,7 +68,7 @@ class CategoryHelper {
             ->select("node_id")
             ->where("parent_id", $category->get("parent_id"))
             ->where("ordering",  $category->get("ordering") + $relation)
-            ->get(Query::TABLE_CATEGORIES_RELATIONS);
+            ->get(XCMS_Tables::TABLE_CATEGORIES_RELATIONS);
 
         if ($result = $query->row()) {
             return (new CategoryModel())->load($result->node_id);

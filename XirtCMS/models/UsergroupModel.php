@@ -28,7 +28,7 @@ class UsergroupModel extends XCMS_Model {
     public function load($id) {
 
         // Retrieve data
-        $result = $this->db->get_where(Query::TABLE_USERGROUPS, array("id" => intval($id)));
+        $result = $this->_buildQuery($id)->get(XCMS_Tables::TABLE_USERGROUPS);
         if ($result->num_rows()) {
 
             // Populate model
@@ -49,7 +49,7 @@ class UsergroupModel extends XCMS_Model {
      */
     public function save() {
 
-        $this->db->replace(Query::TABLE_USERGROUPS, $this->getArray());
+        $this->db->replace(XCMS_Tables::TABLE_USERGROUPS, $this->getArray());
         $this->set("id", $this->db->insert_id());
 
         return $this;
@@ -62,9 +62,29 @@ class UsergroupModel extends XCMS_Model {
      */
     public function remove() {
 
-        $this->db->delete(Query::TABLE_USERGROUPS,  array(
+        $this->db->delete(XCMS_Tables::TABLE_USERGROUPS,  array(
             "id" => $this->get("id")
         ));
+
+    }
+
+
+    /**
+     * Creates query (using CI QueryBuilder) for retrieving model content (usergroup)
+     *
+     * @param   int         $id             The id of the usergroup to load
+     * @return  Object                      CI Database Instance for chaining purposes
+     */
+    protected function _buildQuery($id) {
+
+        $this->db->where("id", intval($id));
+
+        // Hook for customized filtering
+        XCMS_Hooks::execute("usergroup.build_query", array(
+            &$this->db, $id
+        ));
+
+        return $this->db;
 
     }
 

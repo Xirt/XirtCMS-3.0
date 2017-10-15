@@ -42,7 +42,7 @@ class SettingsModel extends XCMS_Model {
         $this->_list = array();
 
         // Populate list from database
-        $query = $this->_buildQuery()->get(Query::TABLE_CONFIGURATION);
+        $query = $this->_buildQuery()->get(XCMS_Tables::TABLE_CONFIGURATION);
         foreach ($query->result() as $row) {
             $this->_list[] = (new SettingModel())->set((array)$row);
         }
@@ -58,7 +58,7 @@ class SettingsModel extends XCMS_Model {
      * @return  int                         The total number of items in the DB
      */
     public function getTotalCount() {
-        return $this->_buildQuery(true)->count_all_results(Query::TABLE_CONFIGURATION);
+        return $this->_buildQuery(true)->count_all_results(XCMS_Tables::TABLE_CONFIGURATION);
     }
 
 

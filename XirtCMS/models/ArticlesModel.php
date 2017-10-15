@@ -60,7 +60,7 @@ class ArticlesModel extends XCMS_Model {
      * @return  int                         The total number of items in the DB
      */
     public function getTotalCount() {
-        return $this->_buildArticleQuery(true)->count_all_results(Query::TABLE_ARTICLES);
+        return $this->_buildArticleQuery(true)->count_all_results(XCMS_Tables::TABLE_ARTICLES);
     }
 
 
@@ -81,7 +81,7 @@ class ArticlesModel extends XCMS_Model {
      */
     protected function _loadArticles() {
 
-        $query = $this->_buildArticleQuery()->get(Query::TABLE_ARTICLES);
+        $query = $this->_buildArticleQuery()->get(XCMS_Tables::TABLE_ARTICLES);
         foreach ($query->result() as $row) {
             $this->_list[$row->id] = (new ArticleModel())->set((array)$row);
         }
@@ -99,7 +99,7 @@ class ArticlesModel extends XCMS_Model {
         $authors = array();
 
         // Retrieve authors
-        $query = $this->_buildUsersQuery()->get(Query::TABLE_USERS);
+        $query = $this->_buildUsersQuery()->get(XCMS_Tables::TABLE_USERS);
         foreach ($query->result() as $row) {
             $authors[$row->id] = (new UserModel())->set("username", $row->username);
         }
@@ -117,7 +117,7 @@ class ArticlesModel extends XCMS_Model {
      */
     protected function _loadAttributes() {
 
-        $query = $this->_buildAttributeQuery()->get(Query::TABLE_ARTICLES_ATTR);
+        $query = $this->_buildAttributeQuery()->get(XCMS_Tables::TABLE_ARTICLES_ATTR);
         foreach ($query->result() as $row) {
             $this->_list[$row->ref_id]->setAttribute($row->name, $row->value);
         }

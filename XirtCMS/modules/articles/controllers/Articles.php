@@ -73,7 +73,7 @@ class Articles extends XCMS_Controller {
     private function _getTitle() {
 
         $conf = $this->router->module_config;
-        $query = $this->db->get_where(Query::TABLE_MODULES, array(
+        $query = $this->db->get_where(XCMS_Tables::TABLE_MODULES, array(
             "type" => $this->router->class
         ));
 

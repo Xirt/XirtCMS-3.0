@@ -42,7 +42,7 @@ class RoutesModel extends XCMS_Model {
         $this->_list = array();
 
         // Populate list from database
-        $query = $this->_buildQuery()->get(Query::TABLE_ROUTES);
+        $query = $this->_buildQuery()->get(XCMS_Tables::TABLE_ROUTES);
         foreach ($query->result() as $row) {
             $this->_list[] = (new RouteModel())->set((array)$row);
         }
@@ -58,7 +58,7 @@ class RoutesModel extends XCMS_Model {
      * @return  int                         The total number of items in the DB
      */
     public function getTotalCount() {
-        return $this->_buildQuery(true)->count_all_results(Query::TABLE_ROUTES);
+        return $this->_buildQuery(true)->count_all_results(XCMS_Tables::TABLE_ROUTES);
     }
 
 
@@ -81,7 +81,7 @@ class RoutesModel extends XCMS_Model {
     function _buildQuery($filterOnly = false) {
 
         $this->db->select("id, source_url, target_url, count(menuitem_id) as menu_items");
-        $this->db->join(Query::TABLE_MENUITEMS_ROUTES, "route_id = id", "left");
+        $this->db->join(XCMS_Tables::TABLE_MENUITEMS_ROUTES, "route_id = id", "left");
         $this->db->group_by("id, source_url, target_url");
 
         // Hook for customized filtering

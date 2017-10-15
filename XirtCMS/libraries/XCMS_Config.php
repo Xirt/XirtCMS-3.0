@@ -1,6 +1,6 @@
 <?php
 
-require APPPATH . "config/queries.php";
+require APPPATH . "config/XCMS_Tables.php";
 
 /**
  * XirtCMS main configuration manager (e.g. application parameters)
@@ -46,7 +46,7 @@ class XCMS_Config {
     private function _load() {
 
         // Retrieve data from DB
-        $query = $this->CI->db->get(Query::TABLE_CONFIGURATION);
+        $query = $this->CI->db->get(XCMS_Tables::TABLE_CONFIGURATION);
         foreach ($query->result() as $metaInfo) {
             self::set($metaInfo->name, $metaInfo->value);
         }

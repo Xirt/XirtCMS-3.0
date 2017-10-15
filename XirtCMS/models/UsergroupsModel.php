@@ -42,7 +42,7 @@ class UsergroupsModel extends XCMS_Model {
         $this->_list = array();
 
         // Populate list from database
-        $query = $this->_buildQuery()->get(Query::TABLE_USERGROUPS);
+        $query = $this->_buildQuery()->get(XCMS_Tables::TABLE_USERGROUPS);
         foreach ($query->result() as $row) {
             $this->_list[] = (new UsergroupModel())->set((array)$row);
         }
@@ -58,7 +58,7 @@ class UsergroupsModel extends XCMS_Model {
      * @return  Object                      CI Database Instance for chaining purposes
      */
     public function getTotalCount() {
-        return $this->_buildQuery(true)->count_all_results(Query::TABLE_USERGROUPS);
+        return $this->_buildQuery(true)->count_all_results(XCMS_Tables::TABLE_USERGROUPS);
     }
 
 
@@ -80,8 +80,8 @@ class UsergroupsModel extends XCMS_Model {
      */
     function _buildQuery($filterOnly = false) {
 
-        $this->db->select(Query::TABLE_USERGROUPS . ".*, count(usergroup_id) as users")
-            ->join(Query::TABLE_USERS, Query::TABLE_USERGROUPS . ".id = usergroup_id", "left")
+        $this->db->select(XCMS_Tables::TABLE_USERGROUPS . ".*, count(usergroup_id) as users")
+            ->join(XCMS_Tables::TABLE_USERS, XCMS_Tables::TABLE_USERGROUPS . ".id = usergroup_id", "left")
             ->group_by("id, authorization_level, name");
 
         // Hook for customized filtering

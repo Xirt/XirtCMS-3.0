@@ -55,7 +55,7 @@ class ArticleModel extends XCMS_Model {
         // Initialize default attributes
         $this->_author = new UserModel();
         $this->_attributes = (new AttributesModel())->init(
-            Query::TABLE_ARTICLES_ATTR, "article"
+            XCMS_Tables::TABLE_ARTICLES_ATTR, "article"
         );
 
     }
@@ -71,7 +71,7 @@ class ArticleModel extends XCMS_Model {
     public function load($id, $extArticle = true) {
 
         // Retrieve data from DB
-        $result = $this->db->get_where(Query::TABLE_ARTICLES, array("id" => $id));
+        $result = $this->_buildQuery($id)->get(XCMS_Tables::TABLE_ARTICLES);
         if ($result->num_rows()) {
 
             // Populate model
@@ -114,7 +114,7 @@ class ArticleModel extends XCMS_Model {
     public function remove() {
 
         $this->_attributes->removeAll($this->_data["id"]);
-        $this->db->delete(Query::TABLE_ARTICLES, array(
+        $this->db->delete(XCMS_Tables::TABLE_ARTICLES, array(
             "id" => $this->_data["id"]
         ));
 
@@ -205,12 +205,32 @@ class ArticleModel extends XCMS_Model {
 
 
     /**
+     * Creates query (using CI QueryBuilder) for retrieving model content (article)
+     *
+     * @param   int         $id             The id of the article to load
+     * @return  Object                      CI Database Instance for chaining purposes
+     */
+    protected function _buildQuery($id) {
+
+        $this->db->where("id", intval($id));
+
+        // Hook for customized filtering
+        XCMS_Hooks::execute("article.build_query", array(
+            &$this->db, $id
+        ));
+
+        return $this->db;
+
+    }
+
+
+    /**
      * Loads categories for this article
      */
     private function _loadCategories() {
 
         // Retrieve data from DB
-        $query = $this->db->get_where(Query::TABLE_ARTICLES_CATEGORIES, array(
+        $query = $this->db->get_where(XCMS_Tables::TABLE_ARTICLES_CATEGORIES, array(
             "article_id"  => $this->get("id")
         ));
 
@@ -228,7 +248,7 @@ class ArticleModel extends XCMS_Model {
      * @return  Object                      Always this instance
      */
     private function _create() {
-        $this->db->insert(Query::TABLE_ARTICLES, $this->_data);
+        $this->db->insert(XCMS_Tables::TABLE_ARTICLES, $this->_data);
     }
 
 
@@ -239,7 +259,7 @@ class ArticleModel extends XCMS_Model {
      */
     private function _update() {
 
-        $this->db->replace(Query::TABLE_ARTICLES, $this->_data);
+        $this->db->replace(XCMS_Tables::TABLE_ARTICLES, $this->_data);
         $this->_attributes->save();
         $this->_saveCategories();
 
@@ -252,14 +272,14 @@ class ArticleModel extends XCMS_Model {
     private function _saveCategories() {
 
         // Remove old categories
-        $this->db->delete(Query::TABLE_ARTICLES_CATEGORIES, array(
+        $this->db->delete(XCMS_Tables::TABLE_ARTICLES_CATEGORIES, array(
             "article_id" => $this->get("id")
         ));
 
         // Add current categories
         foreach ($this->_categories as $category) {
 
-            $this->db->insert(Query::TABLE_ARTICLES_CATEGORIES, array(
+            $this->db->insert(XCMS_Tables::TABLE_ARTICLES_CATEGORIES, array(
                 "article_id"  => $this->get("id"),
                 "category_id" => $category
             ));

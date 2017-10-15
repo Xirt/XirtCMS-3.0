@@ -28,7 +28,7 @@ class MenuModel extends XCMS_Model {
     public function load($id) {
 
         // Retrieve data from DB
-        $result = $this->db->get_where(Query::TABLE_MENUS, array("id" => $id));
+        $result = $this->_buildQuery($id)->get(XCMS_Tables::TABLE_MENUS);
         if ($result->num_rows()) {
 
             // Populate model
@@ -62,14 +62,14 @@ class MenuModel extends XCMS_Model {
      */
     public function remove() {
 
-        $this->db->delete(Query::TABLE_MENUS, array(
+        $this->db->delete(XCMS_Tables::TABLE_MENUS, array(
             "id" => $this->get("id")
         ));
 
         // Correct ordering
         $this->db->set("ordering", "ordering - 1", false);
         $this->db->where("ordering >", $this->get("ordering"));
-        $this->db->update(Query::TABLE_MENUS);
+        $this->db->update(XCMS_Tables::TABLE_MENUS);
 
         return $this;
 
@@ -83,11 +83,11 @@ class MenuModel extends XCMS_Model {
 
         // Determine ordering...
         $this->db->select_max("ordering");
-        $result = $this->db->get(Query::TABLE_MENUS)->row();
+        $result = $this->db->get(XCMS_Tables::TABLE_MENUS)->row();
         $this->set("ordering", $result->ordering + 1);
 
         // Create item
-        $this->db->insert(Query::TABLE_MENUS, $this->getArray());
+        $this->db->insert(XCMS_Tables::TABLE_MENUS, $this->getArray());
 
     }
 
@@ -96,7 +96,27 @@ class MenuModel extends XCMS_Model {
      * Saves the instance in the DB as a existing item (update)
      */
     private function _update() {
-        $this->db->replace(Query::TABLE_MENUS, $this->getArray());
+        $this->db->replace(XCMS_Tables::TABLE_MENUS, $this->getArray());
+    }
+
+
+    /**
+     * Creates query (using CI QueryBuilder) for retrieving model content (menu)
+     *
+     * @param   int         $id             The id of the menu to load
+     * @return  Object                      CI Database Instance for chaining purposes
+     */
+    protected function _buildQuery($id) {
+
+        $this->db->where("id", intval($id));
+
+        // Hook for customized filtering
+        XCMS_Hooks::execute("menu.build_query", array(
+            &$this->db, $id
+        ));
+
+        return $this->db;
+
     }
 
 }

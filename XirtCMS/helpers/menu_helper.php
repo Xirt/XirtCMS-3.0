@@ -20,7 +20,7 @@ class MenuHelper {
 
         get_instance()->db
             ->set("home", 0)
-            ->update(Query::TABLE_MENUITEMS);
+            ->update(XCMS_Tables::TABLE_MENUITEMS);
 
     }
 
@@ -39,7 +39,7 @@ class MenuHelper {
             get_instance()->db
                 ->where_in("node_id", $subjects)
                 ->set("level", "level + " . $delta, false)
-                ->update(Query::TABLE_MENUITEMS_RELATIONS);
+                ->update(XCMS_Tables::TABLE_MENUITEMS_RELATIONS);
 
         }
 
@@ -60,7 +60,7 @@ class MenuHelper {
             get_instance()->db
                 ->where_in("node_id", $subjects)
                 ->set("ordering", "ordering + " . $delta, false)
-                ->update(Query::TABLE_MENUITEMS_RELATIONS);
+                ->update(XCMS_Tables::TABLE_MENUITEMS_RELATIONS);
 
         }
 
@@ -78,11 +78,11 @@ class MenuHelper {
 
         $query = get_instance()->db
             ->select("node_id")
-            ->join(Query::TABLE_MENUITEMS, "id = node_id")
+            ->join(XCMS_Tables::TABLE_MENUITEMS, "id = node_id")
             ->where("menu_id", $category->get("menu_id"))
             ->where("parent_id", $category->get("parent_id"))
             ->where("ordering",  $category->get("ordering") + $relation)
-            ->get(Query::TABLE_MENUITEMS_RELATIONS);
+            ->get(XCMS_Tables::TABLE_MENUITEMS_RELATIONS);
 
         if ($result = $query->row()) {
             return (new MenuitemModel())->load($result->node_id);

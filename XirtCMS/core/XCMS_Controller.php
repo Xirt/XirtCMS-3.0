@@ -118,8 +118,8 @@ class XCMS_Controller extends CI_Controller {
         log_message("info", "[XCMS] Loading configuration for Module '{$this->router->class}'.");
 
         // Retrieve data
-        $this->db->join(Query::TABLE_MODULES_SETTINGS, "module_id = id", "left");
-        $query = $this->db->get_where(Query::TABLE_MODULES, array("type" => $this->router->class));
+        $this->db->join(XCMS_Tables::TABLE_MODULES_SETTINGS, "module_id = id", "left");
+        $query = $this->db->get_where(XCMS_Tables::TABLE_MODULES, array("type" => $this->router->class));
 
         // Parse results
         $conf = $this->router->module_config;

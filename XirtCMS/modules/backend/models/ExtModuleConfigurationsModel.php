@@ -29,9 +29,9 @@ class ExtModuleConfigurationsModel extends ModuleConfigurationsModel {
             if ($filter = trim($this->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
-                    Query::TABLE_MODULES . ".id"   => $filter,
-                    Query::TABLE_MODULES . ".name" => $filter,
-                    Query::TABLE_MODULES . ".type" => $filter
+                    XCMS_TablesTABLE_MODULES . ".id"   => $filter,
+                    XCMS_TablesTABLE_MODULES . ".name" => $filter,
+                    XCMS_TablesTABLE_MODULES . ".type" => $filter
                 ));
 
             }

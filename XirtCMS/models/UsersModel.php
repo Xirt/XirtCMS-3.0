@@ -42,7 +42,7 @@ class UsersModel extends XCMS_Model {
         $this->_list = array();
 
         // Populate list from database
-        $query = $this->_buildQuery()->get(Query::TABLE_USERS);
+        $query = $this->_buildQuery()->get(XCMS_Tables::TABLE_USERS);
         foreach ($query->result() as $row) {
             $this->_list[] = (new UserModel())->set((array)$row);
         }
@@ -58,7 +58,7 @@ class UsersModel extends XCMS_Model {
      * @return  int                         The total number of articles in the DB
      */
     public function getTotalCount() {
-        return $this->_buildQuery(true)->count_all_results(Query::TABLE_USERS);
+        return $this->_buildQuery(true)->count_all_results(XCMS_Tables::TABLE_USERS);
     }
 
 
@@ -80,8 +80,8 @@ class UsersModel extends XCMS_Model {
      */
     function _buildQuery($filterOnly = false) {
 
-        $this->db->select(Query::TABLE_USERS . ".*, " . Query::TABLE_USERGROUPS . ".name AS usergroup")
-            ->join(Query::TABLE_USERGROUPS, Query::TABLE_USERGROUPS . ".id = usergroup_id");
+        $this->db->select(XCMS_Tables::TABLE_USERS . ".*, " . XCMS_Tables::TABLE_USERGROUPS . ".name AS usergroup")
+            ->join(XCMS_Tables::TABLE_USERGROUPS, XCMS_Tables::TABLE_USERGROUPS . ".id = usergroup_id");
 
         // Hook for customized filtering
         XCMS_Hooks::execute("users.build_query", array(

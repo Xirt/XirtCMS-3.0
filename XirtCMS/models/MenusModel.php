@@ -24,7 +24,7 @@ class MenusModel extends XCMS_Model {
      */
     public function load() {
 
-        $query = $this->_buildQuery()->get(Query::TABLE_MENUS);
+        $query = $this->_buildQuery()->get(XCMS_Tables::TABLE_MENUS);
         foreach ($query->result() as $row) {
             $this->_list[] = $row;
         }
@@ -40,7 +40,7 @@ class MenusModel extends XCMS_Model {
      * @return  int                         The total number of articles in the DB
      */
     public function getTotalCount() {
-        return $this->_buildQuery(true)->count_all_results(Query::TABLE_MENUS);
+        return $this->_buildQuery(true)->count_all_results(XCMS_Tables::TABLE_MENUS);
     }
 
 
