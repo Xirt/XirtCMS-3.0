@@ -371,7 +371,7 @@ Form.validate = function (targetForm, options) {
 	// Show dialog and return to given modal
 	function _showDialogAndReturn(type, triggerModal, nextModal, title, message) {
 
-		triggerModal.modal('hide');
+		triggerModal.hide();
 		var that = BootstrapDialog.show({
 			type     : type,
 			title    : title,
@@ -380,7 +380,7 @@ Form.validate = function (targetForm, options) {
 			onshown  : function(e) {
 				setTimeout(function() {
 					that.close();
-					nextModal.modal('show');
+					nextModal.show();
 				}, 2500);
 			}
 		});
@@ -390,7 +390,7 @@ Form.validate = function (targetForm, options) {
 	// Show dialog and show overview (list)
 	function _showDialogAndList(type, triggerModal, grid, title, message) {
 
-		triggerModal.modal('hide');
+		triggerModal.hide();
 		var that = BootstrapDialog.show({
 			type     : type,
 			title    : title,
@@ -398,7 +398,7 @@ Form.validate = function (targetForm, options) {
 			closable : false,
 			onshown  : function(e) {
 				setTimeout(function() {
-					if (grid) grid.bootgrid("reload");
+					if (grid) grid.reload();
 					that.close();
 				}, 1000);
 			}
