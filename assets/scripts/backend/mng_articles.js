@@ -17,7 +17,6 @@ $(function() {
 		init: function() {
 
 			this._initGrid();
-			this._initForms();
 			this._initEditor();
 			this._initButtons();
 			this._initDatepickers();
@@ -43,6 +42,7 @@ $(function() {
 				width	: "100%"
 			})).then(function(editors) {
 				that._initModals(editors);
+				that._initForms();
 			});
 
 		},
@@ -203,6 +203,10 @@ $(function() {
 
 			return this;
 
+		},
+		
+		reload: function() {
+			this.element.bootgrid("reload");
 		},
 
 		_onload: function() {
