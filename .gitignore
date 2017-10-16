@@ -8,3 +8,6 @@
 .project
 assets/images/articles
 .buildpath
+XirtCMS/widgets/text_header/config.xml
+XirtCMS/widgets/text_header/index.php
+XirtCMS/widgets/text_header/views/default.tpl
