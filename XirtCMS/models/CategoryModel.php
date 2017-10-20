@@ -61,7 +61,7 @@ class CategoryModel extends XCMS_Model {
     public function remove() {
 
         // Make sure item has no children
-        $result = $this->db->get_where("parent_id", $this->get("id"));
+        $result = $this->db->get_where(XCMS_Tables::TABLE_CATEGORIES, array("parent_id", $this->get("id")));
         if ($result->num_rows()) {
             return null;
         }
