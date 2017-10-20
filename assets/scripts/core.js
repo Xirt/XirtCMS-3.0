@@ -398,7 +398,7 @@ Form.validate = function (targetForm, options) {
 			closable : false,
 			onshown  : function(e) {
 				setTimeout(function() {
-					if (grid) grid.reload();
+					if (grid) typeof grid.reload == "function" ? grid.reload() : grid.bootgrid("reload");
 					that.close();
 				}, 1000);
 			}
