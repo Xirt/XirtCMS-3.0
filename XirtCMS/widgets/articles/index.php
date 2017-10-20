@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ *
  *
  * @author      A.G. Gideonse
  * @version     1.0
@@ -16,20 +16,21 @@ class xwidget_articles extends XCMS_Widget {
      */
     const ARTICLE_URL = "article/view/";
 
-    
+
     /**
      * Shows the content
      */
     public function show() {
-        
+
         // Load helpers
         $this->load->helper("route");
         $this->load->helper("article");
+        $this->load->helper("category");
 
         // Load models
         $this->load->model("ArticlesModel", false);
         require_once "models/ExtArticlesModel.php";
-        
+
         RouteHelper::init();
 
         // Populate models
@@ -62,17 +63,47 @@ class xwidget_articles extends XCMS_Widget {
      */
     private function _retrieveArticles() {
 
+        // Retrieve articles
         $articles = (new ExtArticlesModel())->init()
-            ->set("limit",    $this->config("limit"))
-            ->set("category", $this->config("category_id"))
-            ->set("sorting",  $this->config("sorting") ?? "dt_publish DESC")
+            ->set("limit",      $this->config("limit"))
+            ->set("categories", $this->_retrieveCategories())
+            ->set("sorting",    $this->config("sorting") ?? "dt_publish DESC")
             ->load();
 
         return $articles->toArray();
 
     }
-    
-    
+
+
+    /**
+     * Retrieves all requested categories (if configured)
+     *
+     * @return  Array                       List containing all required categories
+     */
+    private function _retrieveCategories() {
+
+        // Check for valid input
+        if (!($id = $this->config("category_id"))) {
+            return null;
+        }
+
+        // Check category existence
+        $tree = CategoryHelper::getCategoryTree();
+        if (!($category = $tree->getItemById($id))) {
+            return null;
+        }
+
+        // Prepare result
+        $categories = array($id);
+        foreach ($category->toArray() as $category) {
+            $categories[] = $category->node_id;
+        }
+
+        return $categories;
+
+    }
+
+
     /**
      * Retrieves the link to the given article
      *
@@ -80,18 +111,18 @@ class xwidget_articles extends XCMS_Widget {
      * @return  String                      The link towards the given article
      */
     private function _getLink($id) {
-        
+
         // Retrieve parameter (module config)
         if (!($config = abs($this->config("module_config"))) || $config < 1) {
             $config = null;
         }
-        
+
         return RouteHelper::getByTarget(self::ARTICLE_URL . $id, $config)->source_url;
-        
+
     }
-    
-    
-    
+
+
+
     /**
      * Returns the publish date for the given article
      *
@@ -99,15 +130,15 @@ class xwidget_articles extends XCMS_Widget {
      * @return  String                      The publish date or "--" if unknown (format error)
      */
     private function _getDate($article) {
-        
+
         $dt = ArticleHelper::getPublished($article);
         if ($format = $this->config("dt_format", XCMS_Config::get("DT_FORMAT"))) {
             return $dt->format($format);
         }
-        
+
         return "--";
-        
+
     }
-    
+
 }
 ?>
