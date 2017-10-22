@@ -93,8 +93,8 @@ $(function() {
 
 		_initModals: function(initializedEditors) {
 
-			createModal		= new $.XirtModal($("#createModal")).init();
-			configModal		= new $.XirtModal($("#configModal")).init();
+			createModal	= new $.XirtModal($("#createModal")).init();
+			configModal	= new $.XirtModal($("#configModal")).init();
 			publishModal	= new $.XirtModal($("#publishModal")).init();
 			categoriesModal = new $.XirtModal($("#categoriesModal")).init();
 
@@ -216,8 +216,8 @@ $(function() {
 
 			modifyModal.load({
 
-				url	   : "backend/article/view/" + $(this).data("id"),
-				onLoad : function(json) {
+				url	: "backend/article/view/" + $(this).data("id"),
+				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "article_", converters: {
 						id: function (value) { return Xirt.pad(value, 5, "0"); }
@@ -238,8 +238,8 @@ $(function() {
 
 			configModal.load({
 
-				url	   : "backend/article/view/" + $(this).data("id"),
-				onLoad : function(json) {
+				url	: "backend/article/view/" + $(this).data("id"),
+				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-config"), json, { prefix : "article_", converters: {
 						id: function (value) { return Xirt.pad(value, 5, "0"); }
@@ -257,8 +257,8 @@ $(function() {
 
 			categoriesModal.load({
 
-				url	   : "backend/article/view/" + $(this).data("id"),
-				onLoad : function(json) {
+				url	: "backend/article/view/" + $(this).data("id"),
+				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-categories"), json, { prefix : "article_", converters: {
 						id: function (value) { return Xirt.pad(value, 5, "0"); }
@@ -274,8 +274,8 @@ $(function() {
 
 			publishModal.load({
 
-				url	   : "backend/article/view/" + $(this).data("id"),
-				onLoad : function(json) {
+				url	: "backend/article/view/" + $(this).data("id"),
+				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-publish"), json, { prefix : "article_", converters: {
 
@@ -306,16 +306,16 @@ $(function() {
 
 		_deleteItemModal: function(e) {
 
-            var reference = $(e.currentTarget).data("id");
+			var reference = $(e.currentTarget).data("id");
 			if (jQuery.type(reference) != "undefined") {
 
-                confirmRemoval(
-                    "backend/article/remove/" + reference,
-                    reference,
-                    this
-                );
+				confirmRemoval(
+					"backend/article/remove/" + reference,
+					reference,
+					this
+				);
 
-            }
+			}
 
 		}
 
@@ -336,9 +336,9 @@ $(function() {
 				var group = $("<div class=\"form-group\"></div>").appendTo(container);
 
 				$("<label class=\"col-sm-4 control-label\"></label>")
-				.attr("for", "attr_" + setting.name)
-				.text(setting.label)
-				.appendTo(group);
+					.attr("for", "attr_" + setting.name)
+					.text(setting.label)
+					.appendTo(group);
 
 				var subContainer = $("<div class=\"col-sm-7\"></div>").appendTo(group);
 

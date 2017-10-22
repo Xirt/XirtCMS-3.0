@@ -79,8 +79,8 @@ $(function() {
 
 		_initModals: function(initializedEditors) {
 
-			createModal		= new $.XirtModal($("#createModal")).init();
-			modifyModal		= new $.XirtModal($("#modifyModal")).init();
+			createModal	= new $.XirtModal($("#createModal")).init();
+			modifyModal	= new $.XirtModal($("#modifyModal")).init();
 			attributesModal	= new $.XirtModal($("#attrModal")).init();
 			passwordModal	= new $.XirtModal($("#passwordModal")).init();
 
@@ -130,15 +130,15 @@ $(function() {
 
 						if (row.id == 1) {
 							return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
-									"<button type=\"button\" class=\"btn btn-xs btn-default command-attributes\" data-id=\"" + row.id + "\"><span class=\"fa fa-info\"></span></button> " +
-									"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
-									"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" disabled=\"disabled\"><span class=\"fa fa-trash-o\"></span></button>";
+								"<button type=\"button\" class=\"btn btn-xs btn-default command-attributes\" data-id=\"" + row.id + "\"><span class=\"fa fa-info\"></span></button> " +
+								"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
+								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" disabled=\"disabled\"><span class=\"fa fa-trash-o\"></span></button>";
 						}
 
 						return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
-								"<button type=\"button\" class=\"btn btn-xs btn-default command-attributes\" data-id=\"" + row.id + "\"><span class=\"fa fa-info\"></span></button> " +
-								"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
-								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button>";
+							"<button type=\"button\" class=\"btn btn-xs btn-default command-attributes\" data-id=\"" + row.id + "\"><span class=\"fa fa-info\"></span></button> " +
+							"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
+							"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button>";
 
 					}
 
@@ -167,8 +167,8 @@ $(function() {
 
 			modifyModal.load({
 
-				url	   : "backend/user/view/" + $(this).data("id"),
-				onLoad : function(json) {
+				url	: "backend/user/view/" + $(this).data("id"),
+				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "user_", converters: {
 						id: function (value) { return Xirt.pad(value, 5, "0"); }
@@ -184,8 +184,8 @@ $(function() {
 
 			attributesModal.load({
 
-				url	   : "backend/user/view/" + $(this).data("id"),
-				onLoad : function(json) {
+				url	: "backend/user/view/" + $(this).data("id"),
+				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-attr"), json, { prefix : "user_", converters: {
 						id: function (value) { return Xirt.pad(value, 5, "0"); }
@@ -203,8 +203,8 @@ $(function() {
 
 			passwordModal.load({
 
-				url	   : "backend/user/view/" + $(this).data("id"),
-				onLoad : function(json) {
+				url	: "backend/user/view/" + $(this).data("id"),
+				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-password"), json, { prefix : "user_", converters: {
 						id: function (value) { return Xirt.pad(value, 5, "0"); }
@@ -218,14 +218,14 @@ $(function() {
 
 		_deleteItemModal: function(e) {
 
-            var reference = $(e.currentTarget).data("id");
+			var reference = $(e.currentTarget).data("id");
 			if (jQuery.type(reference) != "undefined") {
 
-                confirmRemoval(
-                    "backend/user/remove/" + reference,
-                    reference,
-                    this
-                );
+				confirmRemoval(
+					"backend/user/remove/" + reference,
+					reference,
+					this
+				);
 
 			}
 
@@ -248,9 +248,9 @@ $(function() {
 				var group = $("<div class=\"form-group\"></div>").appendTo(container);
 
 				$("<label class=\"col-sm-4 control-label\"></label>")
-				.attr("for", "attr_" + setting.name)
-				.text(setting.label)
-				.appendTo(group);
+					.attr("for", "attr_" + setting.name)
+					.text(setting.label)
+					.appendTo(group);
 
 				var subContainer = $("<div class=\"col-sm-7\"></div>").appendTo(group);
 
