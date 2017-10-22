@@ -11,7 +11,8 @@
 class Article extends XCMS_Controller {
 
     /**
-     * Constructs the controller with associated model
+     * CONSTRUCTOR
+     * Instantiates controller with required helpers, libraries and models
      */
     public function __construct() {
 
