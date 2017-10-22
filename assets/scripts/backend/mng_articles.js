@@ -205,7 +205,7 @@ $(function() {
 			this.element.find(".command-config").on("click", this._modifyConfigModal);
 			this.element.find(".command-categories").on("click", this._modifyCategoriesModal);
 			this.element.find(".command-publish").on("click", this._modifyPublicationModal);
-			this.element.find(".command-delete").on("click", this._deleteItemModal);
+			this.element.find(".command-delete").on("click", $.proxy(this._deleteItemModal, this));
 
 		},
 
@@ -215,6 +215,7 @@ $(function() {
 			tinyMCE.activeEditor.setProgressState(true);
 
 			modifyModal.load({
+
 				url	   : "backend/article/view/" + $(this).data("id"),
 				onLoad : function(json) {
 
@@ -236,6 +237,7 @@ $(function() {
 		_modifyConfigModal: function() {
 
 			configModal.load({
+
 				url	   : "backend/article/view/" + $(this).data("id"),
 				onLoad : function(json) {
 
@@ -254,6 +256,7 @@ $(function() {
 		_modifyCategoriesModal: function() {
 
 			categoriesModal.load({
+
 				url	   : "backend/article/view/" + $(this).data("id"),
 				onLoad : function(json) {
 
@@ -270,6 +273,7 @@ $(function() {
 		_modifyPublicationModal: function() {
 
 			publishModal.load({
+
 				url	   : "backend/article/view/" + $(this).data("id"),
 				onLoad : function(json) {
 
@@ -300,31 +304,18 @@ $(function() {
 
 		},
 
-		_deleteItemModal: function() {
+		_deleteItemModal: function(e) {
 
-			var el = $(this);
+            var reference = $(e.currentTarget).data("id");
+			if (jQuery.type(reference) != "undefined") {
 
-			BootstrapDialog.confirm({
+                confirmRemoval(
+                    "backend/article/remove/" + reference,
+                    reference,
+                    this
+                );
 
-				backdrop: false,
-				title: "Confirm deletion",
-				message: "Are you sure that you want to permanently delete item #" + Xirt.pad(el.data("id").toString(), 5, "0") + "?",
-				type: BootstrapDialog.TYPE_WARNING,
-				callback: function(result) {
-
-					if (result) {
-
-						$.ajax({
-							url: "backend/article/remove/" + el.data("id"),
-						}).done(function() {
-							$("#grid-basic").bootgrid("reload");
-						});
-
-					}
-
-				}
-
-			});
+            }
 
 		}
 

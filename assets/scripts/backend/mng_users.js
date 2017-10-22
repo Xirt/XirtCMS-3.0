@@ -129,16 +129,16 @@ $(function() {
 					{
 
 						if (row.id == 1) {
-							return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-ref-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
+							return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
 									"<button type=\"button\" class=\"btn btn-xs btn-default command-attributes\" data-id=\"" + row.id + "\"><span class=\"fa fa-info\"></span></button> " +
-									"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-ref-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
+									"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
 									"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" disabled=\"disabled\"><span class=\"fa fa-trash-o\"></span></button>";
 						}
 
-						return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-ref-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
+						return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
 								"<button type=\"button\" class=\"btn btn-xs btn-default command-attributes\" data-id=\"" + row.id + "\"><span class=\"fa fa-info\"></span></button> " +
-								"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-ref-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
-								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-ref-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button>";
+								"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
+								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button>";
 
 					}
 
@@ -159,14 +159,15 @@ $(function() {
 			this.element.find(".command-edit").on("click", this._modifyContentModal);
 			this.element.find(".command-attributes").on("click", this._modifyAttributesModal);
 			this.element.find(".command-password").on("click", this._modifyPasswordModal);
-			this.element.find(".command-delete").on("click", this._deleteItemModal);
+			this.element.find(".command-delete").on("click", $.proxy(this._deleteItemModal, this));
 
 		},
 
 		_modifyContentModal: function() {
 
 			modifyModal.load({
-				url	   : "backend/user/view/" + $(this).data("ref-id"),
+
+				url	   : "backend/user/view/" + $(this).data("id"),
 				onLoad : function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "user_", converters: {
@@ -182,6 +183,7 @@ $(function() {
 		_modifyAttributesModal: function() {
 
 			attributesModal.load({
+
 				url	   : "backend/user/view/" + $(this).data("id"),
 				onLoad : function(json) {
 
@@ -200,7 +202,8 @@ $(function() {
 		_modifyPasswordModal: function() {
 
 			passwordModal.load({
-				url	   : "backend/user/view/" + $(this).data("ref-id"),
+
+				url	   : "backend/user/view/" + $(this).data("id"),
 				onLoad : function(json) {
 
 					Xirt.populateForm($("#form-password"), json, { prefix : "user_", converters: {
@@ -213,34 +216,18 @@ $(function() {
 
 		},
 
-		_deleteItemModal: function() {
+		_deleteItemModal: function(e) {
 
-			var el = $(this);
-			if (!el.data("ref-id")) {
-				return;
+            var reference = $(e.currentTarget).data("id");
+			if (jQuery.type(reference) != "undefined") {
+
+                confirmRemoval(
+                    "backend/user/remove/" + reference,
+                    reference,
+                    this
+                );
+
 			}
-
-			BootstrapDialog.confirm({
-
-				backdrop: false,
-				title: "Confirm deletion",
-				message: "Are you sure that you want to permanently delete item #" + Xirt.pad(el.data("ref-id").toString(), 5, "0") + "?",
-				type: BootstrapDialog.TYPE_WARNING,
-				callback: function(result) {
-
-					if (result) {
-
-						$.ajax({
-							url: "backend/user/remove/" + el.data("ref-id"),
-						}).done(function() {
-							$("#grid-basic").bootgrid("reload");
-						});
-
-					}
-
-				}
-
-			});
 
 		}
 

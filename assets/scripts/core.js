@@ -562,6 +562,30 @@ Form.Request = function(form, options) {
 
 }(jQuery));
 
+/** admin grid removal */
+function confirmRemoval(url, id, grid) {
+
+    BootstrapDialog.confirm({
+
+        title: "Confirm deletion",
+        message: "Are you sure that you want to permanently delete item #" + Xirt.pad(id.toString(), 5, "0") + "?",
+        type: BootstrapDialog.TYPE_WARNING,
+        callback: function(result) {
+
+            if (result) {
+
+                $.ajax(url).done(function() {
+                    grid.reload();
+                });
+
+            }
+
+        }
+
+    });
+
+}
+
 /* TODO:: Replace placeholder for JQuery validation messages
 required: "A value for this field is required prior to submitting.",
 minlength: jQuery.validator.format("The minimum length for this field is {0} characters."),
