@@ -83,8 +83,8 @@ class Article extends XCMS_Controller {
 
             // Set & save new updates
             $this->load->library("XCMS_Authentication");
-            $this->article->set("title",  $this->input->post("article_title"));
-            $this->article->set("author", XCMS_Authentication::getUserId());
+            $this->article->set("author_id", XCMS_Authentication::getUserId());
+            $this->article->set("title", $this->input->post("article_title"));
             $this->article->validate();
             $this->article->save();
 
