@@ -1,16 +1,8 @@
-var createModal	, configModal, publishModal, categoriesModal, modifyModal;
 $(function() {
-	(new $.PageManager()).init();
 
-});
-
-
-/**
- * PAGE MANAGER
- */
-(function($) {
-
-	// Constructor
+	/****************
+	 * PAGE MANAGER *
+	 ****************/
 	$.PageManager = function() {
 	};
 
@@ -152,14 +144,10 @@ $(function() {
 
 	};
 
-}(jQuery));
 
-
-/**
- * GRID MANAGER
- */
-(function($) {
-
+	/****************
+	 * GRID MANAGER *
+	 ****************/
 	$.GridManager = function(element) {
 		this.element = (element instanceof $) ? element : $(element);
 	};
@@ -172,13 +160,15 @@ $(function() {
 
 				rowCount: [10, 25, 50, -1],
 				defaultRowCount: +($(window).height() > 1100),
+				ajax: true,
+				url: "backend/articles/view",
 				converters: {
+
 					identifier: {
 						to: function (value) { return Xirt.pad(value, 5, "0"); }
 					}
+
 				},
-				ajax: true,
-				url: "backend/articles/view",
 				formatters: {
 
 					"published": function(column, row)
@@ -340,95 +330,105 @@ $(function() {
 
 	};
 
-}(jQuery));
 
+	/*********************
+	 * ATTRIBUTE MANAGER *
+	 ********************/
+	var ArticleAttributes = {
 
-var ArticleAttributes = {
+		createFromJSON : function(data) {
 
-	createFromJSON : function(data) {
+			var container = $("#attrBox").empty();
 
-		var container = $("#attrBox").empty();
+			$.each(data, function(index, setting) {
 
-		$.each(data, function(index, setting) {
+				var group = $("<div class=\"form-group\"></div>").appendTo(container);
 
-			var group = $("<div class=\"form-group\"></div>").appendTo(container);
+				$("<label class=\"col-sm-4 control-label\"></label>")
+				.attr("for", "attr_" + setting.name)
+				.text(setting.label)
+				.appendTo(group);
 
-			$("<label class=\"col-sm-4 control-label\"></label>")
-			.attr("for", "attr_" + setting.name)
-			.text(setting.label)
-			.appendTo(group);
+				var subContainer = $("<div class=\"col-sm-7\"></div>").appendTo(group);
 
-			var subContainer = $("<div class=\"col-sm-7\"></div>").appendTo(group);
+				switch (setting.type) {
 
-			switch (setting.type) {
+					case "text":
+						ArticleAttributes._addTextField(setting, subContainer);
+						break;
 
-				case "text":
-					ArticleAttributes._addTextField(setting, subContainer);
-					break;
+					case "date":
+						ArticleAttributes._addDateField(setting, subContainer);
+						break;
 
-				case "date":
-					ArticleAttributes._addDateField(setting, subContainer);
-					break;
+					case "textarea":
+						ArticleAttributes._addTextareaField(setting, subContainer);
+						break;
 
-				case "textarea":
-					ArticleAttributes._addTextareaField(setting, subContainer);
-					break;
+					case "select":
+						ArticleAttributes._addSelectField(setting, subContainer);
+						break;
 
-				case "select":
-					ArticleAttributes._addSelectField(setting, subContainer);
-					break;
+				}
 
-			}
-
-		});
-
-	},
-
-	_addTextField : function(data, container) {
-
-		$("<input type='text' class='form-control' />")
-		.attr("id", "attr_" + data.name)
-		.attr("name", "attr_" + data.name)
-		.text(data.label)
-		.val(data.value)
-		.appendTo(container);
-
-	},
-
-	_addDateField : function(data, container) {
-
-		var dateGroup = $("<div class='input-group date'>");
-
-			var field = $("<input type='text' class='form-control datepicker' />")
-			.attr("id", "attr_" + data.name)
-			.attr("name", "attr_" + data.name)
-			.attr("readonly", "readonly")
-			.appendTo(dateGroup)
-			.text(data.label)
-			.val(data.value)
-			.datepicker({
-				weekStart: 1,
-				autoclose: true,
-				format: "dd/mm/yyyy"
 			});
 
-			$("<div class='input-group-addon'><i class='fa fa-calendar'></i></div>")
-			.on("click", function() { field.datepicker("show"); })
-			.appendTo(dateGroup);
+		},
 
-		dateGroup.appendTo(container);
+		_addTextField : function(data, container) {
 
-	},
+			$("<input type='text' class='form-control' />")
+			.attr("id", "attr_" + data.name)
+			.attr("name", "attr_" + data.name)
+			.text(data.label)
+			.val(data.value)
+			.appendTo(container);
 
-	_addTextareaField : function(data, container) {
+		},
 
-		$("<textarea class='form-control'></textarea>")
-		.attr("id", "attr_" + data.name)
-		.attr("name", "attr_" + data.name)
-		.text(data.label)
-		.val(data.value)
-		.appendTo(container);
+		_addDateField : function(data, container) {
 
-	}
+			var dateGroup = $("<div class='input-group date'>");
 
-};
+				var field = $("<input type='text' class='form-control datepicker' />")
+				.attr("id", "attr_" + data.name)
+				.attr("name", "attr_" + data.name)
+				.attr("readonly", "readonly")
+				.appendTo(dateGroup)
+				.text(data.label)
+				.val(data.value)
+				.datepicker({
+					weekStart: 1,
+					autoclose: true,
+					format: "dd/mm/yyyy"
+				});
+
+				$("<div class='input-group-addon'><i class='fa fa-calendar'></i></div>")
+				.on("click", function() { field.datepicker("show"); })
+				.appendTo(dateGroup);
+
+			dateGroup.appendTo(container);
+
+		},
+
+		_addTextareaField : function(data, container) {
+
+			$("<textarea class='form-control'></textarea>")
+			.attr("id", "attr_" + data.name)
+			.attr("name", "attr_" + data.name)
+			.text(data.label)
+			.val(data.value)
+			.appendTo(container);
+
+		}
+
+	};
+
+
+	/***********
+	 * TRIGGER *
+	 **********/
+	var createModal	, configModal, publishModal, categoriesModal, modifyModal;
+	(new $.PageManager()).init();
+
+});
