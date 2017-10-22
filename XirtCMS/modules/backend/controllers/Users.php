@@ -46,7 +46,7 @@ class Users extends XCMS_Controller {
 
         // Show template
         $this->load->view("users", array(
-            "usergroups" => (new UserGroupsModel())->load()->toArray()
+            "usergroups" => $this->_getUsergroups()
         ));
 
     }
@@ -67,6 +67,7 @@ class Users extends XCMS_Controller {
             ->parseRequest($this->input);
 
         // Load requested data
+        $usergroups = $this->_getUsergroups();
         $users = (new ExtUsersModel())->init()
             ->set($gridIO->getRequest())
             ->load();
@@ -77,17 +78,33 @@ class Users extends XCMS_Controller {
 
             $gridIO->addRow([
                 "id"         => $user->get("id"),
-                "username"   => $user->get("username"),
                 "email"      => $user->get("email"),
+                "username"   => $user->get("username"),
                 "real_name"  => $user->get("real_name"),
-                "usergroup"  => $user->get("usergroup"),
-                "dt_created" => $user->get("dt_created")
+                "dt_created" => $user->get("dt_created"),
+                "usergroup"  => $usergroups[$user->get("usergroup_id")]->get("name")
             ]);
 
         }
 
         // ... and output it
         $gridIO->generateResponse($this->output);
+
+    }
+
+    /**
+     * Returns list of all known usergroups
+     *
+     * @return  Array                       The list of known usergroups (with authorization level as key)
+     */
+    private function _getUsergroups() {
+
+        $usergroups = array();
+        foreach ((new UserGroupsModel())->load()->toArray() as $usergroup) {
+            $usergroups[$usergroup->get("id")] = $usergroup;
+        }
+
+        return $usergroups;
 
     }
 
