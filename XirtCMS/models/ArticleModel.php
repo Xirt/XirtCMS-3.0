@@ -96,6 +96,23 @@ class ArticleModel extends XCMS_Model {
 
 
     /**
+     * Validates the internal integrity of the model
+     *
+     * @throws  InputException              Exception in case validation failed
+     * @return  boolean                     Always true
+     */
+    public function validate() {
+
+        if (!$this->get("author_id")) {
+            throw new UnexpectedValueException();
+        }
+
+        return true;
+
+    }
+
+
+    /**
      * Saves the instance in the DB
      *
      * @return  Object                      Always this instance
