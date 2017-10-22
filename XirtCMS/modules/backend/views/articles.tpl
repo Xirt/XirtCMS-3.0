@@ -3,7 +3,6 @@
 	<div class='btn-group create' />
 		<button class="btn btn-sm btn-success btn-create">Add New</button>
 	</div>
-
 </h1>
 
 <table id="grid-basic" class="table table-condensed table-hover table-striped" data-toggle="bootgrid">
