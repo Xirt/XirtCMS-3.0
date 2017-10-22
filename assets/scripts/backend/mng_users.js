@@ -237,7 +237,7 @@ $(function() {
 	/***********
 	 * TRIGGER *
 	 **********/
-	var createModal	, modifyModal, attributesModal, passwordModal;
+	var createModal, modifyModal, attributesModal, passwordModal;
 	(new $.PageManager()).init();
 
 });
