@@ -1,5 +1,7 @@
+var createModal	, configModal, publishModal, categoriesModal, modifyModal;
 $(function() {
 	(new $.PageManager()).init();
+
 });
 
 
@@ -166,8 +168,6 @@ $(function() {
 
 		init: function() {
 
-			var that = this;
-
 			this.element.bootgrid({
 
 				rowCount: [10, 25, 50, -1],
@@ -184,7 +184,7 @@ $(function() {
 					"published": function(column, row)
 					{
 
-						style = (row.published == 1) ? "active" : "inactive";
+						var style = (row.published == 1) ? "active" : "inactive";
 						return "<button type=\"button\" class=\"btn btn-xs btn-default command-publish " + style + "\" data-id=\"" + row.id + "\"><span class=\"fa fa-globe\"></span></button>";
 
 					},
@@ -204,7 +204,7 @@ $(function() {
 			return this;
 
 		},
-		
+
 		reload: function() {
 			this.element.bootgrid("reload");
 		},
@@ -221,24 +221,23 @@ $(function() {
 
 		_modifyContentModal: function() {
 
-			Xirt.showSpinner();
-			$("#form-modify")[0].reset();
 			tinyMCE.activeEditor.setContent("");
 			tinyMCE.activeEditor.setProgressState(true);
 
-			// ... and display the result
-			$.getJSON("backend/article/view/" + $(this).data("id"), function (json) {
+			modifyModal.load({
+				url	   : "backend/article/view/" + $(this).data("id"),
+				onLoad : function(json) {
 
-				Xirt.hideSpinner();
-				Xirt.populateForm($("#form-modify"), json, { prefix : "article_", converters: {
-					id: function (value) { return Xirt.pad(value, 5, "0"); }
-				}});
+					Xirt.populateForm($("#form-modify"), json, { prefix : "article_", converters: {
+						id: function (value) { return Xirt.pad(value, 5, "0"); }
+					}});
 
-				modifyModal.show();
-				tinyMCE.activeEditor.setContent(json.content);
-				tinyMCE.activeEditor.setProgressState(false);
-				tinyMCE.activeEditor.undoManager.clear();
-				tinyMCE.activeEditor.setDirty(false);
+					tinyMCE.activeEditor.setContent(json.content);
+					tinyMCE.activeEditor.setProgressState(false);
+					tinyMCE.activeEditor.undoManager.clear();
+					tinyMCE.activeEditor.setDirty(false);
+
+				}
 
 			});
 
@@ -246,18 +245,17 @@ $(function() {
 
 		_modifyConfigModal: function() {
 
-			Xirt.showSpinner();
-			$.getJSON("backend/article/view/" + $(this).data("id"), function (json) {
+			configModal.load({
+				url	   : "backend/article/view/" + $(this).data("id"),
+				onLoad : function(json) {
 
-				Xirt.hideSpinner();
+					Xirt.populateForm($("#form-config"), json, { prefix : "article_", converters: {
+						id: function (value) { return Xirt.pad(value, 5, "0"); }
+					}});
 
-				// Standard form population
-				Xirt.populateForm($("#form-config"), json, { prefix : "article_", converters: {
-					id: function (value) { return Xirt.pad(value, 5, "0"); }
-				}});
+					ArticleAttributes.createFromJSON(json.attributes);
 
-				ArticleAttributes.createFromJSON(json.attributes);
-				configModal.show();
+				}
 
 			});
 
@@ -265,17 +263,15 @@ $(function() {
 
 		_modifyCategoriesModal: function() {
 
-			Xirt.showSpinner();
-			$.getJSON("backend/article/view/" + $(this).data("id"), function (json) {
+			categoriesModal.load({
+				url	   : "backend/article/view/" + $(this).data("id"),
+				onLoad : function(json) {
 
-				Xirt.hideSpinner();
+					Xirt.populateForm($("#form-categories"), json, { prefix : "article_", converters: {
+						id: function (value) { return Xirt.pad(value, 5, "0"); }
+					}});
 
-				// Standard form population
-				Xirt.populateForm($("#form-categories"), json, { prefix : "article_", converters: {
-					id: function (value) { return Xirt.pad(value, 5, "0"); }
-				}});
-
-				categoriesModal.show();
+				}
 
 			});
 
@@ -283,33 +279,32 @@ $(function() {
 
 		_modifyPublicationModal: function() {
 
-			Xirt.showSpinner();
-			$.getJSON("backend/article/view/" + $(this).data("id"), function (json) {
+			publishModal.load({
+				url	   : "backend/article/view/" + $(this).data("id"),
+				onLoad : function(json) {
 
-				// Standard form population
-				Xirt.populateForm($("#form-publish"), json, { prefix : "article_", converters: {
+					Xirt.populateForm($("#form-publish"), json, { prefix : "article_", converters: {
 
-					id: function (value) { return Xirt.pad(value, 5, "0"); },
+						id: function (value) { return Xirt.pad(value, 5, "0"); },
 
-					dt_publish: function (value) {
-						dt = new Date(value);
-						return ('0' + dt.getDate()).slice(-2) + "/"
-							 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
-							 + dt.getFullYear();
-					},
+						dt_publish: function (value) {
+							var dt = new Date(value);
+							return ('0' + dt.getDate()).slice(-2) + "/"
+								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
+								 + dt.getFullYear();
+						},
 
-					dt_unpublish: function (value) {
+						dt_unpublish: function (value) {
 
-						dt = new Date(value);
-						return ('0' + dt.getDate()).slice(-2) + "/"
-							 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
-							 + dt.getFullYear();
-					}
+							var dt = new Date(value);
+							return ('0' + dt.getDate()).slice(-2) + "/"
+								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
+								 + dt.getFullYear();
+						}
 
-				}});
+					}});
 
-				Xirt.hideSpinner();
-				publishModal.show();
+				}
 
 			});
 
@@ -340,104 +335,6 @@ $(function() {
 				}
 
 			});
-
-		}
-
-	};
-
-}(jQuery));
-
-
-/**
- * XIRT MODAL
- */
-(function ($) {
-
-	// Constructor
-	$.XirtModal = function(element, options) {
-
-		this.element = (element instanceof $) ? element : $(element);
-		this.options = $.extend({}, {
-			resetForms: true,
-			editors:	[],
-			backdrop:   false,
-			keyboard:   false
-		}, options);
-
-	};
-
-	$.XirtModal.prototype = {
-
-		init: function () {
-
-			var that = this;
-
-			// Create modal
-			$(this.element).modal({
-				backdrop: this.options.backdrop,
-				keyboard: this.options.keyboard
-			}).hide();
-
-			// Fix for slide-effect
-			this.element.modal("hide");
-
-			// Activate closure button
-			this.element.find(".btn-close").on("click", function() {
-
-				// Check for content changes
-				var isDirty = (that._initState != that.element.find("form").serialize());
-				$.each(that.options.editors, function(i, editor) {
-					isDirty = editor.isDirty() ? true : isDirty;
-				});
-
-				if (isDirty) {
-
-					BootstrapDialog.confirm({
-
-						backdrop: false,
-						title: "Confirm cancellation",
-						message: "Are you sure that you want to close without saving?",
-						type: BootstrapDialog.TYPE_WARNING,
-						callback: function(result) {
-
-							if (result) {
-								that.hide();
-							}
-
-						}
-
-					});
-
-					return;
-
-				}
-
-				that.hide();
-
-			});
-
-			return this;
-
-		},
-
-		show: function() {
-
-			this._initState = this.element.find("form").serialize();
-			this.element.modal("show");
-			return this;
-
-		},
-
-		hide: function() {
-
-			// Optionally reset form values
-			if (this.options.resetForms) {
-				this.element.find("input").val("");
-			}
-
-			// Show the modal
-			this.element.modal("hide");
-			return this;
 
 		}
 

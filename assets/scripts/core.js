@@ -119,7 +119,7 @@ var Xirt = {
 
 				case "checkbox":
 				case "radio":
-					var value = (value && value != 0 && value != "FALSE");
+					value = (value && value != 0 && value != "FALSE");
 					return element.prop("checked", value).trigger("change");
 
 				default:
@@ -236,7 +236,7 @@ var XCMS = (function(){
 		// Future method (once BootGrid has been rewritten)
 		future_createButton : function(classNames, icon, data) {
 
-			button = $('<button/>');
+			var button = $('<button/>');
 			button.attr("type", "button");
 			button.addClass('btn btn-xs btn-default ' + classNames);
 			button.html('<span class=\"fa fa-' + icon + '\"></span>');
@@ -264,10 +264,10 @@ Form.validate = function (targetForm, options) {
 
 			$(targetForm).find( "input, select, textarea, [contenteditable]").each(function (i, candidate) {
 
-				var candidate = $(candidate);
+				candidate = $(candidate);
 
 				var error = false;
-				for (key in errorList) {
+				for (var key in errorList) {
 
 					if (candidate.is($(errorList[key].element))) {
 						error = errorList[key].message;
@@ -438,3 +438,126 @@ Form.Request = function(form, options) {
 	disabled.attr("disabled", "disabled");
 
 };
+
+
+/**********************************************
+*        XirtModal - Default Xirt Modal       *
+*          (version 1.0 - 22.10.2017)         *
+**********************************************/
+(function ($) {
+
+	// Constructor
+	$.XirtModal = function(element, options) {
+
+		this.element = (element instanceof $) ? element : $(element);
+		this.options = $.extend({}, {
+			resetForms: true,
+			editors:	[],
+			backdrop:   false,
+			keyboard:   false
+		}, options);
+
+	};
+
+	$.XirtModal.prototype = {
+
+		init: function () {
+
+			var that = this;
+
+			// Create modal
+			$(this.element).modal({
+				backdrop: this.options.backdrop,
+				keyboard: this.options.keyboard
+			}).hide();
+
+			// Fix for slide-effect
+			this.element.modal("hide");
+
+			// Activate closure button
+			this.element.find(".btn-close").on("click", function() {
+
+				// Check for content changes
+				var isDirty = (that._initState != that.element.find("form").serialize());
+				$.each(that.options.editors, function(i, editor) {
+					isDirty = editor.isDirty() ? true : isDirty;
+				});
+
+				if (isDirty) {
+
+					BootstrapDialog.confirm({
+
+						backdrop: false,
+						title: "Confirm cancellation",
+						message: "Are you sure that you want to close without saving?",
+						type: BootstrapDialog.TYPE_WARNING,
+						callback: function(result) {
+
+							if (result) {
+								that.hide();
+							}
+
+						}
+
+					});
+
+					return;
+
+				}
+
+				that.hide();
+
+			});
+
+			return this;
+
+		},
+
+		load: function(options) {
+
+			var that = this;
+			options = $.extend({
+				url:      "index.php",
+				onLoad:   function() {},
+				autoShow: true
+			}, options);
+
+			Xirt.showSpinner();
+			//this.element.find("form").reset();
+			$.getJSON(options.url, function (json) {
+
+				Xirt.hideSpinner();
+				options.onLoad(json);
+
+				if (options.autoShow) {
+					that.show();
+				}
+
+			});
+
+		},
+
+		show: function() {
+
+			this._initState = this.element.find("form").serialize();
+			this.element.modal("show");
+			return this;
+
+		},
+
+		hide: function() {
+
+			// Optionally reset form values
+			if (this.options.resetForms) {
+				this.element.find("input").val("");
+			}
+
+			// Show the modal
+			this.element.modal("hide");
+			return this;
+
+		}
+
+	};
+
+}(jQuery));
