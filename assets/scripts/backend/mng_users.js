@@ -191,7 +191,7 @@ $(function() {
 						id: function (value) { return Xirt.pad(value, 5, "0"); }
 					}});
 
-					AttributesManager.createFromJSON(json.attributes);
+					AttributesManager.createFromJSON($("#attrBox"), json.attributes);
 
 				}
 
@@ -228,71 +228,6 @@ $(function() {
 				);
 
 			}
-
-		}
-
-	};
-
-
-	/*********************
-	 * ATTRIBUTE MANAGER *
-	 ********************/
-	var AttributesManager = {
-
-		createFromJSON : function(data) {
-
-			var container = $("#attrBox").empty();
-
-			$.each(data, function(index, setting) {
-
-				var group = $("<div class=\"form-group\"></div>").appendTo(container);
-
-				$("<label class=\"col-sm-4 control-label\"></label>")
-					.attr("for", "attr_" + setting.name)
-					.text(setting.label)
-					.appendTo(group);
-
-				var subContainer = $("<div class=\"col-sm-7\"></div>").appendTo(group);
-
-				switch (setting.type) {
-
-					case "text":
-						AttributesManager._addTextField(setting, subContainer);
-						break;
-
-					case "textarea":
-						AttributesManager._addTextareaField(setting, subContainer);
-						break;
-
-					case "select":
-						AttributesManager._addSelectField(setting, subContainer);
-						break;
-
-				}
-
-			});
-
-		},
-
-		_addTextField : function(data, container) {
-
-			$("<input type='text' class='form-control' />")
-			.attr("id", "attr_" + data.name)
-			.attr("name", "attr_" + data.name)
-			.text(data.label)
-			.val(data.value)
-			.appendTo(container);
-
-		},
-
-		_addTextareaField : function(data, container) {
-
-			$("<textarea class='form-control'></textarea>")
-			.attr("id", "attr_" + data.name)
-			.attr("name", "attr_" + data.name)
-			.text(data.label)
-			.val(data.value)
-			.appendTo(container);
 
 		}
 
