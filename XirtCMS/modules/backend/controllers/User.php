@@ -118,8 +118,8 @@ class User extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
-                throw new UnexpectedValueException(null);
+            if (!$this->form_validation->run()) {
+                throw new UnexpectedValueException();
             }
 
             // Validate authorization to modify profile (protect administrator)
@@ -174,6 +174,7 @@ class User extends XCMS_Controller {
 
         }
 
+        $this->user->validate();
         $this->user->save();
 
         // Inform user
@@ -199,7 +200,7 @@ class User extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
+            if (!$this->form_validation->run()) {
                 throw new UnexpectedValueException(null);
             }
 
