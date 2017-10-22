@@ -561,3 +561,12 @@ Form.Request = function(form, options) {
 	};
 
 }(jQuery));
+
+/* TODO:: Replace placeholder for JQuery validation messages
+required: "A value for this field is required prior to submitting.",
+minlength: jQuery.validator.format("The minimum length for this field is {0} characters."),
+maxlength: jQuery.validator.format("The maximum length for this field is {0} characters.")
+alpha_dashdot: "Only alphanumeric characters, periods and dashes are allowed."
+email: "Only valid e-mail addresses are allowed for this field."
+equalTo: "The provided password should match to prevent accidental mistakes."
+*/
