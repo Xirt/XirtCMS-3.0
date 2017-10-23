@@ -226,7 +226,7 @@ class ModuleSettingsModel extends CI_Model {
      */
     protected function _buildQuery($id) {
         
-        $this->db->where("id", intval($id));
+        $this->db->where("module_id", intval($id));
         
         // Hook for customized filtering
         XCMS_Hooks::execute("modulesettings.build_query", array(
