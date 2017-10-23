@@ -103,18 +103,63 @@ $(function() {
 				formatters: {
 
 					"ordering": function(column, row) {
-						return	"<button type=\"button\" class=\"btn btn-xs btn-default command-order-down\" data-id=\"" + row.id + "\"><span class=\"fa fa-arrow-down\"></span></button> " +
-							"<button type=\"button\" class=\"btn btn-xs btn-default command-order-up\" data-id=\"" + row.id + "\"><span class=\"fa fa-arrow-up\"></span></button>";
+
+						return XCMS.createButtons([
+
+							{
+								classNames : "command-order-down",
+								data : { id : row.id },
+								icon : "arrow-down",
+							},
+
+							{
+								classNames : "command-order-up",
+								data : { id : row.id },
+								icon : "arrow-up",
+							}
+
+						]);
+
 					},
 
 					"sitemap": function(column, row) {
-						return	"<button type=\"button\" class=\"btn btn-xs btn-default command-sitemap " + ((row.sitemap == 1) ? "active" : "inactive") + "\" data-id=\"" + row.id + "\"><span class=\"fa fa-sitemap\"></span></button>";
+
+						return XCMS.createButtons([
+
+							{
+								classNames : "command-sitemap " + ((row.sitemap == 1) ? "active" : "inactive"),
+								data : { id : row.id },
+								icon : "sitemap",
+							}
+
+						]);
+
 					},
 
 					"commands": function(column, row) {
-						return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
-							"<button type=\"button\" class=\"btn btn-xs btn-default command-menu\" data-id=\"" + row.id + "\"><span class=\"fa fa-bars\"></span></button> " +
-							"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button>";
+
+						return XCMS.createButtons([
+
+							{
+								classNames : "command-edit",
+								data : { id : row.id },
+								icon : "pencil",
+							},
+
+							{
+								classNames : "command-menu",
+								data : { id : row.id },
+								icon : "bars",
+							},
+
+							{
+								classNames : "command-delete",
+								data : { id : row.id },
+								icon : "trash-o",
+							}
+
+						]);
+
 					}
 
 				}

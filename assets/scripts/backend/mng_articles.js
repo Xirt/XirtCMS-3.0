@@ -171,20 +171,50 @@ $(function() {
 				},
 				formatters: {
 
-					"published": function(column, row)
-					{
+					"published": function(column, row) {
 
-						var style = (row.published == 1) ? "active" : "inactive";
-						return "<button type=\"button\" class=\"btn btn-xs btn-default command-publish " + style + "\" data-id=\"" + row.id + "\"><span class=\"fa fa-globe\"></span></button>";
+						return XCMS.createButtons([
+
+							{
+								classNames : "command-published " + ((row.published == 1) ? "active" : "inactive"),
+								data : { id : row.id },
+								icon : "globe",
+							}
+
+						]);
 
 					},
 
-					"commands": function(column, row)
-					{
-						return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
-							"<button type=\"button\" class=\"btn btn-xs btn-default command-config\" data-id=\"" + row.id + "\"><span class=\"fa fa-gears\"></span></button> " +
-							"<button type=\"button\" class=\"btn btn-xs btn-default command-categories\" data-id=\"" + row.id + "\"><span class=\"fa fa-list-ul \"></span></button> " +
-							"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button>";
+					"commands": function(column, row) {
+
+						return XCMS.createButtons([
+
+							{
+								classNames : "command-edit",
+								data : { id : row.id },
+								icon : "pencil",
+							},
+
+							{
+								classNames : "command-config",
+								data : { id : row.id },
+								icon : "gears",
+							},
+
+							{
+								classNames : "command-categories",
+								data : { id : row.id },
+								icon : "list-ul",
+							},
+
+							{
+								classNames : "command-delete",
+								data : { id : row.id },
+								icon : "trash-o",
+							}
+
+						]);
+
 					}
 
 				}
@@ -325,7 +355,7 @@ $(function() {
 	/***********
 	 * TRIGGER *
 	 **********/
-	var createModal	, configModal, publishModal, categoriesModal, modifyModal;
+	var createModal, configModal, publishModal, categoriesModal, modifyModal;
 	(new $.PageManager()).init();
 
 });

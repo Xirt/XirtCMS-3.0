@@ -28,7 +28,7 @@ $(function() {
 
 		_initModals: function(initializedEditors) {
 
-			modifyModal	= new $.XirtModal($("#modifyModal")).init();
+			modifyModal = new $.XirtModal($("#modifyModal")).init();
 
 		},
 
@@ -80,7 +80,17 @@ $(function() {
 				formatters: {
 
 					"commands": function(column, row) {
-						return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-name=\"" + row.name + "\"><span class=\"fa fa-pencil\"></span></button>";
+
+						return XCMS.createButtons([
+
+							{
+								classNames : "command-edit",
+								data : { name : row.name },
+								icon : "pencil",
+							}
+
+						]);
+
 					}
 
 				}

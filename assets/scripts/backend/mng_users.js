@@ -128,17 +128,34 @@ $(function() {
 					"commands": function(column, row)
 					{
 
-						if (row.id == 1) {
-							return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
-								"<button type=\"button\" class=\"btn btn-xs btn-default command-attributes\" data-id=\"" + row.id + "\"><span class=\"fa fa-info\"></span></button> " +
-								"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
-								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" disabled=\"disabled\"><span class=\"fa fa-trash-o\"></span></button>";
-						}
+						return XCMS.createButtons([
 
-						return	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
-							"<button type=\"button\" class=\"btn btn-xs btn-default command-attributes\" data-id=\"" + row.id + "\"><span class=\"fa fa-info\"></span></button> " +
-							"<button type=\"button\" class=\"btn btn-xs btn-default command-password\" data-id=\"" + row.id + "\"><span class=\"fa fa-unlock-alt\"></span></button> " +
-							"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button>";
+							{
+								classNames : "command-edit",
+								data : { id : row.id },
+								icon : "pencil",
+							},
+
+							{
+								classNames : "command-attributes",
+								data : { id : row.id },
+								icon : "user-circle-o",
+							},
+
+							{
+								classNames : "command-password",
+								data : { id : row.id },
+								icon : "unlock-alt",
+							},
+
+							{
+								additionalAttributes : (row.id == 1) ? "disabled=\"disabled\"" : "",
+								classNames : "command-delete",
+								data : { id : row.id },
+								icon : "trash-o",
+							}
+
+						]);
 
 					}
 
