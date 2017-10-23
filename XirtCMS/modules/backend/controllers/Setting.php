@@ -75,7 +75,7 @@ class Setting extends XCMS_Controller {
 
             // Validate provided input
             if (!$this->form_validation->run()) {
-                throw new UnexpectedValueException(null);
+                throw new UnexpectedValueException();
             }
 
             // Set & save new updates
