@@ -113,6 +113,26 @@ var AttributesManager = {
 			.val(data.value)
 			.appendTo(container);
 
+	},
+
+	_addSelectField : function(data, container) {
+
+		var el = $("<select class='form-control'></select>")
+			.attr("id", "setting_" + data.name)
+			.attr("name", "setting_" + data.name)
+			.appendTo(container);
+
+		$.each(data.options, function(index, option) {
+
+			$("<option></option")
+				.html(option.name)
+				.val(option.value)
+				.appendTo(el);
+
+		});
+
+		el.val(data.value);
+
 	}
 
 };
