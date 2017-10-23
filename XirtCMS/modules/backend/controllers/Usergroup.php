@@ -16,7 +16,7 @@ class Usergroup extends XCMS_Controller {
      */
     public function __construct() {
 
-        parent::__construct(75, false);
+        parent::__construct(75, true);
 
         // Only allow AJAX requests
         if (!$this->input->is_ajax_request()) {
