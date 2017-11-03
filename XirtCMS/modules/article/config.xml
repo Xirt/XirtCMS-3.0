@@ -26,4 +26,7 @@
 			<option name="Hide" value="0" />
 		</param>
 	</params>
+	<menu>
+		<param name="article_id" type="text" default="" label="Article ID" />
+	</menu>
 </xirtcms>
