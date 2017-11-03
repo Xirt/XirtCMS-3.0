@@ -16,7 +16,7 @@ class MenuitemModel extends XCMS_Model {
      */
     protected $_attr = array(
         "id", "menu_id", "name", "type", "level", "ordering", "parent_id", "home", "published", "sitemap", "relations",
-        "source_url", "target_url", "uri", "anchor", "module_config", "relations"
+        "public_url", "target_url", "uri", "anchor", "module_config", "relations"
     );
 
 
@@ -45,9 +45,8 @@ class MenuitemModel extends XCMS_Model {
             case "module":
 
                 $this->set(array(
-                    "source_url"    => $this->get("source_url"),
                     "target_url"    => $this->get("target_url"),
-                    "uri"           => null,
+                    "public_url"    => $this->get("public_url"),
                     "anchor"        => (string)substr($this->get("uri"), 1),
                     "module_config" => (int)$this->get("module_config")
                 ));
@@ -57,9 +56,8 @@ class MenuitemModel extends XCMS_Model {
             case "anchor":
 
                 $this->set(array(
-                    "source_url"    => null,
                     "target_url"    => null,
-                    "uri"           => $this->get("uri"),
+                    "public_url"    => $this->get("uri"),
                     "anchor"        => (string)substr($this->get("uri"), 1),
                     "module_config" => -1
                 ));
@@ -69,8 +67,8 @@ class MenuitemModel extends XCMS_Model {
             default:
 
                 $this->set(array(
-                    "source_url"    => null,
-                    "uri"           => $this->get("uri"),
+                    "target_url"    => null,
+                    "public_url"    => $this->get("uri"),
                     "anchor"        => "",
                     "module_config" => -1
                 ));
@@ -125,7 +123,7 @@ class MenuitemModel extends XCMS_Model {
      */
     protected function _buildQuery($id) {
 
-        $this->db->select(XCMS_Tables::TABLE_MENUITEMS . ".*, parent_id, level, ordering, source_url, target_url, route_id, module_config")
+        $this->db->select(XCMS_Tables::TABLE_MENUITEMS . ".*, parent_id, level, ordering, public_url, target_url, route_id, module_config")
         ->join(XCMS_Tables::TABLE_MENUITEMS_RELATIONS, XCMS_Tables::TABLE_MENUITEMS . ".id = node_id", "inner")
         ->join(XCMS_Tables::TABLE_MENUITEMS_ROUTES, XCMS_Tables::TABLE_MENUITEMS . ".id = menuitem_id", "left")
         ->join(XCMS_Tables::TABLE_ROUTES, XCMS_Tables::TABLE_ROUTES . ".id = route_id", "left");

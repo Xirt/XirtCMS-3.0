@@ -80,9 +80,9 @@ class RoutesModel extends XCMS_Model {
      */
     function _buildQuery($filterOnly = false) {
 
-        $this->db->select("id, source_url, target_url, count(menuitem_id) as menu_items");
+        $this->db->select("id, public_url, target_url, count(menuitem_id) as menu_items");
         $this->db->join(XCMS_Tables::TABLE_MENUITEMS_ROUTES, "route_id = id", "left");
-        $this->db->group_by("id, source_url, target_url");
+        $this->db->group_by("id, public_url, target_url");
 
         // Hook for customized filtering
         XCMS_Hooks::execute("routes.build_query", array(

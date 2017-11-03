@@ -15,7 +15,7 @@ class RouteModel extends XCMS_Model {
      * @var array
      */
     protected $_attr = array(
-        "id", "source_url", "target_url", "menu_items", "module_config", "master"
+        "id", "public_url", "target_url", "menu_items", "module_config", "master"
     );
 
 
@@ -65,7 +65,7 @@ class RouteModel extends XCMS_Model {
         // Upsert into database...
         $this->db->replace(XCMS_Tables::TABLE_ROUTES, array(
             "id"            => $this->get("id"),
-            "source_url"    => $this->get("source_url"),
+            "public_url"    => $this->get("public_url"),
             "target_url"    => $this->get("target_url"),
             "module_config" => $this->get("module_config"),
             "master"        => $this->get("master") ? $this->get("master") : NULL
@@ -102,9 +102,9 @@ class RouteModel extends XCMS_Model {
 
         ($id !== null) ? $this->db->where("id", $id) : $this->db->where("active", 1);
 
-        $this->db->select("id, source_url, target_url, module_config, master, count(menuitem_id) as menu_items")
+        $this->db->select("id, public_url, target_url, module_config, master, count(menuitem_id) as menu_items")
             ->join(XCMS_Tables::TABLE_MENUITEMS_ROUTES, "route_id = id", "left")
-            ->group_by("id, source_url, target_url, module_config, master")
+            ->group_by("id, public_url, target_url, module_config, master")
             ->where("id", intval($id));
 
         // Hook for customized filtering

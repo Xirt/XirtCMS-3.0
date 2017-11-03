@@ -50,7 +50,7 @@ class ModuleSettingsModel extends CI_Model {
         $this->load->helper("category");
 
         // Load models
-        $this->load->model("MenusModel", "menus");
+        $this->load->model("MenusModel", false);
 
     }
 
@@ -408,7 +408,7 @@ class ModuleSettingsModel extends CI_Model {
     private function _getMenuOptions() {
 
         $options = array();
-        foreach ($this->menus->load()->toArray() as $menu) {
+        foreach ((new MenusModel())->load()->toArray() as $menu) {
 
             // Create option...
             $option = new stdClass();

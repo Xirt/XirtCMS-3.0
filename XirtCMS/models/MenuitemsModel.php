@@ -74,7 +74,7 @@ class MenuitemsModel extends XCMS_Model {
      */
     function _buildQuery($id) {
 
-        $this->db->select("xcms_menu_items.*, source_url, parent_id, ordering");
+        $this->db->select("xcms_menu_items.*, public_url, parent_id, ordering");
 
         $this->db->join(XCMS_Tables::TABLE_MENUITEMS_RELATIONS, "id = node_id");
         $this->db->join(XCMS_Tables::TABLE_MENUITEMS_ROUTES, "id = menuitem_id", "left");
