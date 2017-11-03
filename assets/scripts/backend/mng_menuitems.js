@@ -70,6 +70,7 @@ $(function() {
 
 			createModal = new $.XirtModal($("#createModal")).init();
 			modifyModal = new $.XirtModal($("#modifyModal")).init();
+			configModal = new $.XirtModal($("#configModal"), {resetForms:	false }).init();
 
 		},
 
@@ -78,12 +79,12 @@ $(function() {
 
 			// Activate creation button
 			$('.btn-create').click(function(e) {
-				
+
 				createModal.show();
 				$("input[name=menu_id]").val(menuId);
-				
+
 			});
-			
+
 		}
 
 	};
@@ -242,6 +243,7 @@ $(function() {
 		_onload: function() {
 
 			this.element.find(".command-edit").on("click", this._modifyContentModal);
+			this.element.find(".command-config").on("click", this._modifyConfigModal);
 			this.element.find(".command-order-up").on("click", $.proxy(this._moveItemUp, this));
 			this.element.find(".command-order-down").on("click", $.proxy(this._moveItemDown, this));
 			this.element.find(".command-sitemap").on("click", $.proxy(this._toggleHome, this));
@@ -276,25 +278,18 @@ $(function() {
 				onLoad	: function(json) {
 
 					$("#form-config").find("input").val("");
-					$.extend(json, LinkFactory.parseLink(json.target_url, json.type, json.anchor));
 
-					manager.populateModuleConfigurations(json.module_type, function(e) {
-
-						Xirt.hideSpinner();
-						configModal.modal("show");
-
-						$("#itemCount").text(json.relations);
-						parseInt(json.relations) ? $("#countBox").show() : $("#countBox").hide();
+						linkCreator.update(json);
 
 						Xirt.populateForm($("#form-config"), json, { prefix : "menuitem_", converters: {
 							id: function (value) { return Xirt.pad(value, 5, "0"); },
 							name: function (value) { return Xirt.ellipsis(value, 40); }
 						}});
 
-						manager.updateView(false);
-						manager.updateAnchorView();
+						//manager.updateView(false);
+						//manager.updateAnchorView();
 
-					});
+					//});
 
 				}
 
@@ -308,7 +303,7 @@ $(function() {
 			$.get("backend/menuitem/move_up/" + $(this).data("id"), function () {
 				that.reload();
 			});
-			
+
 		},
 
 		_moveItemDown: function(e) {
@@ -328,7 +323,7 @@ $(function() {
 			});
 
 		},
-		
+
 		_toggleSitemap: function() {
 
 			var that = $(this);
@@ -339,12 +334,12 @@ $(function() {
 		},
 
 		_togglePublished: function() {
-			
+
 			var that = $(this);
 			$.get("backend/menuitem/toggle_published/" + that.data("id"), function () {
 				that.toggleClass("inactive active");
 			});
-			
+
 		},
 
 		_deleteItemModal: function(e) {
@@ -365,6 +360,277 @@ $(function() {
 	};
 
 
+	/**************
+	 * LINK PANEL *
+	 *************/
+	$.LinkPanel = function() {
+	};
+
+	$.LinkPanel.prototype = {
+
+		init: function() {
+
+			var that = this;
+
+			this.countBox   = $("#countBox");
+			this.linkBox    = $("#box-link");
+			this.anchorBox  = $("#anchorBox");
+			this.creatorBox = $("#box-creator");
+			
+			this._initButtons();
+
+			return this;
+
+		},
+
+		getData: function() {
+
+			return {
+				type		: $("#sel-link-type").val(),
+				anchor		: $("#txt-anchor").val(),
+				module_type	: $("#sel-module-type").val(),
+				source_url	: $("#inp-public_url").val(),
+				target_url	: $("#inp-target_url").val(),
+				article		: parseInt($("#sel-article-id").val()),
+				module		: parseInt($("#sel-module-config").val()),
+				relations	: parseInt($("#relations").val())
+			};
+
+		},
+
+		update: function(data) {
+
+			// Need to save data internally (as article ID and selected module configuration cannot be saved in field)
+			
+			$.extend(data, this._parseLink(data.target_url, data.type, data.anchor));
+			Xirt.populateForm($("#box-creator"), data, { prefix : "link_" });
+
+			this._updateModuleConfigurations(data.module_type);
+			this._updateModuleMenu(data.module_type);
+			this._updateView();
+
+		},
+
+		_initButtons: function() {
+
+			var that = this;
+
+			// Update creator to reflect chosen configuration
+			$("#sel-link-type, #sel-module-type, #sel-module-config, #sel-article-id, #txt-anchor").each(function(e) {
+				$(this).on("change", $.proxy(that._updateView, that));
+			});
+
+			// Update configurations for selected module
+			$("#sel-module-type").on("change", function() {
+
+				that._updateModuleConfigurations($(this).val());
+				that._updateModuleMenu($(this).val());
+				that._updateView();
+
+			});
+
+			// Update link anchor
+			$("#txt-anchor").each(function(e) {
+			//	$(this).on("keyup", $.proxy(that._updateAnchorView, that));
+			});
+
+		},
+
+		_parseLink: function(url, type, anchor) {
+			return (new $.Link()).init().create(url, type, anchor);
+		},
+
+		/*
+		_convertLink : function() {
+
+			var that = this;
+			$.post("backend/route/convert_target_url", { uri : this.targetURI.val(), config : this.config.val() }, function (json) {
+
+				if (that.sourceURI.data("val") == json.source) {}
+
+					that.sourceURI.val(json.source + that.getAnchor());
+					that.sourceURI.data("val", json.source);
+
+			}, "json");
+
+		},*/
+
+		_updateModuleConfigurations : function(type) {
+
+			var that = this;
+			$.post("backend/moduleconfigurations/view", { type : type, sort : "name" }, function(json) {
+
+				var el = $("#sel-module-config").empty();
+				$.each(json.rows, function(key, data) {
+
+					$("<option></option")
+						.text(data.name)
+						.val(data.id)
+						.appendTo(el);
+
+				});
+
+				el.val(that.getData().module);
+
+			}, "json");
+
+		},
+
+		_updateModuleMenu : function(type) {
+
+			var that = this;
+			var target = $("#menuBox").empty();
+			
+			$.post("backend/module/view_menu_parameters/" + type, function(json) {
+
+				AttributesManager.createFromJSON(target, json);
+
+				target.find("[name*='attr_']").each(function(e) {
+					$(this).on("change", $.proxy(that._updateView, that));
+				});
+
+				target.find("[name*='attr_']").each(function(e) {
+					$(this).on("keyup", $.proxy(that._updateView, that));
+				});
+
+				el.val(that.getData().article);
+				that._updateView();
+
+			}, "json");
+
+		},
+
+		_updateModuleView : function() {
+
+				//article: this.targetURI.val('article/view/' + this.getArticle());
+				//other: this.targetURI.val(this.getModule());
+
+				// And more code at the bottom...
+
+		},
+
+		_updateView : function() {
+
+			switch (this.getData().type) {
+
+				case "anchor":
+					
+					this.creatorBox.hide();
+					this.anchorBox.show();
+					this.linkBox.hide();
+					this.countBox.hide();
+					//updateLink?
+
+				break;
+
+				case "module":
+
+					this.creatorBox.show();
+					this.anchorBox.show();
+					this.linkBox.show();
+					//$("#itemCount").text(json.relations);
+					this.countBox.toggle(this.getData().relations > 0);
+
+					// Update LINK (WIP)
+					var parts = [this.getData().module_type];
+					$.each($("#menuBox").find("[name*='attr_']"), function() {
+						parts.push($(this).val());
+					});
+
+					$("#inp-target_url").val(parts.join("/"));
+
+				break;
+
+				case "custom":
+					
+					this.creatorBox.hide();
+					this.anchorBox.hide();
+					this.linkBox.show();
+					this.countBox.hide();
+					// updateLink (empty)
+					//this._updateCustomView();
+
+				break;
+
+			}
+
+		}
+
+	};
+
+
+	/****************
+	 * LINK CRAETOR *
+	 ****************/
+	$.Link = function() {
+	};
+
+	$.Link.prototype = {
+
+		init: function() {
+
+			this._linkType   = null;
+			this._moduleType = null;
+			this._articleId  = null;
+			this._anchor     = null;
+			this._link       = null;
+
+			return this;
+
+		},
+
+		create: function(url, type, anchor) {
+
+			// Reset
+			this._linkType   = type;
+			this._moduleType = null;
+			this._articleId  = null;
+			this._anchor     = anchor;
+			this._link       = url;
+
+			if (type == "module") {
+
+				this._moduleType = url;
+				this._anchor = anchor ? "#" + anchor : "";
+
+				// Special case: articles
+				if (url && url.substring(0,url.indexOf("/")) == "article") {
+
+					this._moduleType = url.substring(0,url.indexOf("/"));
+					this._articleId  = url.substring(url.lastIndexOf("/") + 1);
+
+				}
+
+			}
+
+			return {
+				type  		: this._linkType,
+				module_type	: this._moduleType,
+				article 	: this._articleId,
+				anchor  	: this._anchor,
+				link_target	: this._anchor ? url + "#" + this._anchor : url
+			};
+
+		},
+
+		convert: function() {
+
+			var that = this;
+			$.post("backend/route/convert_target_url", { uri : this.targetURI.val(), config : this.config.val() }, function (json) {
+
+				if (that.sourceURI.data("val") == json.source) {}
+
+					that.sourceURI.val(json.source + that.getAnchor());
+					that.sourceURI.data("val", json.source);
+
+			}, "json");
+
+		}
+
+	};
+
+
+
 	/***********
 	 * TRIGGER *
 	 **********/
@@ -372,235 +638,8 @@ $(function() {
 
 	var uri = window.location.href;
 	var menuId = uri.substr(uri.lastIndexOf("/") + 1);
-	var manager = new RouteManager();
-	
+
+	var linkCreator = (new $.LinkPanel()).init();
 	(new $.PageManager()).init();
 
 });
-
-
-function RouteManager() {
-	this.init();
-}
-
-RouteManager.prototype = {
-
-	init: function() {
-
-		var that = this;
-
-		this.type       = $("#modify_type");
-		this.anchor     = $("#modify_anchor");
-		this.config     = $("#modify_module");
-		this.module     = $("#uri_module");
-		this.article    = $("#uri_article");
-		this.targetURI  = $("#targetURI");
-		this.sourceURI  = $("#sourceURI");
-		this.sourceBox  = $("#sourceBox");
-		this.moduleBox  = $("#moduleBox");
-		this.anchorBox  = $("#anchorBox");
-		this.articleBox = $("#articleBox");
-
-		$("#modify_type,#uri_module,#uri_article,#modify_anchor,#modify_module").each(function(e) {
-			$(this).on("change", $.proxy(that.updateView, that));
-		});
-
-		$("#modify_anchor").each(function(e) {
-			$(this).on("keyup", $.proxy(that.updateAnchorView, that));
-		});
-
-		$("#uri_module").on("change", function() {
-			that.populateModuleConfigurations($(this).val());
-		});
-
-	},
-
-	getType : function() {
-		return this.type.val();
-	},
-
-	getModule : function() {
-		return this.module.val();
-	},
-
-	getArticle : function() {
-		return this.article.val();
-	},
-
-	getAnchor : function() {
-		return this.anchor.val() ? '#' + this.anchor.val() : '';
-	},
-
-	updateView : function(e) {
-
-			switch (this.getType()) {
-
-				case "anchor":
-
-					this.moduleBox.hide();
-					this.anchorBox.show();
-					this.sourceBox.hide();
-					this.updateAnchorView();
-					this.targetURI.prop('disabled', true);
-
-				break;
-
-				case "module":
-
-					this.moduleBox.show();
-					this.anchorBox.show();
-					this.sourceBox.show();
-					this.updateModuleView(e);
-					this.targetURI.prop('disabled', true);
-
-				break;
-
-				case "custom":
-
-					this.moduleBox.hide();
-					this.anchorBox.hide();
-					this.sourceBox.hide();
-					this.updateCustomView();
-					this.targetURI.prop('disabled', false);
-
-				break;
-
-			}
-
-	},
-
-	updateModuleView : function(sourceNotKnown) {
-
-		switch (this.getModule()) {
-
-			case "article":
-
-				this.articleBox.show();
-				this.targetURI.val('article/view/' + this.getArticle());
-
-			break;
-
-			default:
-
-				this.articleBox.hide();
-				this.targetURI.val(this.getModule());
-
-			break;
-
-		}
-
-		// Source is known
-		if (!sourceNotKnown) {
-			return this.sourceURI.data("val", this.sourceURI.val());
-		}
-
-		// Source not known (update)
-		var that = this;
-		$.post("backend/route/convert_target_url", { uri : this.targetURI.val(), config : this.config.val() }, function (json) {
-
-			if (that.sourceURI.data("val") == json.source) {}
-
-				that.sourceURI.val(json.source + that.getAnchor());
-				that.sourceURI.data("val", json.source);
-
-		}, "json");
-
-	},
-
-	updateAnchorView : function(e) {
-
-		switch (this.getType()) {
-
-			case "anchor":
-				this.targetURI.val(this.getAnchor());
-			break;
-
-			case "module":
-				this.sourceURI.val(this.sourceURI.data("val") + this.getAnchor());
-			break;
-
-		}
-
-	},
-
-	updateCustomView : function(e) {
-		this.targetURI.val("");
-	},
-
-	populateModuleConfigurations : function(type, onSuccess) {
-
-		data = {
-			current : 1,
-			rowCount : 999999,
-			sort : "name"
-		};
-
-		$.post("backend/moduleconfigurations/view", data, function(json) {
-
-			var el = $("#modify_module").empty();
-			$.each(json.rows, function (key, data) {
-
-				if (data.type == type) {
-
-					$("<option></option")
-					.text(data.name)
-					.val(data.id)
-					.appendTo(el);
-
-				}
-
-			});
-
-			(onSuccess || function(){})();
-
-		}, "json");
-
-	}
-
-};
-
-var LinkFactory = {
-
-	parseLink : function(url, type, anchor) {
-
-		switch (type) {
-
-			case "anchor":
-
-				return {
-					module_type	: null,
-					article 	: null,
-					anchor  	: anchor
-				};
-
-			case "module":
-
-				if (url && url.substring(0,url.indexOf("/")) == "article") {
-
-					return {
-						module_type	: url.substring(0,url.indexOf("/")),
-						article		: url.substring(url.lastIndexOf("/") + 1),
-						anchor		: anchor
-					};
-
-				}
-
-				return {
-					module_type	: url,
-					article 	: null,
-					anchor  	: anchor
-				};
-
-			default:
-
-				return {
-					module_type : null,
-					article 	: null,
-					anchor  	: null
-				};
-
-		}
-
-	}
-
-};
