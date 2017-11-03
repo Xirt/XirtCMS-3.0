@@ -85,7 +85,7 @@ class XCMS_Router extends MX_Router {
         $dbc =& DB($db["default"], true);
 		$dbc->join("xcms_menu_routes", "route_id = id", "left");
         $query = $dbc->get_where("xcms_routes", array(
-            "source_url" => implode("/", $this->uri->segments)
+            "public_url" => implode("/", $this->uri->segments)
         ));
 
         if ($route = $query->first_row()) {

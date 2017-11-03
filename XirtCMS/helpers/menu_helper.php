@@ -125,7 +125,7 @@ class MenuHelper {
             switch ($item->get("type")) {
 
                 case "module":
-                    $target = $item->get("source_url") . $item->get("uri");
+                    $target = $item->get("public_url") . $item->get("uri");
                 break;
 
                 case "anchor":

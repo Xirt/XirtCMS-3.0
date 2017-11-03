@@ -39,7 +39,7 @@ class Home extends XCMS_Controller {
 
         // Candidate home URLs
         $candidates = array(
-            $this->menuitem->get("source_url"),
+            $this->menuitem->get("public_url"),
             $this->menuitem->get("target_url"),
             $this->menuitem->get("uri")
         );
