@@ -367,6 +367,8 @@ $(function() {
 		init: function() {
 
 			var that = this;
+
+			// Update module fields
 			$("#sel-module-type").on("change", function() {
 
 				that._updateModuleConfigurations($(this).val());
@@ -374,6 +376,9 @@ $(function() {
 				that._updateView();
 
 			});
+
+			// Update module fields
+			$("#inp-public_url").on("keyup", this._checkLink);
 
 			return this;
 
@@ -396,11 +401,11 @@ $(function() {
 
 		update: function(data) {
 
-			// Need to save data internally (as article ID and selected module configuration cannot be saved in field)
-
-			$.extend(data, this._parseLink(data.target_url, data.type, data.anchor));
+			// Populate field
+			var parts = data.target_url.split("/");
+			this._data = $.extend(data, { module_type : parts.length ? parts[0] : null });
 			Xirt.populateForm($("#box-link"), data, { prefix : "link_" });
-			
+
 			// Show right tab instantly
 			$(".tab-pane").removeClass("fade in");
 			$("#type-" + data.type).tab("show");
@@ -411,10 +416,6 @@ $(function() {
 			this._updateModuleMenu(data.module_type);
 			this._updateLink();
 
-		},
-
-		_parseLink: function(url, type, anchor) {
-			return (new $.Link()).init().create(url, type, anchor);
 		},
 
 		_updateModuleConfigurations : function(type) {
@@ -432,7 +433,7 @@ $(function() {
 
 				});
 
-				el.val(that.getData().module);
+				el.val(that._data.module);
 
 			}, "json");
 
@@ -459,7 +460,7 @@ $(function() {
 				target.find("[name*='attr_']").each(function(key) {
 
 					if (parts[0] == type && key < parts.length) {
-						$(this).val(parts[key + 1]);							
+						$(this).val(parts[key + 1]);
 					}
 				});
 
@@ -471,13 +472,21 @@ $(function() {
 
 		_updateLink : function() {
 
-			// Update LINK (WIP)
 			var parts = [this.getData().module_type];
 			$.each($("#box-params").find("[name*='attr_']"), function() {
 				parts.push($(this).val());
 			});
 
 			$("#inp-target_url").val(parts.join("/"));
+
+		},
+
+		_checkLink : function(e) {
+
+			var options = {duration : 200};
+			$.post("backend/route/convert_public_url", { uri : $(this).val() }, function (json) {
+				json.success ? $("#box-relations").slideDown(options) : $("#box-relations").slideUp(options);
+			}, "json");
 
 		}
 
@@ -492,65 +501,44 @@ $(function() {
 
 	$.Link.prototype = {
 
-		init: function() {
-
-			this._linkType   = null;
-			this._moduleType = null;
-			this._articleId  = null;
-			this._anchor     = null;
-			this._link       = null;
-
-			return this;
-
-		},
-
 		create: function(url, type, anchor) {
-
+/*
 			// Reset
-			this._linkType   = type;
-			this._moduleType = null;
-			this._articleId  = null;
-			this._anchor     = anchor;
-			this._link       = url;
+			var result = {
+				type   = type,
+				module_type = null,
+				article  = null,
+				anchor     = anchor,
+				link_target       = url
+			};
 
 			if (type == "module") {
 
-				this._moduleType = url;
-				this._anchor = anchor ? "#" + anchor : "";
+				result.module_type = url;
+				result.anchor = anchor ? "#" + anchor : "";
 
 				// Special case: articles
-				if (url && url.substring(0,url.indexOf("/")) == "article") {
+				if (url && url.substring(0, url.indexOf("/")) == "article") {
 
-					this._moduleType = url.substring(0,url.indexOf("/"));
-					this._articleId  = url.substring(url.lastIndexOf("/") + 1);
+					result.module_type = url.substring(0,url.indexOf("/"));
+					result.article  = url.substring(url.lastIndexOf("/") + 1);
 
 				}
 
 			}
 
 			return {
-				type  		: this._linkType,
+				type  		: type,
 				module_type	: this._moduleType,
-				article 	: this._articleId,
-				anchor  	: this._anchor,
-				link_target	: this._anchor ? url + "#" + this._anchor : url
+				anchor  	: anchor,
+				link_target	: url
 			};
-
+*/
 		},
 
 		convert: function() {
 
-			var that = this;
-			$.post("backend/route/convert_target_url", { uri : this.targetURI.val(), config : this.config.val() }, function (json) {
 
-				if (that.sourceURI.data("val") == json.source) {
-
-					that.sourceURI.val(json.source + that.getAnchor());
-					that.sourceURI.data("val", json.source);
-					
-				}
-
-			}, "json");
 
 		}
 
