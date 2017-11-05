@@ -60,9 +60,10 @@ class MenuItem extends XCMS_Controller {
             "menu_id"    => $this->menuitem->get("menu_id"),
             "relations"  => $this->menuitem->get("relations"),
             "anchor"     => $this->menuitem->get("anchor"),
+            "uri"        => $this->menuitem->get("uri"),
+            "extension"  => $this->menuitem->get("uri"),
             "public_url" => $this->menuitem->get("public_url"),
-            "target_url" => $this->menuitem->get("target_url"),
-            "uri"        => $this->menuitem->get("uri")
+            "target_url" => $this->menuitem->get("target_url")
         ];
 
         // ...and output it as JSON
@@ -203,24 +204,16 @@ class MenuItem extends XCMS_Controller {
 
         }
 
-        // Validate provided input
-        if (!$this->form_validation->run()) {
-
-            XCMS_JSON::validationFailureMessage();
-            return;
-
-        }
-
         try {
-
+            
             // Save details
             switch ($this->input->post("menuitem_type")) {
 
-                case "module":
+                case "internal":
 
                     // Set item details ...
-                    $this->menuitem->set("uri",  $this->input->post("menuitem_anchor"));
-                    $this->menuitem->set("type", "module");
+                    $this->menuitem->set("uri",  $this->input->post("menuitem_extension"));
+                    $this->menuitem->set("type", "internal");
                     $this->menuitem->save();
 
                     // ... and update routing
@@ -245,10 +238,10 @@ class MenuItem extends XCMS_Controller {
                 break;
 
                 default:
-
+                    
                     // Save item details
-                    $this->menuitem->set("type", "custom");
-                    $this->menuitem->set("uri",  $this->input->post("menuitem_url"));
+                    $this->menuitem->set("type", "external");
+                    $this->menuitem->set("uri",  $this->input->post("menuitem_uri"));
                     $this->menuitem->save();
 
                     // Remove any obsolete relations
@@ -444,10 +437,10 @@ class MenuItem extends XCMS_Controller {
 
         $routeByPublic = RouteList::getByPublic($publicURL);
         $routeByTarget = RouteList::getByTarget($targetURL, $module);
-
+       
         // Complete match found (both public and target URL)
         if ($routeByPublic == $routeByTarget && $routeByPublic) {
-
+            
             RouteHelper::removeRelation(null, $this->menuitem);
             RouteHelper::createRelation($routeByPublic, $this->menuitem);
 
@@ -456,8 +449,8 @@ class MenuItem extends XCMS_Controller {
         }
 
         // No match on target URL, but public URL found (update target)
-        if ($routeByPublic && !$routeByTarget) {
-
+        if ($routeByPublic) {
+            
             // Update route
             if ($route = (new RouteModel())->load($routeByPublic->id)) {
 
@@ -490,7 +483,7 @@ class MenuItem extends XCMS_Controller {
 
             return true;
 
-        }
+        }        
 
         return false;
 
