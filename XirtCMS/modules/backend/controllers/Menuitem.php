@@ -32,8 +32,8 @@ class MenuItem extends XCMS_Controller {
 
         // Loader models
         $this->load->model("MenuitemModel", "menuitem");
-        $this->load->model("RouteModel", "route");
         $this->load->model("MenuModel", "menu");
+        $this->load->model("RouteModel", false);
 
     }
 
@@ -445,7 +445,7 @@ class MenuItem extends XCMS_Controller {
         $routeByPublic = RouteList::getByPublic($publicURL);
         $routeByTarget = RouteList::getByTarget($targetURL, $module);
 
-        // Complete match available
+        // Complete match found (both public and target URL)
         if ($routeByPublic == $routeByTarget && $routeByPublic) {
 
             RouteHelper::removeRelation(null, $this->menuitem);
@@ -455,32 +455,30 @@ class MenuItem extends XCMS_Controller {
 
         }
 
-        // Only matching target, update public
-        if (!$routeByPublic && $routeByTarget) {
+        // No match on target URL, but public URL found (update target)
+        if ($routeByPublic && !$routeByTarget) {
 
             // Update route
-            $this->load->model("RouteModel", "route");
-            if ($this->route->load($routeByTarget->id)) {
+            if ($route = (new RouteModel())->load($routeByPublic->id)) {
 
-                $this->route->set("public_url", $publicURL);
-                $this->route->save();
+                $route->set("target_url", $targetURL);
+                $route->save();
 
             }
 
             // Update relation
             RouteHelper::removeRelation(null, $this->menuitem);
-            RouteHelper::createRelation($this->route, $this->menuitem);
+            RouteHelper::createRelation($route, $this->menuitem);
 
             return true;
 
         }
 
-        // No match found, create new
-        if (!$routeByPublic && !$routeByTarget) {
+        // No match on public URL
+        if (!$routeByPublic) {
 
             // Create new route
-            $this->load->model("RouteModel", "route");
-            $this->route->set(array(
+            $route = (new RouteModel())->set(array(
                 "public_url"    => $publicURL,
                 "target_url"    => $targetURL,
                 "module_config" => $module
@@ -488,7 +486,7 @@ class MenuItem extends XCMS_Controller {
 
             // Update relation
             RouteHelper::removeRelation(null, $this->menuitem);
-            RouteHelper::createRelation($this->route, $this->menuitem);
+            RouteHelper::createRelation($route, $this->menuitem);
 
             return true;
 
