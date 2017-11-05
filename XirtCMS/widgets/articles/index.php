@@ -117,7 +117,7 @@ class xwidget_articles extends XCMS_Widget {
             $config = null;
         }
 
-        return RouteHelper::getByTarget(self::ARTICLE_URL . $id, $config)->source_url;
+        return RouteHelper::getByTarget(self::ARTICLE_URL . $id, $config)->public_url;
 
     }
 
