@@ -311,7 +311,7 @@ Form.validate = function (targetForm, options) {
 
 		},
 
-		submitHandler: function(form, e) {
+		submitHandler: ($.type(options.submitHandler)) === "function" ? options.submitHandler: function(form, e) {
 
 			targetForm = $(form);
 			$.each(targetForm.find(":button"), function (index, el) {
@@ -367,6 +367,8 @@ Form.validate = function (targetForm, options) {
 		}
 
 	});
+
+	
 
 	// Show dialog and return to given modal
 	function _showDialogAndReturn(type, triggerModal, nextModal, title, message) {
@@ -450,11 +452,11 @@ Form.Request = function(form, options) {
 	$.XirtModal = function(element, options) {
 
 		this.element = (element instanceof $) ? element : $(element);
-		this.options = $.extend({}, {
-			resetForms: true,
+		this._options = $.extend({}, {
+			resetForms:	true,
 			editors:	[],
-			backdrop:   false,
-			keyboard:   false
+			backdrop:	false,
+			keyboard:	false
 		}, options);
 
 	};
@@ -467,8 +469,8 @@ Form.Request = function(form, options) {
 
 			// Create modal
 			$(this.element).modal({
-				backdrop: this.options.backdrop,
-				keyboard: this.options.keyboard
+				backdrop: this._options.backdrop,
+				keyboard: this._options.keyboard
 			}).hide();
 
 			// Fix for slide-effect
@@ -479,7 +481,7 @@ Form.Request = function(form, options) {
 
 				// Check for content changes
 				var isDirty = (that._initState != that.element.find("form").serialize());
-				$.each(that.options.editors, function(i, editor) {
+				$.each(that._options.editors, function(i, editor) {
 					isDirty = editor.isDirty() ? true : isDirty;
 				});
 
@@ -516,20 +518,19 @@ Form.Request = function(form, options) {
 		load: function(options) {
 
 			var that = this;
-			options = $.extend({
+			_options = $.extend({
 				url:      "index.php",
 				onLoad:   function() {},
 				autoShow: true
 			}, options);
 
 			Xirt.showSpinner();
-			//this.element.find("form").reset();
-			$.getJSON(options.url, function (json) {
+			$.getJSON(_options.url, function (json) {
 
 				Xirt.hideSpinner();
-				options.onLoad(json);
+				_options.onLoad(json);
 
-				if (options.autoShow) {
+				if (_options.autoShow) {
 					that.show();
 				}
 
@@ -548,7 +549,7 @@ Form.Request = function(form, options) {
 		hide: function() {
 
 			// Optionally reset form values
-			if (this.options.resetForms) {
+			if (this._options.resetForms) {
 				this.element.find("input").val("");
 			}
 
