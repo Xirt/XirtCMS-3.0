@@ -85,7 +85,12 @@ $(function() {
 				$("input[name=menu_id]").val(menuId);
 
 			});
-
+			
+			// Activate tab tracing
+			$('.nav-tabs a').click(function(e) {
+				$("#inp-type").val($(this).attr('id').substr(5));
+			});
+			
 		}
 
 	};
@@ -247,7 +252,7 @@ $(function() {
 			this.element.find(".command-config").on("click", this._modifyConfigModal);
 			this.element.find(".command-order-up").on("click", $.proxy(this._moveItemUp, this));
 			this.element.find(".command-order-down").on("click", $.proxy(this._moveItemDown, this));
-			this.element.find(".command-sitemap").on("click", $.proxy(this._toggleHome, this));
+			this.element.find(".command-home").on("click", $.proxy(this._toggleHome, this));
 			this.element.find(".command-sitemap").on("click", this._toggleSitemap);
 			this.element.find(".command-published").on("click", this._togglePublished);
 			this.element.find(".command-delete").on("click", $.proxy(this._deleteItemModal, this));
@@ -295,8 +300,8 @@ $(function() {
 
 		_moveItemUp: function(e) {
 
-			var that = $(this);
-			$.get("backend/menuitem/move_up/" + $(this).data("id"), function () {
+			var that = this;
+			$.get("backend/menuitem/move_up/" + $(e.currentTarget).data("id"), function () {
 				that.reload();
 			});
 
@@ -304,8 +309,8 @@ $(function() {
 
 		_moveItemDown: function(e) {
 
-			var that = $(this);
-			$.get("backend/menuitem/move_down/" + $(this).data("id"), function () {
+			var that = this;
+			$.get("backend/menuitem/move_down/" + $(e.currentTarget).data("id"), function () {
 				that.reload();
 			});
 
@@ -313,7 +318,7 @@ $(function() {
 
 		_toggleHome: function(e) {
 
-			var that = $(this);
+			var that = this;
 			$.get("backend/menuitem/set_home/" +  $(e.currentTarget).data("id"), function() {
 				that.reload();
 			});
@@ -368,33 +373,35 @@ $(function() {
 
 			var that = this;
 
-			// Update module fields
+			// [Input] Link existence check
+			$("#inp-public_url").on("keyup", function() {
+				that._checkLink($(this).val());
+			});
+			
+			// [Select] Update module details
 			$("#sel-module-type").on("change", function() {
 
-				that._updateModuleConfigurations($(this).val());
-				that._updateModuleMenu($(this).val());
-				that._updateView();
+				var moduleType = $(this).val();
+				that._updateModuleMenu(moduleType, that.getModuleTarget().module);
+				that._updateModuleConfigurations(moduleType);
 
 			});
 
-			// Update module fields
-			$("#inp-public_url").on("keyup", this._checkLink);
+			// [Button] Editor activation
+			$("#btn-editor").on("click", function() {
+				$("#box-link").slideToggle({ duration : 200 });		
+			});
 
 			return this;
 
 		},
 
-		getData: function() {
+		getModuleTarget: function() {
 
 			return {
-				type		: $("#sel-link-type").val(),
-				anchor		: $("#txt-anchor").val(),
-				module_type	: $("#sel-module-type").val(),
-				public_url	: $("#inp-public_url").val(),
 				target_url	: $("#inp-target_url").val(),
-				article		: parseInt($("#sel-article-id").val()),
+				module_type	: $("#sel-module-type").val(),
 				module		: parseInt($("#sel-module-config").val()),
-				relations	: parseInt($("#relations").val())
 			};
 
 		},
@@ -402,38 +409,42 @@ $(function() {
 		update: function(data) {
 
 			// Populate field
-			var parts = data.target_url.split("/");
-			this._data = $.extend(data, { module_type : parts.length ? parts[0] : null });
-			Xirt.populateForm($("#box-link"), data, { prefix : "link_" });
+			if (data.target_url) {
+				
+				var parts = data.target_url.split("/");
+				$.extend(data, { module_type : parts.length ? parts[0] : null });
+				
+			}
+				
+			// Populate form
+			Xirt.populateForm($("#box-link"), data, { prefix : "menuitem_" });
 
-			// Show right tab instantly
-			$(".tab-pane").removeClass("fade in");
-			$("#type-" + data.type).tab("show");
-			$(".tab-pane").addClass("fade in");
+			// Update GUI
+			this._updateModuleConfigurations(data.module_type, data.module);
+			this._updateModuleView(data.target_url, data.public_url);
+			this._updateModuleMenu(data.module_type);			
+			this._updateTabView(data.type);
 
-			// Update view for current item
-			this._updateModuleConfigurations(data.module_type);
-			this._updateModuleMenu(data.module_type);
-			this._updateLink();
 
 		},
 
-		_updateModuleConfigurations : function(type) {
+		_updateModuleConfigurations : function(type, module) {
 
-			var that = this;
-			$.post("backend/moduleconfigurations/view", { type : type, sort : "name" }, function(json) {
+			var target = $("#sel-module-config").empty();
 
-				var el = $("#sel-module-config").empty();
+			// Retrieve module configurations for given module type
+			$.post("backend/moduleconfigurations/view", { moduleType : type, sort : "name" }, function(json) {
+
 				$.each(json.rows, function(key, data) {
 
 					$("<option></option")
 						.text(data.name)
 						.val(data.id)
-						.appendTo(el);
+						.appendTo(target);
 
 				});
-
-				el.val(that._data.module);
+				
+				target.val(module ? module : target.find("option:first").val());
 
 			}, "json");
 
@@ -443,107 +454,74 @@ $(function() {
 
 			var that = this;
 			var target = $("#box-params").empty();
-
+			
+			// Retrieve module menu parameters for given module type
 			$.post("backend/module/view_menu_parameters/" + type, function(json) {
 
-				AttributesManager.createFromJSON(target, json);
-
-				target.find("[name*='attr_']").each(function() {
-					$(this).on("change", $.proxy(that._updateLink, that));
-				});
-
-				target.find("[name*='attr_']").each(function(key) {
-					$(this).on("keyup", $.proxy(that._updateLink, that));
-				});
-
-				var parts = that.getData().target_url.split("/");
+				AttributesManager.createFromJSON(target, json);				
+				var parts = that.getModuleTarget().target_url.split("/");
+				
+				// Activate events on new items
 				target.find("[name*='attr_']").each(function(key) {
 
+					$(this).on("change keyup", $.proxy(that._updateLink, that));
 					if (parts[0] == type && key < parts.length) {
 						$(this).val(parts[key + 1]);
 					}
+					
 				});
-
+				
 				that._updateLink();
 
+			}, "json");
+
+		},
+		
+		_updateModuleView: function(publicURL, targetURL) {
+			
+			// Toggle visibility
+			$("#box-link").toggle(publicURL ? false : true);
+			$("#box-relations").hide(); 
+			
+			// Trigger additional updates
+			this._checkLink(targetURL);
+			this._updateLink();
+			
+		},
+		
+		_updateTabView(linkType) {
+			
+			var tabs = $(".tab-pane");
+			var current = (linkType ? linkType : "internal");
+			
+			// Instant switch tabs
+			tabs.removeClass("fade in");
+			$("#type-" + current).tab("show");
+			tabs.addClass("fade in");
+			
+		},
+
+		_checkLink : function(link) {
+
+			var options = {duration : 200};
+			$.post("backend/route/convert_public_url", { uri : link }, function (json) {
+				json.success ? $("#box-relations").slideDown(options) : $("#box-relations").slideUp(options);
 			}, "json");
 
 		},
 
 		_updateLink : function() {
 
-			var parts = [this.getData().module_type];
+			var parts = [this.getModuleTarget().module_type];
 			$.each($("#box-params").find("[name*='attr_']"), function() {
 				parts.push($(this).val());
 			});
 
 			$("#inp-target_url").val(parts.join("/"));
 
-		},
-
-		_checkLink : function(e) {
-
-			var options = {duration : 200};
-			$.post("backend/route/convert_public_url", { uri : $(this).val() }, function (json) {
-				json.success ? $("#box-relations").slideDown(options) : $("#box-relations").slideUp(options);
-			}, "json");
-
 		}
 
 	};
-
-
-	/****************
-	 * LINK CRAETOR *
-	 ****************/
-	$.Link = function() {
-	};
-
-	$.Link.prototype = {
-
-		create: function(url, type, anchor) {
-/*
-			// Reset
-			var result = {
-				type   = type,
-				module_type = null,
-				article  = null,
-				anchor     = anchor,
-				link_target       = url
-			};
-
-			if (type == "module") {
-
-				result.module_type = url;
-				result.anchor = anchor ? "#" + anchor : "";
-
-				// Special case: articles
-				if (url && url.substring(0, url.indexOf("/")) == "article") {
-
-					result.module_type = url.substring(0,url.indexOf("/"));
-					result.article  = url.substring(url.lastIndexOf("/") + 1);
-
-				}
-
-			}
-
-			return {
-				type  		: type,
-				module_type	: this._moduleType,
-				anchor  	: anchor,
-				link_target	: url
-			};
-*/
-		},
-
-		convert: function() {
-
-
-
-		}
-
-	};
-
 
 
 	/***********
