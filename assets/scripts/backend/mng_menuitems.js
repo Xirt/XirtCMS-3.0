@@ -52,6 +52,7 @@ $(function() {
 
 			});
 
+			// TODO :: box-internal to be saved in type field prior to submittin
 			Form.validate("#form-config", {
 
 				currentModal: configModal,
@@ -371,13 +372,13 @@ $(function() {
 		init: function() {
 
 			var that = this;
+			$("#sel-module-type").on("change", function() {
 
-			this.countBox   = $("#countBox");
-			this.linkBox    = $("#box-link");
-			this.anchorBox  = $("#anchorBox");
-			this.creatorBox = $("#box-creator");
-			
-			this._initButtons();
+				that._updateModuleConfigurations($(this).val());
+				that._updateModuleMenu($(this).val());
+				that._updateView();
+
+			});
 
 			return this;
 
@@ -401,9 +402,11 @@ $(function() {
 		update: function(data) {
 
 			// Need to save data internally (as article ID and selected module configuration cannot be saved in field)
-			
+
 			$.extend(data, this._parseLink(data.target_url, data.type, data.anchor));
-			Xirt.populateForm($("#box-creator"), data, { prefix : "link_" });
+			Xirt.populateForm($("#box-link"), data, { prefix : "link_" });
+			$("#type-" + data.type).tab("show");
+			// TODO :: Check if this can be immediate
 
 			this._updateModuleConfigurations(data.module_type);
 			this._updateModuleMenu(data.module_type);
@@ -411,37 +414,11 @@ $(function() {
 
 		},
 
-		_initButtons: function() {
-
-			var that = this;
-
-			// Update creator to reflect chosen configuration
-			$("#sel-link-type, #sel-module-type, #sel-module-config, #sel-article-id, #txt-anchor").each(function(e) {
-				$(this).on("change", $.proxy(that._updateView, that));
-			});
-
-			// Update configurations for selected module
-			$("#sel-module-type").on("change", function() {
-
-				that._updateModuleConfigurations($(this).val());
-				that._updateModuleMenu($(this).val());
-				that._updateView();
-
-			});
-
-			// Update link anchor
-			$("#txt-anchor").each(function(e) {
-			//	$(this).on("keyup", $.proxy(that._updateAnchorView, that));
-			});
-
-		},
-
 		_parseLink: function(url, type, anchor) {
 			return (new $.Link()).init().create(url, type, anchor);
 		},
 
-		/*
-		_convertLink : function() {
+		/*_convertLink : function() {
 
 			var that = this;
 			$.post("backend/route/convert_target_url", { uri : this.targetURI.val(), config : this.config.val() }, function (json) {
@@ -450,6 +427,8 @@ $(function() {
 
 					that.sourceURI.val(json.source + that.getAnchor());
 					that.sourceURI.data("val", json.source);
+
+					that.countBox.toggle(this.getData().relations > 0);
 
 			}, "json");
 
@@ -479,8 +458,8 @@ $(function() {
 		_updateModuleMenu : function(type) {
 
 			var that = this;
-			var target = $("#menuBox").empty();
-			
+			var target = $("#box-params").empty();
+
 			$.post("backend/module/view_menu_parameters/" + type, function(json) {
 
 				AttributesManager.createFromJSON(target, json);
@@ -493,66 +472,22 @@ $(function() {
 					$(this).on("keyup", $.proxy(that._updateView, that));
 				});
 
-				el.val(that.getData().article);
+				// If same module: Retrieve target URL, split it, and populate the new fields, else:
 				that._updateView();
 
 			}, "json");
 
 		},
 
-		_updateModuleView : function() {
-
-				//article: this.targetURI.val('article/view/' + this.getArticle());
-				//other: this.targetURI.val(this.getModule());
-
-				// And more code at the bottom...
-
-		},
-
 		_updateView : function() {
 
-			switch (this.getData().type) {
+			// Update LINK (WIP)
+			var parts = [this.getData().module_type];
+			$.each($("#box-params").find("[name*='attr_']"), function() {
+				parts.push($(this).val());
+			});
 
-				case "anchor":
-					
-					this.creatorBox.hide();
-					this.anchorBox.show();
-					this.linkBox.hide();
-					this.countBox.hide();
-					//updateLink?
-
-				break;
-
-				case "module":
-
-					this.creatorBox.show();
-					this.anchorBox.show();
-					this.linkBox.show();
-					//$("#itemCount").text(json.relations);
-					this.countBox.toggle(this.getData().relations > 0);
-
-					// Update LINK (WIP)
-					var parts = [this.getData().module_type];
-					$.each($("#menuBox").find("[name*='attr_']"), function() {
-						parts.push($(this).val());
-					});
-
-					$("#inp-target_url").val(parts.join("/"));
-
-				break;
-
-				case "custom":
-					
-					this.creatorBox.hide();
-					this.anchorBox.hide();
-					this.linkBox.show();
-					this.countBox.hide();
-					// updateLink (empty)
-					//this._updateCustomView();
-
-				break;
-
-			}
+			$("#inp-target_url").val(parts.join("/"));
 
 		}
 
