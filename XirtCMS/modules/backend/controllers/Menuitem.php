@@ -442,7 +442,7 @@ class MenuItem extends XCMS_Controller {
 
         RouteHelper::init();
 
-        $routeBypublic = RouteList::getByPublic($publicURL);
+        $routeByPublic = RouteList::getByPublic($publicURL);
         $routeByTarget = RouteList::getByTarget($targetURL, $module);
 
         // Complete match available
