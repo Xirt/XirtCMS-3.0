@@ -34,7 +34,7 @@ class Menuitems extends XCMS_Controller {
     /**
      * Index page for this controller (shows all items)
      *
-     * @param    $id            The id of the requested menu to display
+     * @param   int         $id             The id of the requested menu to display
      */
     public function index($id = 0) {
 
@@ -77,7 +77,7 @@ class Menuitems extends XCMS_Controller {
     /**
      * Provides JSON overview of requested items
      *
-     * @param    $id            The ID of the menu for items are requested (optional)
+     * @param   int         $id             The ID of the menu for items are requested (optional)
      */
     public function view($id = 0) {
 
@@ -110,8 +110,8 @@ class Menuitems extends XCMS_Controller {
     /**
      * Overrides the default mapping of the controller for this instance (required for menu ID)
      *
-     * @param    $method        The method to be called
-     * @param    $params        The parameters to pass to the method
+     * @param   string      $method         The method to be called
+     * @param   Array       $params         The parameters to pass to the method
      */
     public function _remap($method, $params = array()) {
 
