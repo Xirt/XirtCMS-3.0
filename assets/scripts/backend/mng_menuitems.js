@@ -280,17 +280,12 @@ $(function() {
 
 					$("#form-config").find("input").val("");
 
-						linkCreator.update(json);
+					linkCreator.update(json);
 
-						Xirt.populateForm($("#form-config"), json, { prefix : "menuitem_", converters: {
-							id: function (value) { return Xirt.pad(value, 5, "0"); },
-							name: function (value) { return Xirt.ellipsis(value, 40); }
-						}});
-
-						//manager.updateView(false);
-						//manager.updateAnchorView();
-
-					//});
+					Xirt.populateForm($("#form-config"), json, { prefix : "menuitem_", converters: {
+						id: function (value) { return Xirt.pad(value, 5, "0"); },
+						name: function (value) { return Xirt.ellipsis(value, 40); }
+					}});
 
 				}
 
@@ -390,7 +385,7 @@ $(function() {
 				type		: $("#sel-link-type").val(),
 				anchor		: $("#txt-anchor").val(),
 				module_type	: $("#sel-module-type").val(),
-				source_url	: $("#inp-public_url").val(),
+				public_url	: $("#inp-public_url").val(),
 				target_url	: $("#inp-target_url").val(),
 				article		: parseInt($("#sel-article-id").val()),
 				module		: parseInt($("#sel-module-config").val()),
@@ -405,34 +400,22 @@ $(function() {
 
 			$.extend(data, this._parseLink(data.target_url, data.type, data.anchor));
 			Xirt.populateForm($("#box-link"), data, { prefix : "link_" });
+			
+			// Show right tab instantly
+			$(".tab-pane").removeClass("fade in");
 			$("#type-" + data.type).tab("show");
-			// TODO :: Check if this can be immediate
+			$(".tab-pane").addClass("fade in");
 
+			// Update view for current item
 			this._updateModuleConfigurations(data.module_type);
 			this._updateModuleMenu(data.module_type);
-			this._updateView();
+			this._updateLink();
 
 		},
 
 		_parseLink: function(url, type, anchor) {
 			return (new $.Link()).init().create(url, type, anchor);
 		},
-
-		/*_convertLink : function() {
-
-			var that = this;
-			$.post("backend/route/convert_target_url", { uri : this.targetURI.val(), config : this.config.val() }, function (json) {
-
-				if (that.sourceURI.data("val") == json.source) {}
-
-					that.sourceURI.val(json.source + that.getAnchor());
-					that.sourceURI.data("val", json.source);
-
-					that.countBox.toggle(this.getData().relations > 0);
-
-			}, "json");
-
-		},*/
 
 		_updateModuleConfigurations : function(type) {
 
@@ -464,22 +447,29 @@ $(function() {
 
 				AttributesManager.createFromJSON(target, json);
 
-				target.find("[name*='attr_']").each(function(e) {
-					$(this).on("change", $.proxy(that._updateView, that));
+				target.find("[name*='attr_']").each(function() {
+					$(this).on("change", $.proxy(that._updateLink, that));
 				});
 
-				target.find("[name*='attr_']").each(function(e) {
-					$(this).on("keyup", $.proxy(that._updateView, that));
+				target.find("[name*='attr_']").each(function(key) {
+					$(this).on("keyup", $.proxy(that._updateLink, that));
 				});
 
-				// If same module: Retrieve target URL, split it, and populate the new fields, else:
-				that._updateView();
+				var parts = that.getData().target_url.split("/");
+				target.find("[name*='attr_']").each(function(key) {
+
+					if (parts[0] == type && key < parts.length) {
+						$(this).val(parts[key + 1]);							
+					}
+				});
+
+				that._updateLink();
 
 			}, "json");
 
 		},
 
-		_updateView : function() {
+		_updateLink : function() {
 
 			// Update LINK (WIP)
 			var parts = [this.getData().module_type];
@@ -553,10 +543,12 @@ $(function() {
 			var that = this;
 			$.post("backend/route/convert_target_url", { uri : this.targetURI.val(), config : this.config.val() }, function (json) {
 
-				if (that.sourceURI.data("val") == json.source) {}
+				if (that.sourceURI.data("val") == json.source) {
 
 					that.sourceURI.val(json.source + that.getAnchor());
 					that.sourceURI.data("val", json.source);
+					
+				}
 
 			}, "json");
 
