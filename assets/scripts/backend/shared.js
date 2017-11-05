@@ -118,8 +118,8 @@ var AttributesManager = {
 	_addSelectField : function(data, container) {
 
 		var el = $("<select class='form-control'></select>")
-			.attr("id", "setting_" + data.name)
-			.attr("name", "setting_" + data.name)
+			.attr("id", "attr_" + data.name)
+			.attr("name", "attr_" + data.name)
 			.appendTo(container);
 
 		$.each(data.options, function(index, option) {

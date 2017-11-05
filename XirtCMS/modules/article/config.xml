@@ -27,6 +27,9 @@
 		</param>
 	</params>
 	<menu>
+		<param name="action" type="select" default="view" label="Action">
+			<option name="View" value="view" />
+		</param>
 		<param name="article_id" type="text" default="" label="Article ID" />
 	</menu>
 </xirtcms>
