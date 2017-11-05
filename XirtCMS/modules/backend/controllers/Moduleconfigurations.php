@@ -30,7 +30,7 @@ class Moduleconfigurations extends XCMS_Controller {
 
 
     /**
-     * Index Page for this controller.
+     * Index Page for this controller
      */
     public function index() {
 
@@ -56,7 +56,7 @@ class Moduleconfigurations extends XCMS_Controller {
 
 
     /**
-     * Listing method for this controller for AJAX requests.
+     * Listing method for this controller for AJAX requests
      */
     public function view() {
 
@@ -70,7 +70,8 @@ class Moduleconfigurations extends XCMS_Controller {
             ->parseRequest($this->input);
 
         // Load requested data
-        $moduleConfigurations = (new ExtModuleConfigurationsModel())->init()
+            $moduleConfigurations = (new ExtModuleConfigurationsModel())->init()
+            ->set("moduleType", $this->input->post("moduleType"))
             ->set($gridIO->getRequest())
             ->load();
 

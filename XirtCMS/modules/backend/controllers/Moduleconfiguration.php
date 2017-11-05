@@ -37,7 +37,7 @@ class Moduleconfiguration extends XCMS_Controller {
 
 
     /**
-     * "View ModuleConfiguration"-Page for this controller.
+     * "View ModuleConfiguration"-Page for this controller
      *
      * @param   int         $id             The ID of the requested configuration
      */
