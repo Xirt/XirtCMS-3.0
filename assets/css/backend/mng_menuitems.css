@@ -52,6 +52,17 @@ input[name="name"][disabled] {
 	padding-left: 0;
 }
 
+input[name="menuitem_target_url"][disabled] {
+	display: inline-block;
+	padding-right: 3px;
+	max-width: 70%;
+}
+
+#btn-editor {
+	float: right;	
+	margin: 2px 0;]
+}
+
 .form-group.tabs {
 	margin-bottom: -1px;
 }
