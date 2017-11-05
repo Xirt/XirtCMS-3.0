@@ -1,0 +1,74 @@
+/*************
+ Grid Lay-out
+*************/
+.btn-group.create {
+	margin-left: 20px;
+}
+
+.btn-default:active,
+.btn-default.active,
+.btn-default.active:focus {
+	background-color: #b9e8b9;
+}
+
+.bootgrid-table th span,
+.bootgrid-table th a.column-header-anchor {
+	cursor: default;
+}
+
+.table-row-name .fa-home {
+   margin-left: 10px;
+}
+
+.table-row-item_id {
+	width: 100px;
+	text-align: center;
+}
+
+.table-row-sitemap,
+.table-row-ordering,
+.table-row-published {
+	text-align: center;
+	width: 100px;
+}
+
+.table-row-commands {
+	text-align: center;
+	width: 132px;
+}
+
+
+/**************
+ Modal Lay-out
+**************/
+input[name="id"][disabled],
+input[name="menuitem_target_url"][disabled],
+input[name="name"][disabled] {
+	background: #fff;
+	border-color: #fff;
+	cursor: auto;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	padding-left: 0;
+}
+
+.form-group.tabs {
+	margin-bottom: -1px;
+}
+
+.tab-content {
+	padding: 15px 15px 0 15px;
+	border:  1px #ddd solid;
+}
+
+@media screen and (min-width: 768px) {
+
+	.tab-content {
+		padding: 15px 0 0 0;
+	}
+
+}
+
+.box-notify {
+	min-height: 40px;
+}
