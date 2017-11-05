@@ -42,12 +42,12 @@ class MenuitemModel extends XCMS_Model {
         // Populate model (routing)
         switch ($this->get("type")) {
 
-            case "module":
+            case "internal":
 
                 $this->set(array(
                     "target_url"    => $this->get("target_url"),
                     "public_url"    => $this->get("public_url"),
-                    "anchor"        => (string)substr($this->get("uri"), 1),
+                    "anchor"        => $this->get("uri"),
                     "module_config" => (int)$this->get("module_config")
                 ));
 
@@ -57,8 +57,9 @@ class MenuitemModel extends XCMS_Model {
 
                 $this->set(array(
                     "target_url"    => null,
-                    "public_url"    => $this->get("uri"),
-                    "anchor"        => (string)substr($this->get("uri"), 1),
+                    "public_url"    => null,
+                    "anchor"        => $this->get("uri"),
+                    "uri"           => null,
                     "module_config" => -1
                 ));
 
@@ -68,8 +69,8 @@ class MenuitemModel extends XCMS_Model {
 
                 $this->set(array(
                     "target_url"    => null,
-                    "public_url"    => $this->get("uri"),
-                    "anchor"        => "",
+                    "public_url"    => null,
+                    "anchor"        => null,
                     "module_config" => -1
                 ));
 

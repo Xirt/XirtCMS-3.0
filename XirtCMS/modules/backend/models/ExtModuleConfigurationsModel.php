@@ -14,7 +14,7 @@ class ExtModuleConfigurationsModel extends ModuleConfigurationsModel {
      * Attribute array for this model (valid attributes)
      * @var array
      */
-    protected $_attr = array("searchPhrase", "current", "rowCount", "sortColumn", "sortOrder");
+    protected $_attr = array("moduleType", "searchPhrase", "current", "rowCount", "sortColumn", "sortOrder");
 
 
     /**
@@ -25,15 +25,19 @@ class ExtModuleConfigurationsModel extends ModuleConfigurationsModel {
         // Hook for retrieval query
         XCMS_Hooks::reset("moduleconfigurations.build_query");
         XCMS_Hooks::add("moduleconfigurations.build_query", function($stmt, $filterOnly) {
-
+            
             if ($filter = trim($this->get("searchPhrase"))) {
-
+                
                 $stmt->or_like(array(
-                    XCMS_TablesTABLE_MODULES . ".id"   => $filter,
-                    XCMS_TablesTABLE_MODULES . ".name" => $filter,
-                    XCMS_TablesTABLE_MODULES . ".type" => $filter
+                    XCMS_Tables::TABLE_MODULES . ".id"   => $filter,
+                    XCMS_Tables::TABLE_MODULES . ".name" => $filter,
+                    XCMS_Tables::TABLE_MODULES . ".type" => $filter
                 ));
-
+                
+            }
+            
+            if ($filter = trim($this->get("moduleType"))) {                
+                $stmt->or_where(XCMS_Tables::TABLE_MODULES . ".type", $filter);
             }
 
             if (!$filterOnly) {
