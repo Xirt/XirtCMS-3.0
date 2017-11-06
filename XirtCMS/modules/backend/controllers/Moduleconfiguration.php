@@ -112,7 +112,7 @@ class Moduleconfiguration extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
+            if (!$this->form_validation->run()) {
                 throw new UnexpectedValueException(null);
             }
 
@@ -150,13 +150,13 @@ class Moduleconfiguration extends XCMS_Controller {
 
             // Retrieve value
             $value = $setting->default;
-            if ($this->input->post("setting_" . $setting->name) !== null) {
-                $value = $this->input->post("setting_" . $setting->name);
+            if ($this->input->post("attr_" . $setting->name) !== null) {
+                $value = $this->input->post("attr_" . $setting->name);
             }
 
             // Check value validity
             if (!AttributeHelper::isValidInput($setting, $value)) {
-                $value = $settings->default;
+                $value = $setting->default;
             }
 
             // Update value
