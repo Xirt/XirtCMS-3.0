@@ -374,7 +374,7 @@ $(function() {
 			var that = this;
 
 			// [Input] Link existence check
-			$("#inp-public_url").on("keyup", function() {
+			$("#inp-public_url").on("change", function() {
 				that._checkLink($(this).val());
 			});
 			
