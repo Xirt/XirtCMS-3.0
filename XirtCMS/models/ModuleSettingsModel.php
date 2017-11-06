@@ -315,11 +315,6 @@ class ModuleSettingsModel extends CI_Model {
             throw new ConfigurationException("Invalid label for module setting");
         }
 
-        // Check required description for setting
-        if (!isset($attribs->description) || !strlen($attribs->description)) {
-            throw new ConfigurationException("Invalid description for module setting");
-        }
-
         // Check optional default for setting
         if (!isset($attribs->default)) {
             log_message("debug", $this->_moduleType . ": No default given for module setting (assuming null)");
@@ -327,12 +322,12 @@ class ModuleSettingsModel extends CI_Model {
 
         // Create basic setting...
         $setting = new stdClass();
-        $setting->name            = $attribs->name;
-        $setting->type            = in_array($attribs->type, array("text", "textarea", "select")) ? $attribs->type : "select";
-        $setting->label            = $attribs->label;
-        $setting->description    = $attribs->description;
-        $setting->default        = isset($attribs->default) ? $attribs->default : null;
-        $setting->value            = $setting->default;
+        $setting->name        = $attribs->name;
+        $setting->type        = in_array($attribs->type, array("text", "textarea", "select")) ? $attribs->type : "select";
+        $setting->label       = $attribs->label;
+        $setting->description = $attribs->description ?? null;
+        $setting->default     = isset($attribs->default) ? $attribs->default : null;
+        $setting->value       = $setting->default;
 
         // ... and extend if needed
         if (in_array($attribs->type, array("select"))) {
