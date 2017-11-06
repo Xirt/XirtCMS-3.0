@@ -124,7 +124,7 @@ class MenuHelper {
 
             switch ($item->get("type")) {
 
-                case "module":
+                case "internal":
                     $target = $item->get("public_url") . $item->get("uri");
                 break;
 
