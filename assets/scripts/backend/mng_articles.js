@@ -234,7 +234,7 @@ $(function() {
 			this.element.find(".command-edit").on("click", this._modifyContentModal);
 			this.element.find(".command-config").on("click", this._modifyConfigModal);
 			this.element.find(".command-categories").on("click", this._modifyCategoriesModal);
-			this.element.find(".command-publish").on("click", this._modifyPublicationModal);
+			this.element.find(".command-published").on("click", this._modifyPublicationModal);
 			this.element.find(".command-delete").on("click", $.proxy(this._deleteItemModal, this));
 
 		},
