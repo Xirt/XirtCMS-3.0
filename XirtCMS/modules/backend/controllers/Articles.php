@@ -83,7 +83,7 @@ class Articles extends XCMS_Controller {
                 "dt_created"   => $article->get("dt_created"),
                 "dt_publish"   => $article->get("dt_publish"),
                 "dt_unpublish" => $article->get("dt_unpublish"),
-                "published"    => ArticleHelper::isPublished($article),
+                "published"    => $article->get("published"),
                 "author"       => $article->getAuthor()->get("username")
             ]);
 
