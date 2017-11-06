@@ -49,7 +49,6 @@ class WidgetModel extends XCMS_Model {
 
             // Populate model (main)
             $this->set($result->row());
-            $this->set("pages", $pages);
 
             // Retrieve configuration (XML)
             $this->settings->load($this->get("id"), $this->get("type"));
@@ -67,7 +66,7 @@ class WidgetModel extends XCMS_Model {
                 $pages[] = $row->item_id;
             }
 
-            return $this;
+            return $this->set("pages", $pages);
 
         }
 
