@@ -56,7 +56,7 @@
                 searchPhrase: this.searchPhrase
             };
 
-		// A.G. Gideonse (12/02/2017) - Removed post option to prevent historical sorting
+	// A.G. Gideonse (12/02/2017) - Removed post option to prevent historical sorting
         // post = this.options.post;
         // post = ($.isFunction(post)) ? post() : post;
         return this.options.requestHandler(request);
@@ -123,21 +123,21 @@
             var $this = $(this),
                 data = $this.data(),
                 column = {
-                    id					: data.columnId,
+                    id				: data.columnId,
                     identifier			: that.identifier == null && data.identifier || false,
                     converter			: that.options.converters[data.converter || data.type] || that.options.converters["string"],
-                    text				: $this.text(),
-                    align				: data.align || "left",
+                    text			: $this.text(),
+                    align			: data.align || "left",
                     headerAlign			: data.headerAlign || "left",
                     cssClass			: data.cssClass || "",
                     headerCssClass		: data.headerCssClass || "",
                     formatter			: that.options.formatters[data.formatter] || null,
-                    order				: (!sorted && (data.order === "asc" || data.order === "desc")) ? data.order : null,
+                    order			: (!sorted && (data.order === "asc" || data.order === "desc")) ? data.order : null,
                     searchable		 	: !(data.searchable === false), // default: true
                     sortable			: !(data.sortable === false), // default: true
-                    visible				: visibleByViewport(data.visible), // default: true ** UPDATED **
-                    visibleInSelection	: !(data.visibleInSelection === false), // default: true
-                    width				: ($.isNumeric(data.width)) ? data.width + "px" :  (typeof(data.width) === "string") ? data.width : null
+                    visible			: visibleByViewport(data.visible), // default: true ** UPDATED **
+                    visibleInSelection		: !(data.visibleInSelection === false), // default: true
+                    width			: ($.isNumeric(data.width)) ? data.width + "px" :  (typeof(data.width) === "string") ? data.width : null
                 };
             that.columns.push(column);
             if (column.order != null)
@@ -479,27 +479,27 @@
                     maxCount = this.options.padding * 2 + 1,
                     count = (totalPages >= maxCount) ? maxCount : totalPages;
 
-                renderPaginationItem.call(this, pagination, "first", "&laquo;", "first")
+                renderPaginationItem.call(this, pagination, "first", "&laquo;", "page-item first")
                     ._bgEnableAria(current > 1);
-                renderPaginationItem.call(this, pagination, "prev", "&lt;", "prev")
+                renderPaginationItem.call(this, pagination, "prev", "&lt;", "page-item prev")
                     ._bgEnableAria(current > 1);
 
                 for (var i = 0; i < count; i++)
                 {
                     var pos = i + startWith;
-                    renderPaginationItem.call(this, pagination, pos, pos, "page-" + pos)
+                    renderPaginationItem.call(this, pagination, pos, pos, "page-item page-" + pos)
                         ._bgEnableAria()._bgSelectAria(pos === current);
                 }
 
                 if (count === 0)
                 {
-                    renderPaginationItem.call(this, pagination, 1, 1, "page-" + 1)
+                    renderPaginationItem.call(this, pagination, 1, 1, "page-item page-" + 1)
                         ._bgEnableAria(false)._bgSelectAria();
                 }
 
-                renderPaginationItem.call(this, pagination, "next", "&gt;", "next")
+                renderPaginationItem.call(this, pagination, "next", "&gt;", "page-item next")
                     ._bgEnableAria(totalPages > current);
-                renderPaginationItem.call(this, pagination, "last", "&raquo;", "last")
+                renderPaginationItem.call(this, pagination, "last", "&raquo;", "page-item last")
                     ._bgEnableAria(totalPages > current);
 
                 replacePlaceHolder.call(this, paginationItems, pagination);
@@ -1240,7 +1240,7 @@
             dropDownItemButton: "dropdown-item-button", // must be a unique class name or constellation of class names within the actionDropDown
             dropDownItemCheckbox: "dropdown-item-checkbox", // must be a unique class name or constellation of class names within the actionDropDown
             dropDownMenu: "dropdown btn-group", // must be a unique class name or constellation of class names within the actionDropDown
-            dropDownMenuItems: "dropdown-menu pull-right", // must be a unique class name or constellation of class names within the actionDropDown
+            dropDownMenuItems: "dropdown-menu float-right", // must be a unique class name or constellation of class names within the actionDropDown
             dropDownMenuText: "dropdown-text", // must be a unique class name or constellation of class names within the actionDropDown
             footer: "bootgrid-footer container-fluid",
             header: "bootgrid-header container-fluid",
@@ -1253,7 +1253,7 @@
             infos: "infos", // must be a unique class name or constellation of class names within the header and footer,
             left: "text-left",
             pagination: "pagination", // must be a unique class name or constellation of class names within the header and footer
-            paginationButton: "button", // must be a unique class name or constellation of class names within the pagination
+            paginationButton: "page-link", // must be a unique class name or constellation of class names within the pagination
 
             /**
              * CSS class to select the parent div which activates responsive mode.
@@ -1268,8 +1268,8 @@
 
             right: "text-right",
             search: "search form-group", // must be a unique class name or constellation of class names within the header and footer
-            searchField: "search-field form-control",
-            selectBox: "select-box", // must be a unique class name or constellation of class names within the entire table
+            searchField: "search-field form-control form-control-sm",
+            selectBox: "select-box form-control form-control-sm", // must be a unique class name or constellation of class names within the entire table
             selectCell: "select-cell", // must be a unique class name or constellation of class names within the entire table
 
             /**
@@ -1367,8 +1367,8 @@
          * @for defaults
          **/
         templates: {
-            actionButton: "<button class=\"btn btn-default\" type=\"button\" title=\"{{ctx.text}}\">{{ctx.content}}</button>",
-            actionDropDown: "<div class=\"{{css.dropDownMenu}}\"><button class=\"btn btn-default dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\"><span class=\"{{css.dropDownMenuText}}\">{{ctx.content}}</span> <span class=\"caret\"></span></button><ul class=\"{{css.dropDownMenuItems}}\" role=\"menu\"></ul></div>",
+            actionButton: "<button class=\"btn btn-sm btn-default\" type=\"button\" title=\"{{ctx.text}}\">{{ctx.content}}</button>",
+            actionDropDown: "<div class=\"{{css.dropDownMenu}}\"><button class=\"btn btn-default btn-sm dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\"><span class=\"{{css.dropDownMenuText}}\">{{ctx.content}}</span> <span class=\"caret\"></span></button><ul class=\"{{css.dropDownMenuItems}}\" role=\"menu\"></ul></div>",
             actionDropDownItem: "<li><a data-action=\"{{ctx.action}}\" class=\"{{css.dropDownItem}} {{css.dropDownItemButton}}\">{{ctx.text}}</a></li>",
             actionDropDownCheckboxItem: "<li><label class=\"{{css.dropDownItem}}\"><input name=\"{{ctx.name}}\" type=\"checkbox\" value=\"1\" class=\"{{css.dropDownItemCheckbox}}\" {{ctx.checked}} /> {{ctx.label}}</label></li>",
             actions: "<div class=\"{{css.actions}}\"></div>",
