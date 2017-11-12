@@ -490,15 +490,7 @@ $(function() {
 		},
 		
 		_updateTabView(linkType) {
-			
-			var tabs = $(".tab-pane");
-			var current = (linkType ? linkType : "internal");
-			
-			// Instant switch tabs
-			tabs.removeClass("fade in");
-			$("#type-" + current).tab("show");
-			tabs.addClass("fade in");
-			
+			$("#type-" + (linkType ? linkType : "internal")).tab("show");			
 		},
 
 		_checkLink : function(link) {
