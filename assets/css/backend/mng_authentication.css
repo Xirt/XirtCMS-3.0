@@ -5,6 +5,7 @@
 	background: rgba(255, 255, 255, 0.25) !important;
 }
 
+.navbar-toggler,
 .navbar-collapse, .navbar-nav {
 	display: none;
 }
