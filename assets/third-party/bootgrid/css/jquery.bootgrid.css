@@ -32,14 +32,23 @@
 .bootgrid-footer .search .search-field::-ms-clear {
   display: none;
 }
-.bootgrid-header .pagination,
-.bootgrid-footer .pagination {
-  margin: 0 !important;
-}
 .bootgrid-header .actionBar,
 .bootgrid-footer .infoBar {
   text-align: right;
-   padding: 0; /** Updated **/
+}
+.bootgrid-header .pagination,
+.bootgrid-footer .pagination {
+    margin-bottom: 0;
+}
+@media screen and (min-width: 576px) {
+  .bootgrid-header .pagination,
+  .bootgrid-footer .pagination {
+    margin: 0 !important;
+  }
+  .bootgrid-header .actionBar,
+  .bootgrid-footer .infoBar {
+    text-align: right;
+  }
 }
 .bootgrid-header .actions { /** Updated **/
    margin: 0 0 10px 20px;
