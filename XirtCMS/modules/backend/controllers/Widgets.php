@@ -57,7 +57,7 @@ class Widgets extends XCMS_Controller {
         ));
 
         // Show template
-        $this->load->view("widgets", array(
+        $this->load->view("widgets.tpl", array(
             "configurations" => $configurations,
             "menuEntries"    => $menuEntries,
             "positions"      => $positions,

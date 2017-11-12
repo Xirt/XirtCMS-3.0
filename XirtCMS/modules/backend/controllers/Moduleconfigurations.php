@@ -39,16 +39,16 @@ class Moduleconfigurations extends XCMS_Controller {
 
         // Add page scripts
         XCMS_Page::getInstance()->addScript(array(
-            "assets/scripts/backend/mng_modules.js"
+            "assets/scripts/backend/mng_moduleconfigurations.js"
         ));
 
         // Add page stylesheets
         XCMS_Page::getInstance()->addStylesheet(array(
-            "assets/css/backend/mng_modules.css"
+            "assets/css/backend/mng_moduleconfigurations.css"
         ));
 
         // Show template
-        $this->load->view("moduleconfigurations", array (
+        $this->load->view("moduleconfigurations.tpl", array (
             "moduleTypes" => $this->modules->toArray()
         ));
 

@@ -64,7 +64,7 @@ class Menuitems extends XCMS_Controller {
         ));
 
         // Show template
-        $this->load->view("menuitems", array(
+        $this->load->view("menuitems.tpl", array(
             "moduleTypes" => $this->modules->toArray(),
             "menu_name"   => htmlspecialchars($this->menu->get("name")),
             "menu_id"     => $this->menu->get("menu_id"),

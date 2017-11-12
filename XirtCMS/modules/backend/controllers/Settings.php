@@ -44,7 +44,7 @@ class Settings extends XCMS_Controller {
         ));
 
         // Show template
-        $this->load->view("settings");
+        $this->load->view("settings.tpl");
 
     }
 

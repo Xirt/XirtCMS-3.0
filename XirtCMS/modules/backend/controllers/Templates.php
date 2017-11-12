@@ -44,7 +44,7 @@ class Templates extends XCMS_Controller {
         ));
 
         // Show template
-        $this->load->view("templates");
+        $this->load->view("templates.tpl");
 
     }
 

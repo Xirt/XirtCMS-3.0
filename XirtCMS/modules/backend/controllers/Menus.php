@@ -43,7 +43,7 @@ class Menus extends XCMS_Controller {
         ));
 
         // Show template
-        $this->load->view("menus");
+        $this->load->view("menus.tpl");
 
     }
 

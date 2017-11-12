@@ -45,7 +45,7 @@ class Users extends XCMS_Controller {
         ));
 
         // Show template
-        $this->load->view("users", array(
+        $this->load->view("users.tpl", array(
             "usergroups" => $this->_getUsergroups()
         ));
 
