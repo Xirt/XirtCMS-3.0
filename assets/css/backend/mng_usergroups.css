@@ -1,0 +1,13 @@
+input[name="usergroup_authorization_level"] {
+	width: 50px;
+}
+
+.table-row-id,
+.table-row-users,
+.table-row-authorization_level {
+	width: 100px;
+}
+
+.table-row-commands {
+	width: 80px;
+}

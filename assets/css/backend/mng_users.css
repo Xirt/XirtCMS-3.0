@@ -1,0 +1,19 @@
+.table-row-id {
+	width: 100px;
+}
+
+.table-row-email,
+.table-row-usergroup,
+.table-row-real_name,
+.table-row-dt_created {
+	width: 200px;
+}
+
+.table-row-commands {
+	width: 160px;
+}
+
+textarea {
+	height: 100px;
+	resize: none;
+}

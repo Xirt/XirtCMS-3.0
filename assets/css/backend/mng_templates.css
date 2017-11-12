@@ -1,0 +1,26 @@
+.table-row-folder,
+.table-row-item_id,
+.table-row-published {
+	width: 100px;
+}
+
+.table-row-commands {
+	width: 80px;
+}
+
+.list-group {
+	overflow: auto;
+	max-height: 166px;
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+
+.list-group-item {
+	position: relative;
+}
+
+.btn-remove {
+	position: absolute;
+	right: 10px;
+	padding: 0 5px;
+}
