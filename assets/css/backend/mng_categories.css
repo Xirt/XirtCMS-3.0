@@ -1,0 +1,9 @@
+.table-row-id,
+.table-row-ordering,
+.table-row-published {
+	width: 100px;
+}
+
+.table-row-commands {
+	width: 95px;
+}

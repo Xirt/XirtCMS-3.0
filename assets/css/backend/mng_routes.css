@@ -1,0 +1,30 @@
+/*************
+ Grid Lay-out
+*************/
+.table-row-id,
+.table-row-menu_item_id {
+	width: 100px;
+}
+
+.table-row-commands {
+	width: 95px;
+}
+
+
+/**************
+ Modal Lay-out
+**************/
+.modal-dialog.configuration {
+	max-width: 600px;
+}
+
+.modal-dialog.configuration input[name="route_target_url"][disabled] {
+	display: inline-block;
+	padding-right: 3px;
+	max-width: 65%;
+}
+
+.modal-dialog.configuration #btn-editor {
+	float: right;	
+	margin: 2px 0;
+}

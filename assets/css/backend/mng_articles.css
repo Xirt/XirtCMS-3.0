@@ -1,0 +1,24 @@
+.table-row-published {
+	width: 75px;
+}
+
+.table-row-id {
+	width: 100px;
+}
+
+.table-row-author,
+.table-row-dt_created {
+	width: 175px;
+}
+
+.table-row-commands {
+	width: 175px;
+}
+
+.modal-dialog.article {
+	max-width: 85%;
+}
+
+.modal-dialog.article .box-article-header {
+	margin-bottom: 10px;
+}
