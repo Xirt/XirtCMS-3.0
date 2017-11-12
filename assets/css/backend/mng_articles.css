@@ -1,3 +1,6 @@
+/**************
+ Grid Lay-out *
+**************/
 .table-row-published {
 	width: 75px;
 }
@@ -15,6 +18,10 @@
 	width: 175px;
 }
 
+
+/***************
+ Modal Lay-out *
+***************/
 .modal-dialog.article {
 	max-width: 85%;
 }

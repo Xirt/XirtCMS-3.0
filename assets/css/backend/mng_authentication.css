@@ -1,3 +1,6 @@
+/**************
+ Page Lay-out *
+**************/
 .box-container {
 	background: rgba(255, 255, 255, 0.25) !important;
 }
@@ -6,6 +9,10 @@
 	display: none;
 }
 
+
+/***************
+ Modal Lay-out *
+***************/
 form {
 	max-width: 450px;
 	margin: 10% auto;

@@ -1,6 +1,6 @@
-/*************
- Grid Lay-out
-*************/
+/**************
+ Grid Lay-out *
+**************/
 .table-row-name .fa-home {
    margin-left: 10px;
 }
@@ -17,9 +17,9 @@
 }
 
 
-/**************
- Modal Lay-out
-**************/
+/***************
+ Modal Lay-out *
+***************/
 .modal-dialog.configuration {
 	max-width: 600px;
 }

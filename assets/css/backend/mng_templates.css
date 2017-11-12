@@ -1,3 +1,6 @@
+/**************
+ Grid Lay-out *
+**************/
 .table-row-folder,
 .table-row-item_id,
 .table-row-published {
@@ -15,6 +18,10 @@
 	margin-bottom: 0;
 }
 
+
+/***************
+ Modal Lay-out *
+***************/
 .list-group-item {
 	position: relative;
 }

@@ -1,6 +1,6 @@
-/*************
- Grid Lay-out
-*************/
+/**************
+ Grid Lay-out *
+**************/
 .table-row-id,
 .table-row-menu_item_id {
 	width: 100px;
@@ -11,9 +11,9 @@
 }
 
 
-/**************
- Modal Lay-out
-**************/
+/***************
+ Modal Lay-out *
+***************/
 .modal-dialog.configuration {
 	max-width: 600px;
 }

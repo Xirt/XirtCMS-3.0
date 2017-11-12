@@ -1,7 +1,6 @@
-input[name="usergroup_authorization_level"] {
-	width: 50px;
-}
-
+/**************
+ Grid Lay-out *
+**************/
 .table-row-id,
 .table-row-users,
 .table-row-authorization_level {
@@ -10,4 +9,12 @@ input[name="usergroup_authorization_level"] {
 
 .table-row-commands {
 	width: 80px;
+}
+
+
+/***************
+ Modal Lay-out *
+***************/
+input[name="usergroup_authorization_level"] {
+	width: 50px;
 }
