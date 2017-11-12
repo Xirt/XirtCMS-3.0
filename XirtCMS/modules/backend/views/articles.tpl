@@ -126,7 +126,7 @@
 
 						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control form-control-sm" name="article_id" required disabled="disabled" />
+							<input type="text" class="form-control form-control-sm input-info" name="article_id" required disabled="disabled" />
 						</div>
 
 					</div>
@@ -135,7 +135,7 @@
 
 						<label class="col-sm-4 col-form-label col-form-label-sm">Title</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control form-control-sm" name="article_title" disabled="disabled" />
+							<input type="text" class="form-control form-control-sm input-info" name="article_title" disabled="disabled" />
 						</div>
 
 					</div>
@@ -192,7 +192,7 @@
 
 						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control form-control-sm" name="article_id" required disabled="disabled" />
+							<input type="text" class="form-control form-control-sm input-info" name="article_id" required disabled="disabled" />
 						</div>
 
 					</div>
@@ -201,7 +201,7 @@
 
 						<label class="col-sm-4 col-form-label col-form-label-sm">Title</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control form-control-sm" name="article_title" disabled="disabled" />
+							<input type="text" class="form-control form-control-sm input-info" name="article_title" disabled="disabled" />
 						</div>
 
 					</div>
@@ -245,7 +245,7 @@
 
 						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control form-control-sm" name="article_id" required disabled="disabled" />
+							<input type="text" class="form-control form-control-sm input-info" name="article_id" required disabled="disabled" />
 						</div>
 
 					</div>
@@ -254,7 +254,7 @@
 
 						<label class="col-sm-4 col-form-label col-form-label-sm">Title</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control form-control-sm" name="article_title" disabled="disabled" />
+							<input type="text" class="form-control form-control-sm input-info" name="article_title" disabled="disabled" />
 						</div>
 
 					</div>
