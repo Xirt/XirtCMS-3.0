@@ -29,8 +29,8 @@ class ExtArticlesModel extends ArticlesModel {
             if ($filter = trim($this->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
-                    XCMS_TablesTABLE_ARTICLES . ".id"    => $filter,
-                    XCMS_TablesTABLE_ARTICLES . ".title" => $filter
+                    XCMS_Tables::TABLE_ARTICLES . ".id"    => $filter,
+                    XCMS_Tables::TABLE_ARTICLES . ".title" => $filter
                 ));
 
             }

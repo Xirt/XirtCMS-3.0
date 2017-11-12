@@ -29,8 +29,8 @@ class ExtSettingsModel extends SettingsModel {
             if ($filter = trim($this->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
-                    XCMS_TablesTABLE_CONFIGURATION . ".name"  => $filter,
-                    XCMS_TablesTABLE_CONFIGURATION . ".value" => $filter
+                    XCMS_Tables::TABLE_CONFIGURATION . ".name"  => $filter,
+                    XCMS_Tables::TABLE_CONFIGURATION . ".value" => $filter
                 ));
 
             }

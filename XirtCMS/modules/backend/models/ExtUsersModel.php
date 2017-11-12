@@ -29,11 +29,11 @@ class ExtUsersModel extends UsersModel {
             if ($filter = trim($this->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
-                    XCMS_TablesTABLE_USERS . ".id"        => $filter,
-                    XCMS_TablesTABLE_USERS . ".username"  => $filter,
-                    XCMS_TablesTABLE_USERS . ".email"     => $filter,
-                    XCMS_TablesTABLE_USERS . ".real_name" => $filter,
-                    XCMS_TablesTABLE_USERGROUPS . ".name" => $filter
+                    XCMS_Tables::TABLE_USERS . ".id"        => $filter,
+                    XCMS_Tables::TABLE_USERS . ".username"  => $filter,
+                    XCMS_Tables::TABLE_USERS . ".email"     => $filter,
+                    XCMS_Tables::TABLE_USERS . ".real_name" => $filter,
+                    XCMS_Tables::TABLE_USERGROUPS . ".name" => $filter
                 ));
 
             }

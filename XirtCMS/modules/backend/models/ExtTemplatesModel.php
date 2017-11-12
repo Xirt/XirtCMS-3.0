@@ -29,9 +29,9 @@ class ExtTemplatesModel extends TemplatesModel {
             if ($filter = trim($this->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
-                    XCMS_TablesTABLE_TEMPLATES . ".id"     => $filter,
-                    XCMS_TablesTABLE_TEMPLATES . ".name"   => $filter,
-                    XCMS_TablesTABLE_TEMPLATES . ".folder" => $filter
+                    XCMS_Tables::TABLE_TEMPLATES . ".id"     => $filter,
+                    XCMS_Tables::TABLE_TEMPLATES . ".name"   => $filter,
+                    XCMS_Tables::TABLE_TEMPLATES . ".folder" => $filter
                 ));
 
             }
