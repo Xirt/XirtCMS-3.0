@@ -239,18 +239,8 @@ $(function() {
 
 		_moveItemUp: function() {
 
-			BootstrapDialog.show({
-
-				message: "This functionality (move item down) is pending implementation.",
-				buttons: [{
-
-					label: "Close",
-					action: function(dialog) {
-						dialog.close();
-					}
-
-				}]
-
+			new $.XirtMessage({
+				message: "This functionality (move item down) is pending implementation."
 			});
 
 			//var el = $(this);
@@ -262,18 +252,8 @@ $(function() {
 
 		_moveItemDown: function() {
 
-			BootstrapDialog.show({
-
-				message: "This functionality (move item up) is pending implementation.",
-				buttons: [{
-
-					label: "Close",
-					action: function(dialog) {
-						dialog.close();
-					}
-
-				}]
-
+			new $.XirtMessage({
+				message: "This functionality (move item down) is pending implementation."
 			});
 
 			//var el = $(this);
