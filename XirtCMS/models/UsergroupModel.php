@@ -15,7 +15,7 @@ class UsergroupModel extends XCMS_Model {
      * @var array
      */
     protected $_attr = array(
-        "id", "name", "authorization_level"
+        "id", "name", "authorization_level", "users"
     );
 
 
@@ -49,7 +49,7 @@ class UsergroupModel extends XCMS_Model {
      */
     public function save() {
 
-        $this->db->replace(XCMS_Tables::TABLE_USERGROUPS, $this->getArray());
+        $this->db->replace(XCMS_Tables::TABLE_USERGROUPS, $this->_filterMetadata($this->getArray()));
         $this->set("id", $this->db->insert_id());
 
         return $this;
@@ -70,6 +70,27 @@ class UsergroupModel extends XCMS_Model {
 
 
     /**
+     * Filter all metadata related attributes from given data set
+     *
+     * @param   array       $data           The data set to be filtered
+     * @return  array                       The filtered data set
+     */
+    private function _filterMetadata($data) {
+
+        foreach ($data as $key => $value) {
+
+            if (!in_array($key, array("id", "name", "authorization_level"))) {
+                unset($data[$key]);
+            }
+
+        }
+
+        return $data;
+
+    }
+
+
+    /**
      * Creates query (using CI QueryBuilder) for retrieving model content (usergroup)
      *
      * @param   int         $id             The id of the usergroup to load
@@ -77,7 +98,10 @@ class UsergroupModel extends XCMS_Model {
      */
     protected function _buildQuery($id) {
 
-        $this->db->where("id", intval($id));
+        $this->db->select(XCMS_Tables::TABLE_USERGROUPS . ".*, count(usergroup_id) as users")
+            ->join(XCMS_Tables::TABLE_USERS, XCMS_Tables::TABLE_USERGROUPS . ".id = usergroup_id", "left")
+            ->where(XCMS_Tables::TABLE_USERGROUPS . ".id", intval($id))
+            ->group_by("id, authorization_level, name");
 
         // Hook for customized filtering
         XCMS_Hooks::execute("usergroup.build_query", array(
