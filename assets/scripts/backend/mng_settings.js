@@ -66,7 +66,7 @@ $(function() {
 
 				search: true,
 				sorting: true,
-				rowCount: [10, 25, 50, -1],
+				rowCount: [10, 20, 50, -1],
 				defaultRowCount: +($(window).height() > 1100),
 				ajax: true,
 				url: "backend/settings/view",
@@ -102,7 +102,9 @@ $(function() {
 		},
 
 		reload: function() {
+
 			this.element.bootgrid("reload");
+
 		},
 
 		_onload: function() {

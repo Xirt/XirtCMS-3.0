@@ -67,11 +67,11 @@ $(function() {
 
 		_initButtons: function() {
 
-			// Activate creation button
+			// Activate "Create item"-button
 			$(".btn-create").click(function(e) {
 				createModal.show();
 			});
-			
+
 			// Prevent submitting form on 'Enter'
 			$("#position").keypress(function(e) {
 
@@ -84,11 +84,12 @@ $(function() {
 
 			});
 
+			// Activate "Add position"-button
 			$("#btn-add-position").on("click", function() {
 
-				var val = $("#position").val().replace(/[^a-zA-Z0-9_.]/g, "");
+				var val = $("#inp-position").val().replace(/[^a-zA-Z0-9_.]/g, "");
 				PositionManager.addPosition(val);
-				$("#positions").val("").focus();
+				$("#inp-position").val("").focus();
 
 			});
 
@@ -189,7 +190,9 @@ $(function() {
 		},
 
 		reload: function() {
+
 			this.element.bootgrid("reload");
+
 		},
 
 		_onload: function() {
@@ -314,12 +317,12 @@ var PositionManager = {
 
 		if (val && $.inArray(val, PositionManager.positions) == -1) {
 
-			var removeButton = $('<button type="button" class="btn btn-sm btn-danger">x</button>').click(PositionManager.removePosition);
+			var removeButton = $('<button type="button" class="btn btn-sm btn-danger btn-remove">x</button>').click(PositionManager.removePosition);
 			var item = $("<li class='list-group-item'>" + val + "</li>").data("pos", val);
-			$("#positions_gui").append(item.append(removeButton));
+			$("#gui-positions").append(item.append(removeButton));
 			PositionManager.positions.push(val);
 
-			$("#positions_list").val(PositionManager.positions);
+			$("#inp-positions").val(PositionManager.positions);
 
 		}
 
@@ -328,7 +331,7 @@ var PositionManager = {
 	removePosition: function(e) {
 
 		PositionManager.positions.splice($.inArray($(this).parent().data("pos"), PositionManager.positions), 1);
-		$("#positions_list").val(PositionManager.positions);
+		$("#inp-positions").val(PositionManager.positions);
 		$(this).parent().remove();
 
 	},
@@ -336,8 +339,8 @@ var PositionManager = {
 	empty: function() {
 
 		PositionManager.positions = [];
-		$("#positions_list").val("");
-		$("#positions_gui").empty();
+		$("#inp-positions").val("");
+		$("#gui-positions").empty();
 
 	}
 
