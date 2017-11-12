@@ -3,11 +3,11 @@
  *******************/
 function confirmRemoval(url, id, grid) {
 
-	BootstrapDialog.confirm({
+	new $.XirtConfirmation({
 
 		title: "Confirm deletion",
 		message: "Are you sure that you want to permanently delete item #" + Xirt.pad(id.toString(), 5, "0") + "?",
-		type: BootstrapDialog.TYPE_WARNING,
+		type: "warning",
 		callback: function(result) {
 
 			if (result) {
@@ -35,14 +35,14 @@ var AttributesManager = {
 		var container = $(target).empty();
 		$.each(data, function(index, setting) {
 
-			var group = $("<div class=\"form-group\"></div>").appendTo(container);
+			var group = $("<div class=\"form-group row\"></div>").appendTo(container);
 
-			$("<label class=\"col-sm-4 control-label\"></label>")
+			$("<label class=\"col-sm-4 col-form-label col-form-label-sm\"></label>")
 				.attr("for", "attr_" + setting.name)
 				.text(setting.label)
 				.appendTo(group);
 
-			var subContainer = $("<div class=\"col-sm-7\"></div>").appendTo(group);
+			var subContainer = $("<div class=\"col-sm-8\"></div>").appendTo(group);
 
 			switch (setting.type) {
 
@@ -70,7 +70,7 @@ var AttributesManager = {
 
 	_addTextField : function(data, container) {
 
-		$("<input type='text' class='form-control' />")
+		$("<input type='text' class='form-control form-control-sm' />")
 			.attr("id", "attr_" + data.name)
 			.attr("name", "attr_" + data.name)
 			.text(data.label)
@@ -83,7 +83,7 @@ var AttributesManager = {
 
 		var dateGroup = $("<div class='input-group date'>");
 
-			var field = $("<input type='text' class='form-control datepicker' />")
+			var field = $("<input type='text' class='form-control form-control-sm datepicker' />")
 				.attr("id", "attr_" + data.name)
 				.attr("name", "attr_" + data.name)
 				.attr("readonly", "readonly")
@@ -106,7 +106,7 @@ var AttributesManager = {
 
 	_addTextareaField : function(data, container) {
 
-		$("<textarea class='form-control'></textarea>")
+		$("<textarea class='form-control form-control-sm'></textarea>")
 			.attr("id", "attr_" + data.name)
 			.attr("name", "attr_" + data.name)
 			.text(data.label)
@@ -117,7 +117,7 @@ var AttributesManager = {
 
 	_addSelectField : function(data, container) {
 
-		var el = $("<select class='form-control'></select>")
+		var el = $("<select class='form-control custom-select form-control-sm'></select>")
 			.attr("id", "attr_" + data.name)
 			.attr("name", "attr_" + data.name)
 			.appendTo(container);
