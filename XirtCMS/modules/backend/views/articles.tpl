@@ -1,19 +1,21 @@
 <h1>
+
 	Articles
 	<div class="btn-group create" />
 		<button class="btn btn-sm btn-success btn-create">Add New</button>
 	</div>
+
 </h1>
 
 <table id="grid-basic" class="table table-sm table-hover table-striped" data-toggle="bootgrid">
 <thead>
 <tr>
-    <th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-converter="identifier" data-order="asc">ID #</th>
-    <th data-column-id="title" data-header-css-class="table-row-title align-middle" data-css-class="table-row-title align-middle">Title</th>
-    <th data-column-id="dt_created" data-header-css-class="table-row-dt_created align-middle text-center" data-css-class="table-row-dt_created text-center" data-visible="false">Created</th>
-    <th data-column-id="author" data-header-css-class="table-row-author align-middle text-center" data-css-class="table-row-author text-center" data-visible="false">Author</th>
-    <th data-column-id="published" data-header-css-class="table-row-published align-middle text-center" data-css-class="table-row-published text-center" data-formatter="published" data-sortable="false">Status</th>
-    <th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-center" data-formatter="commands" data-visible-in-selection="false" data-sortable="false">&nbsp;</th>
+	<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-converter="identifier" data-order="asc">ID #</th>
+	<th data-column-id="title" data-header-css-class="table-row-title align-middle" data-css-class="table-row-title align-middle">Title</th>
+	<th data-column-id="dt_created" data-header-css-class="table-row-dt_created align-middle text-center" data-css-class="table-row-dt_created align-middle text-center" data-visible="false">Created</th>
+	<th data-column-id="author" data-header-css-class="table-row-author align-middle text-center" data-css-class="table-row-author align-middle text-center" data-visible="false">Author</th>
+	<th data-column-id="published" data-header-css-class="table-row-published text-center" data-css-class="table-row-published text-center" data-formatter="published" data-sortable="false">Status</th>
+	<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false" data-sortable="false">&nbsp;</th>
 </tr>
 </thead>
 </table>
@@ -46,8 +48,10 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-sm btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Create article</button>
-					<button type="button"  class="btn btn-sm btn-primary btn-close" aria-hidden="true">Close</button>
+
+					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Create article</button>
+					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
+
 				</div>
 
 			</div>
@@ -89,8 +93,8 @@
 
 					<input type="hidden" class="form-control form-control-sm" name="article_id" />
 
-					<button type="submit" class="btn btn-sm btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close" aria-hidden="true">Close</button>
+					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
+					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
 
 				</div>
 
@@ -155,8 +159,8 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close" aria-hidden="true">Close</button>
+					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
+					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
 
 				</div>
 
@@ -208,8 +212,8 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close" aria-hidden="true">Close</button>
+					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
+					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
 
 				</div>
 
@@ -296,8 +300,8 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success" aria-hidden="true"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close" aria-hidden="true">Close</button>
+					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
+					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
 
 				</div>
 

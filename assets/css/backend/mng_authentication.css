@@ -1,3 +1,7 @@
+.box-container {
+	background: rgba(255, 255, 255, 0.25) !important;
+}
+
 .navbar-collapse, .navbar-nav {
 	display: none;
 }

@@ -32,7 +32,20 @@ class Authentication extends XCMS_Controller {
      * Index Page for this controller.
      */
     public function index() {
+
+        // Add page scripts
+        XCMS_Page::getInstance()->addScript(array(
+            "assets/scripts/backend/mng_authentication.js"
+        ));
+
+        // Add page stylesheets
+        XCMS_Page::getInstance()->addStylesheet(array(
+            "assets/css/backend/mng_authentication.css"
+        ));
+
+        // Show template
         $this->load->view("authentication.tpl");
+
     }
 
 
