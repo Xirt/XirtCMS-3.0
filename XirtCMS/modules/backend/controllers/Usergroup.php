@@ -66,7 +66,7 @@ class Usergroup extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
+            if (!$this->form_validation->run()) {
                 throw new UnexpectedValueException(null);
             }
 
@@ -105,7 +105,7 @@ class Usergroup extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
+            if (!$this->form_validation->run()) {
                 throw new UnexpectedValueException(null);
             }
 
