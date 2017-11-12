@@ -5,7 +5,7 @@
 	<tr>
 		<th data-column-id="name" data-header-css-class="table-row-name align-middle" data-css-class="table-row-name align-middle" data-visible-in-selection="false" data-order="asc">Name</th>
 		<th data-column-id="value" data-header-css-class="table-row-value align-middle" data-css-class="table-row-value align-middle" data-visible-in-selection="true">Value</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-center" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
 	</tr>
 </thead>
 </table>

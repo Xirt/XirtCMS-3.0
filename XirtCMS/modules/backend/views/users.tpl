@@ -16,7 +16,7 @@
 		<th data-column-id="email" data-header-css-class="table-row-email align-middle text-center" data-css-class="table-row-email align-middle text-center">E-mail</th>
 		<th data-column-id="usergroup" data-header-css-class="table-row-usergroup align-middle text-center" data-css-class="table-row-usergroup align-middle text-center">Usergroup</th>
 		<th data-column-id="dt_created" data-header-css-class="table-row-dt_created align-middle text-center" data-css-class="table-row-dt_created align-middle text-center">Created</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-center" data-formatter="commands" data-visible-in-selection="false" data-sortable="false">&nbsp;</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false" data-sortable="false">&nbsp;</th>
 	</tr>
 </thead>
 </table>

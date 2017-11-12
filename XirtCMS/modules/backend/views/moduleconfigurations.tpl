@@ -14,7 +14,7 @@
 		<th data-column-id="name" data-header-css-class="table-row-name align-middle" data-css-class="table-row-name align-middle" data-formatter="name" data-visible-in-selection="false">Name</th>
 		<th data-column-id="type" data-header-css-class="table-row-type align-middle text-center" data-css-class="table-row-type align-middle text-center">Type</th>
 		<th data-column-id="default" data-header-css-class="table-row-default align-middle text-center" data-css-class="table-row-default align-middle text-center" data-formatter="default" >Default</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands align-middle" data-css-class="table-row-commands align-middle" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
 	</tr>
 </thead>
 </table>

@@ -14,7 +14,7 @@
 		<th data-column-id="name" data-header-css-class="table-row-name align-middle" data-css-class="table-row-name align-middle" data-visible-in-selection="false">Name</th>
 		<th data-column-id="folder" data-header-css-class="table-row-folder align-middle text-center" data-css-class="table-row-folder align-middle text-center" data-visible-in-selection="false">Folder</th>
 		<th data-column-id="published" data-header-css-class="table-row-published align-middle text-center" data-css-class="table-row-published align-middle text-center" data-formatter="published">Active</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-center" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
 	</tr>
 </thead>
 </table>

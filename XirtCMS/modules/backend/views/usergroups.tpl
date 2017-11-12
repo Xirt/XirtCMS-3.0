@@ -14,7 +14,7 @@
 		<th data-column-id="name" data-header-css-class="table-row-name align-middle" data-css-class="table-row-name align-middle" data-visible-in-selection="true">Name</th>
 		<th data-column-id="authorization_level" data-header-css-class="table-row-authorization_level align-middle text-center" data-css-class="table-row-authorization_level align-middle text-center" data-visible-in-selection="true">Level</th>
 		<th data-column-id="users" data-header-css-class="table-row-users align-middle text-center" data-css-class="table-row-users align-middle text-center" data-visible-in-selection="true">Users</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-center" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
 	</tr>
 </thead>
 </table>
