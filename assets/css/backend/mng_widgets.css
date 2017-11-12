@@ -1,0 +1,28 @@
+/**************
+ Grid Lay-out *
+**************/
+.table-row-item_id,
+.table-row-ordering,
+.table-row-published {
+	width: 100px;
+}
+
+.table-row-commands {
+	width: 135px;
+}
+
+.table-row-type,
+.table-row-position {
+	width: 150px;
+}
+
+
+/***************
+ Modal Lay-out *
+***************/
+label[for="opt-toggle-page"],
+label[for="opt-page-default"] {
+	font-style: italic;
+	font-weight: normal;
+	font-size: 80%;
+}
