@@ -1,0 +1,22 @@
+body {
+	background: url(../../images/cms/bg-backend.jpg);
+	background-size: cover;
+}
+
+.navbar-collapse, .navbar-nav {
+	display: none;
+}
+
+form {
+	max-width: 450px;
+	margin: 10% auto;
+}
+
+.form-group:last-of-type {
+	margin-bottom: 0;
+}
+
+.form-check-label {
+	font-style: italic;
+	font-size: 80%;
+}
