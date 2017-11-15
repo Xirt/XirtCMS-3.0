@@ -65,7 +65,7 @@ class Comment extends XCMS_Controller {
             }
 
             // E-mail validation
-            if (!trim($authorMail)) {
+            if (!trim($authorMail) || !preg_match("/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+.[a-zA-Z]{2,4}/", $authorMail)) {
 
                 XCMS_JSON::validationFailureMessage("Please enter your e-mail address.");
                 return;
