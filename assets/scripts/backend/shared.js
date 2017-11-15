@@ -178,7 +178,7 @@ $.LinkPanel.prototype = {
 	}
 
 };
-	
+
 
 /*********************
  * ATTRIBUTE MANAGER *

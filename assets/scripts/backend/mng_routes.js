@@ -15,6 +15,11 @@ $(function() {
 			this._initForms();
 			this._initButtons();
 
+			// [Input] Link existence check
+			$("#inp-url").on("change", function() {
+				linkCreator.checkLink($(this).val(), $("#box-exists"));
+			});
+
 			return this;
 
 		},
