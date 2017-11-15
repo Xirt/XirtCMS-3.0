@@ -11,11 +11,6 @@
 	</div>
 	<?php endif; ?>
 
-	<div class="alert alert-danger alert-dismissable" id="errorBox" style="display: none;">
-		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		<span></span>
-	</div>
-
 	<?php foreach ($comments as $comment): ?>
 	<div class="comment-box comment-level-<?php echo $comment->level; ?>">
 
@@ -36,7 +31,7 @@
 					<?php echo $comment->username; ?>
 				</a>
 				<?php else: ?>
-					<?php echo $comment->username; ?>
+					<?php echo htmlspecialchars($comment->username); ?>
 				<?php endif; ?>
 
 			</span>
@@ -47,7 +42,7 @@
 
 		</div>
 
-		<p><?php echo $comment->content; ?></p>
+		<p><?php echo htmlspecialchars($comment->content); ?></p>
 
 		<?php if (!$config->authorization_required || $authenticated): ?>
 			<br/>
@@ -57,7 +52,7 @@
 	</div>
 	<?php endforeach; ?>
 
-	<button type="button" class="btn btn-primary btn-xs" id="commentButton">Respond in main thread</button>
+	<button type="button" class="btn btn-sm btn-primary btn-xs" id="commentButton">Respond in main thread</button>
 
 	<?php if (!$config->authorization_required || $authenticated): ?>
 
@@ -67,19 +62,19 @@
 
 			<?php if (!$authenticated): ?>
 
-				<div class="form-group">
+				<div class="form-group row">
 
 					<label for="comment_name" class="col-sm-4 control-label">Name</label>
-					<div class="col-sm-7">
+					<div class="col-sm-8">
 						<input type="text" id="comment_name" name="comment_name" value="" />
 					</div>
 
 				</div>
 
-				<div class="form-group">
+				<div class="form-group row">
 
 					<label for="comment_email" class="col-sm-4 control-label">E-mail Address (not shown)</label>
-					<div class="col-sm-7">
+					<div class="col-sm-8">
 						<input type="text" id="comment_email" name="comment_email" value="" />
 					</div>
 
@@ -100,13 +95,18 @@
 
 			<?php endif; ?>
 
+            <div class="alert alert-danger alert-dismissable" id="errorBox" style="display: none;">
+                <a href="#" class="close" aria-label="close">&times;</a>
+                <span></span>
+            </div>
+            
 			<textarea id="comment_content" name="comment_content"></textarea>
 
 			<input type="hidden" name="article_id" value="<?php echo $article_id; ?>" />
 			<input type="hidden" name="parent_id" value="0" />
 
-			<button type="submit" class="btn btn-primary btn-xs">Submit response</button>
-			<button type="button" class="btn btn-default btn-xs" id="cancelButton">Cancel</button>
+			<button type="submit" class="btn btn-sm btn-primary btn-xs">Submit response</button>
+			<button type="button" class="btn btn-sm btn-default btn-xs" id="cancelButton">Cancel</button>
 
 		</form>
 
