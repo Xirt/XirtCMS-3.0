@@ -33,9 +33,9 @@ class Setting extends XCMS_Controller {
 
 
     /**
-     * "View route"-functionality for this controller
+     * "View setting"-functionality for this controller
      *
-     * @param   String      $name           The name of the requested route
+     * @param   String      $name           The name of the requested setting
      */
     public function view($name = null) {
 
