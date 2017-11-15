@@ -55,7 +55,7 @@ class Sitemap extends XCMS_Controller {
 
             foreach ($menu->items as $item) {
 
-                if ($item->type == "module") {
+                if ($item->type == "internal") {
                     $items[] = $item;
                 }
 
