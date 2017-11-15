@@ -18,7 +18,7 @@ $(function() {
 			// [Input] Link existence check
 			$("#inp-url").on("change", function() {
 				linkCreator.checkLink($(this).val(), $("#box-exists"));
-			});
+			}).trigger("change");
 
 			return this;
 
