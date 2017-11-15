@@ -24,13 +24,11 @@ $(function() {
 
 		},
 
-
 		_initGrid: function() {
 
 			this.grid = (new $.GridManager($("#grid-basic"))).init();
 
 		},
-
 
 		_initForms: function() {
 
@@ -43,7 +41,6 @@ $(function() {
 					route_public_url: { required: true, maxlength: 256 },
 					route_target_url: { required: true, maxlength: 256 }
 				}
-
 
 			});
 
@@ -61,14 +58,12 @@ $(function() {
 
 		},
 
-
 		_initModals: function(initializedEditors) {
 
 			createModal = new $.XirtModal($("#createModal")).init();
 			modifyModal = new $.XirtModal($("#modifyModal")).init();
 
 		},
-
 
 		_initButtons: function() {
 
