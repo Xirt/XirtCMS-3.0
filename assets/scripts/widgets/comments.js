@@ -1,4 +1,12 @@
+// TODO :: Drafty code; to be refactured (incl. template)
 $(document).ready(function() {
+
+	$("#errorBox .close").on("click", function(e) {
+		
+		$("#errorBox").hide();
+		e.preventDefault();
+		
+	});
 
 	var form = $("#commentBox").submit(function(e) {
 
@@ -8,11 +16,7 @@ $(document).ready(function() {
 				return location.reload();
 			}
 
-			Xirt.removeNotifications();
-			form.notification(json.message, {
-				type 		: "danger",
-				position	: "top"
-			});
+			showNotificationBox(json.message);
 
 		}, "json");
 
@@ -42,9 +46,10 @@ $(document).ready(function() {
 		parent.after(form);
 		form.find("textarea").focus();
 		form.children("label").text("Respond to " + el.data("name"));
-		Xirt.removeNotifications();
+
 		$("#commentButton").show();
 		$("#cancelButton").show();
+		hideNotificationBox();
 
 		// Prevent default
 		e.preventDefault();
@@ -59,12 +64,24 @@ $(document).ready(function() {
 		}
 
 		$(".x-widget-comments").append(form.removeClass("belowComment"));
-		Xirt.removeNotifications();
+		hideNotificationBox();
+		
 		form.find("label").text("Leave response");
 		$("#commentButton").hide();
 		$("#cancelButton").hide();
 		e.preventDefault();
 
-	});
+	});	
 
 });
+
+function showNotificationBox(message) {
+	
+	var notificationBox = $("#errorBox").fadeIn();
+	notificationBox.find("span").html(message);
+	
+}
+
+function hideNotificationBox() {
+	$("#errorBox").fadeOut();
+}
