@@ -39,7 +39,7 @@ $.LinkPanel.prototype = {
 
 		// [Input] Link existence check
 		$("#inp-public_url").on("change", function() {
-			that.checkLink($(this).val(), $("#box-relations"));
+			that._checkLink($(this).val());
 		});
 
 		// [Select] Update module details
@@ -91,16 +91,6 @@ $.LinkPanel.prototype = {
 
 
 	},
-
-	checkLink : function(link, box) {
-
-		var options = {duration : 200};
-		$.post("backend/route/convert_public_url", { uri : link }, function (json) {
-			json.success ? box.slideDown(options) : box.slideUp(options);
-		}, "json");
-
-	},
-
 
 	_updateModuleConfigurations : function(type, module) {
 
@@ -155,13 +145,25 @@ $.LinkPanel.prototype = {
 
 		// Toggle visibility
 		$("#box-link").toggle(publicURL ? false : true);
-		this.checkLink(targetURL, $("#box-relations").hide());
+		$("#box-relations").hide();
+
+		// Trigger additional updates
+		this._checkLink(targetURL);
 		this._updateLink();
 
 	},
 
 	_updateTabView(linkType) {
 		$("#type-" + (linkType ? linkType : "internal")).tab("show");
+	},
+
+	_checkLink : function(link) {
+
+		var options = {duration : 200};
+		$.post("backend/route/convert_public_url", { uri : link }, function (json) {
+			json.success ? $("#box-relations").slideDown(options) : $("#box-relations").slideUp(options);
+		}, "json");
+
 	},
 
 	_updateLink : function() {
