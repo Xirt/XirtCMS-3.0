@@ -3,11 +3,13 @@ tinyMCE_Full = {
 	selector						: "#articleArea",
 	width							: "100%",
 	height							: "500px",
-	document_base_url				: "../../../",
+	document_base_url					: "../../../",
+	image_advtab						: true,
+	image_dimensions					: false,
 	content_css						: "assets/third-party/bootstrap/css/bootstrap.min.css,assets/css/main.css",
 	plugins							: [ "paste visualchars visualblocks textcolor colorpicker lists advlist image contextmenu anchor link charmap media hr pagebreak table code codesample searchreplace" ],
 	menubar							: "",
-	block_formats					: "Introduction=intro;Section=section;Paragraph=p;Heading 1=h1;Heading 2=h2;Heading 3=h3;Heading 3=h4;Heading 3=h5",
+	block_formats						: "Introduction=intro;Section=section;Paragraph=p;Heading 1=h1;Heading 2=h2;Heading 3=h3;Heading 3=h4;Heading 3=h5",
 	contextmenu						: "cut copy paste pastetext | selectall searchreplace | link image inserttable",
 	contextmenu_never_use_native	: true,
 	formats: {
@@ -18,7 +20,7 @@ tinyMCE_Full = {
 
 		{
 			title: "Default Link",
-			value: "default"
+			value: ""
 		},
 
 		{
@@ -28,7 +30,7 @@ tinyMCE_Full = {
 
 		{
 			title: "Lightbox Image",
-			value: "lightbox"
+			value: "nofollow lightbox"
 		}
 
 	],

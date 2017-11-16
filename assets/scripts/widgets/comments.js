@@ -1,87 +1,118 @@
-// TODO :: Drafty code; to be refactured (incl. template)
-$(document).ready(function() {
+$(function() {
 
-	$("#errorBox .close").on("click", function(e) {
-		
-		$("#errorBox").hide();
-		e.preventDefault();
-		
-	});
+	/********************
+	 * COMMENTS MANAGER *
+	 *******************/
+	$.CommentsManager = function(el) {
+		this.$_el = ($this);
+	};
 
-	var form = $("#commentBox").submit(function(e) {
+	$.CommentsManager.prototype = {
 
-		$.post("comment/create", form.serialize(), function (json) {
+		init: function() {
 
-			if (json.type != "error") {
-				return location.reload();
-			}
+			this.$_notificationBox = this.$_el.find(".box-notification");
+			this.$_commentForm = el.find(".form-comment");
 
-			showNotificationBox(json.message);
+			this._initButtons();
+			this._initForms();
 
-		}, "json");
+			return this;
 
-		e.preventDefault();
+		},
 
-	});
+		_initButtons: function() {
 
-	// Activate comment links
-	$("#commentButton, #cancelButton").hide();
-	$(".x-widget-comments a.react").click(function(e) {
+			var that = this;
+			this.$_el.find(".btn-close").on("click", function(e) {
 
-		// Variables
-		var el = $(this);
-		var parent = el.parent();
-		var form = $("#commentBox");
+				that._hideNotificationBox();
+				e.preventDefault();
 
-		// Update form
-		form.addClass("belowComment");
-		form.find("input[name=parent_id]").val(el.data("id"));
-		for (var i = 0; i < 10; i++) {
+			});
 
-			var className = "comment-level-" + i;
-			form.toggleClass(className, parent.hasClass(className));
+			this.$_el.find(".btn-comment, .x-widget-comments .btn-cancel").click(function(e) {
 
+				for (var i = 0; i < 10; i++) {
+					that.$_commentForm.removeClass("comment-level-" + i);
+				}
+
+				$(".x-widget-comments").append(that.$_commentForm.removeClass("belowComment"));
+				that._hideNotificationBox();
+
+				that.$_commentForm.find("label").text("Leave response");
+				that.$_el.find(".btn-comment").hide();
+				that.$_el.find(".btn-cancel").hide();
+				e.preventDefault();
+
+			}).hide();
+
+			this.$_el.find("a.react").click(function(e) {
+
+				// Variables
+				var el = $(this);
+				var parent = el.parent();
+
+				// Update form
+				that.$_commentForm.addClass("belowComment");
+				that.$_commentForm.find("input[name=parent_id]").val(el.data("id"));
+				for (var i = 0; i < 10; i++) {
+
+					var className = "comment-level-" + i;
+					that.$_commentForm.toggleClass(className, parent.hasClass(className));
+
+				}
+
+				parent.after(that.$_commentForm);
+				that.$_commentForm.find("textarea").focus();
+				that.$_commentForm.children("label").text("Respond to " + el.data("name"));
+
+				that.$_el.find(".btn-comment").show();
+				that.$_el.find(".btn-cancel").show();
+				that._hideNotificationBox();
+
+				// Prevent default
+				e.preventDefault();
+
+			});
+
+		},
+
+		_initForms: function() {
+
+			var that = this;
+			this.$_commentForm.on("submit", function(e) {
+
+				$.post("comment/create", that.$_commentForm.serialize(), function (json) {
+
+					if (json.type != "error") {
+						return location.reload();
+					}
+
+					that._showNotificationBox(json.message);
+
+				}, "json");
+
+				e.preventDefault();
+
+			});
+
+		},
+
+		_showNotificationBox: function(message) {
+			this.$_notificationBox.fadeIn().find("span").html(message);
+		},
+
+		_hideNotificationBox: function() {
+			this.$_notificationBox.hide();
 		}
 
-		parent.after(form);
-		form.find("textarea").focus();
-		form.children("label").text("Respond to " + el.data("name"));
+	};
 
-		$("#commentButton").show();
-		$("#cancelButton").show();
-		hideNotificationBox();
 
-		// Prevent default
-		e.preventDefault();
-
-	});
-
-	$("#commentButton, #cancelButton").click(function(e) {
-
-		var form = $("#commentBox");
-		for (var i = 0; i < 10; i++) {
-			form.removeClass("comment-level-" + i);
-		}
-
-		$(".x-widget-comments").append(form.removeClass("belowComment"));
-		hideNotificationBox();
-		
-		form.find("label").text("Leave response");
-		$("#commentButton").hide();
-		$("#cancelButton").hide();
-		e.preventDefault();
-
-	});	
+	/***********
+	 * TRIGGER *
+	 **********/
+	(new $.CommentsManager).init();
 
 });
-
-function showNotificationBox(message) {
-	
-	var notificationBox = $("#errorBox").fadeIn();
-	notificationBox.find("span").html(message);
-	
-}
-
-function hideNotificationBox() {
-	$("#errorBox").fadeOut();
-}

@@ -52,11 +52,11 @@
 	</div>
 	<?php endforeach; ?>
 
-	<button type="button" class="btn btn-sm btn-primary btn-xs" id="commentButton">Respond in main thread</button>
+	<button type="button" class="btn btn-sm btn-primary btn-comment">Respond in main thread</button>
 
 	<?php if (!$config->authorization_required || $authenticated): ?>
 
-		<form method="post" action="comment" id="commentBox">
+		<form method="post" action="comment" class="form-comment">
 
 			<label for="comment_content">Leave response:</label>
 
@@ -95,8 +95,8 @@
 
 			<?php endif; ?>
 
-            <div class="alert alert-danger alert-dismissable" id="errorBox" style="display: none;">
-                <a href="#" class="close" aria-label="close">&times;</a>
+            <div class="alert alert-danger alert-dismissable box-notification" style="display: none;">
+                <a href="#" class="btn-close close" aria-label="close">&times;</a>
                 <span></span>
             </div>
             
@@ -105,8 +105,8 @@
 			<input type="hidden" name="article_id" value="<?php echo $article_id; ?>" />
 			<input type="hidden" name="parent_id" value="0" />
 
-			<button type="submit" class="btn btn-sm btn-primary btn-xs">Submit response</button>
-			<button type="button" class="btn btn-sm btn-default btn-xs" id="cancelButton">Cancel</button>
+			<button type="submit" class="btn btn-sm btn-primary">Submit response</button>
+			<button type="button" class="btn btn-sm btn-default btn-cancel">Cancel</button>
 
 		</form>
 
