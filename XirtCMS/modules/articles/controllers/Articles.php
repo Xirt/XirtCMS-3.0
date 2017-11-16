@@ -37,15 +37,17 @@ class Articles extends XCMS_Controller {
 
 
     /**
-     * Placeholder for invalid requests
+     * Shows all articles in the requested category
+     *
+     * @param   int         $category       The ID of the category to retrieve
      */
-    public function index() {
+    public function index($category = null) {
 
         RouteHelper::init();
 
         // Populate models
         $articles = array();
-        foreach ($this->_retrieveArticles() as $article) {
+        foreach ($this->_retrieveArticles($category) as $article) {
 
             // Enrich article
             $article = $article->getObject();
@@ -58,9 +60,29 @@ class Articles extends XCMS_Controller {
         $this->load->view("default.tpl", array(
             "show_title" => $this->config("show_title", true),
             "css_name"   => $this->config("css_name", ""),
-            "articles"   => $articles,
-            "title"      => $this->_getTitle()
+            "title"      => $this->_getTitle(),
+            "articles"   => $articles
         ));
+
+    }
+
+
+    /**
+     * Shows all articles
+     */
+    public function all() {
+        $this->index();
+    }
+
+
+    /**
+     * Shows all articles in the requested category
+     *
+     * @param   int         $category       The ID of the category to retrieve
+     */
+    public function category($category) {
+
+        $this->index($category);
 
     }
 
@@ -101,14 +123,15 @@ class Articles extends XCMS_Controller {
     /**
      * Retrieves articles using given search attributes
      *
+     * @param   int         $category       The ID of the category to retrieve
      * @return  Array                       List containing all loaded articles
      */
-    private function _retrieveArticles() {
+    private function _retrieveArticles($category = null) {
         
         $articles = (new ExtArticlesModel())->init()
-            ->set("limit",    $this->config("limit"))
-            ->set("category", $this->config("category_id"))
             ->set("sorting",  $this->config("sorting") ?? "dt_publish DESC")
+            ->set("limit",    $this->config("limit"))
+            ->set("category", $category)
             ->load();
 
         return $articles->toArray();

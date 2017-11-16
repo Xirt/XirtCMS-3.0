@@ -13,7 +13,6 @@
 			<option name="Show" value="1" />
 			<option name="Hide" value="0" />
 		</param>
-		<param name="category_id" type="category" default="" label="Category" description="The category for which to display the articles." />
 		<param name="sorting" type="select" default="dt_publish DESC" label="Final sorting" description="Sorting after DB retrieval.">
 			<option name="Creation Date (asc)" value="dt_created ASC" />
 			<option name="Creation Date (desc)" value="dt_created DESC" />
@@ -28,4 +27,11 @@
 		<param name="module_config" type="text" default="" label="Article Configuration" description="The configuration to use when displaying articles." />
 		<param name="max_length" type="text" default="500" label="Max. length" description="The maximum of characters for the text to show." />
 	</params>
+	<menu>
+		<param name="action" type="select" default="" label="Type">
+			<option name="Default" value="all" />
+			<option name="Category" value="category" />
+		</param>
+		<param name="category_id" type="category" default="" label="Category" description="The category for which to display the articles." />
+	</menu>
 </xirtcms>
