@@ -128,7 +128,7 @@ class Articles extends XCMS_Controller {
      */
     private function _retrieveArticles($category = null) {
         
-        $articles = (new ExtArticlesModel())->init()
+        $articles = (new ExtArticlesModel())
             ->set("sorting",  $this->config("sorting") ?? "dt_publish DESC")
             ->set("limit",    $this->config("limit"))
             ->set("category", $category)

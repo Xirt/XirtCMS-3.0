@@ -207,7 +207,7 @@ class TemplateModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("template.build_query", array(
-            &$this->db, $id
+            &$this, &$this->db, $id
         ));
 
         return $this->db;

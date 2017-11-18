@@ -131,7 +131,11 @@ class ArticlesModel extends XCMS_Model {
     protected function _parseAndFilterArticles() {
 
         foreach ($this->_list as $article) {
-            XCMS_Hooks::execute("articles.parse_article", array($article));
+            
+            XCMS_Hooks::execute("articles.parse_article", array(
+                &$article
+            ));
+            
         }
 
     }
@@ -156,7 +160,7 @@ class ArticlesModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("articles.build_article_query", array(
-            &$this->db, $filterOnly
+            &$this, &$this->db, $filterOnly
         ));
 
         return $this->db;
@@ -179,7 +183,7 @@ class ArticlesModel extends XCMS_Model {
         // Create requested query
         $this->db->where_in("id", array_unique($authors));
         XCMS_Hooks::execute("articles.build_users_query", array(
-            &$this->db)
+            &$this, &$this->db)
         );
 
         return $this->db;
@@ -197,7 +201,7 @@ class ArticlesModel extends XCMS_Model {
         // Hook for customized filtering
         $this->db->where_in("ref_id", array_keys($this->_list));
         XCMS_Hooks::execute("articles.build_attribute_query", array(
-            &$this->db)
+            &$this, &$this->db)
         );
 
         return $this->db;

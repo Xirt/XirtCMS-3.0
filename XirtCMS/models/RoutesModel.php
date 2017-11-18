@@ -86,7 +86,7 @@ class RoutesModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("routes.build_query", array(
-            &$this->db, $filterOnly
+            &$this, &$this->db, $filterOnly
         ));
 
         return $this->db;

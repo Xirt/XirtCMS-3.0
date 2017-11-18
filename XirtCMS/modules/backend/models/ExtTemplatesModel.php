@@ -24,9 +24,9 @@ class ExtTemplatesModel extends TemplatesModel {
 
         // Hook for retrieval query
         XCMS_Hooks::reset("templates.build_query");
-        XCMS_Hooks::add("templates.build_query", function($stmt, $filterOnly) {
+        XCMS_Hooks::add("templates.build_query", function($model, $stmt, $filterOnly) {
 
-            if ($filter = trim($this->get("searchPhrase"))) {
+            if ($filter = trim($model->get("searchPhrase"))) {
 
                 $stmt->or_like(array(
                     XCMS_Tables::TABLE_TEMPLATES . ".id"     => $filter,
@@ -38,11 +38,11 @@ class ExtTemplatesModel extends TemplatesModel {
 
             if (!$filterOnly) {
 
-                if (($rowCount = $this->get("rowCount")) > 0) {
-                    $stmt->limit($rowCount, ($this->get("current") - 1) * $rowCount);
+                if (($rowCount = $model->get("rowCount")) > 0) {
+                    $stmt->limit($rowCount, ($model->get("current") - 1) * $rowCount);
                 }
 
-                $stmt->order_by($this->get("sortColumn"), $this->get("sortOrder"));
+                $stmt->order_by($model->get("sortColumn"), $model->get("sortOrder"));
 
             }
 

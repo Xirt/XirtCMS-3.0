@@ -85,7 +85,7 @@ class UsersModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("users.build_query", array(
-            &$this->db, $filterOnly
+            &$this, &$this->db, $filterOnly
         ));
 
         return $this->db;

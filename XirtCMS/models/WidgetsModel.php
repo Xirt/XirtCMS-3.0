@@ -84,7 +84,7 @@ class WidgetsModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("widgets.build_query", array(
-            &$this->db, $filterOnly
+            &$this, &$this->db, $filterOnly
         ));
 
         return $this->db;

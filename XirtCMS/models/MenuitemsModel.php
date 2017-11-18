@@ -74,7 +74,7 @@ class MenuitemsModel extends XCMS_Model {
      */
     function _buildQuery($id) {
 
-        $this->db->select("xcms_menu_items.*, public_url, parent_id, ordering");
+        $this->db->select("xcms_menu_items.*, public_url, target_url, module_config, parent_id, ordering");
 
         $this->db->join(XCMS_Tables::TABLE_MENUITEMS_RELATIONS, "id = node_id");
         $this->db->join(XCMS_Tables::TABLE_MENUITEMS_ROUTES, "id = menuitem_id", "left");
@@ -84,7 +84,7 @@ class MenuitemsModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("menuitems.build_query", array(
-            &$this->db)
+            &$this, &$this->db)
         );
 
         return $this->db;

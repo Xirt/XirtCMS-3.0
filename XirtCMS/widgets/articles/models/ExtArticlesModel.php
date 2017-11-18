@@ -24,14 +24,14 @@ class ExtArticlesModel extends ArticlesModel {
 
         // Hook for article query
         XCMS_Hooks::reset("articles.build_article_query");
-        XCMS_Hooks::add("articles.build_article_query", function($stmt) {
+        XCMS_Hooks::add("articles.build_article_query", function($model, $stmt) {
 
             // Default query
             $stmt->select(XCMS_Tables::TABLE_ARTICLES . ".*")
-                ->order_by($this->get("sorting"));
+                ->order_by($model->get("sorting"));
 
             // Optional: Specific category ID
-            if ($categories = $this->get("categories")) {
+            if ($categories = $model->get("categories")) {
 
                 $stmt->join(XCMS_Tables::TABLE_ARTICLES_CATEGORIES, XCMS_Tables::TABLE_ARTICLES . ".id = article_id")
                     ->where_in("category_id", $categories);
@@ -39,7 +39,7 @@ class ExtArticlesModel extends ArticlesModel {
             }
 
             // Optional: Limit amount of rows
-            if (($limit = $this->get("limit")) && is_numeric($limit)) {
+            if (($limit = $model->get("limit")) && is_numeric($limit)) {
                 $stmt->limit($limit);
             }
 

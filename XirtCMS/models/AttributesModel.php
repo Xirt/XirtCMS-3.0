@@ -201,7 +201,9 @@ class AttributesModel extends CI_Model {
     private function _getFields() {
 
         $fields = array();
-        XCMS_Hooks::execute($this->_type . ".get_fields", array(&$fields));
+        XCMS_Hooks::execute($this->_type . ".get_fields", array(
+            &$fields
+        ));
 
         return $fields;
 

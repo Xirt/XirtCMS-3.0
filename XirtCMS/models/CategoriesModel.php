@@ -94,7 +94,7 @@ class CategoriesModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("categories.build_categories_query", array(
-            &$this->db, $filterOnly
+            &$this, &$this->db, $filterOnly
         ));
 
         return $this->db;

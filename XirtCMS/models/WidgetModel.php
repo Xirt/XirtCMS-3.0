@@ -160,7 +160,7 @@ class WidgetModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("widget.build_query", array(
-            &$this->db, $id
+            &$this, &$this->db, $id
         ));
 
         return $this->db;
@@ -180,7 +180,7 @@ class WidgetModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("widget.build_pages_query", array(
-            &$this->db, $id
+            &$this, &$this->db, $id
         ));
 
         return $this->db;

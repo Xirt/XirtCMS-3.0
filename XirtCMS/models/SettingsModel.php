@@ -82,7 +82,7 @@ class SettingsModel extends XCMS_Model {
 
         // Hook for customized filtering
         XCMS_Hooks::execute("settings.build_query", array(
-            &$this->db, $filterOnly
+            &$this, &$this->db, $filterOnly
         ));
 
         return $this->db;
