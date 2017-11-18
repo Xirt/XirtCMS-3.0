@@ -85,6 +85,45 @@ class XCMS_Hooks {
 
 
     /**
+     * Removes a hook from the XirtCMS hooks stack (all parameters should match)
+     *
+     * @param   String      $id             The unique ID of this hook
+     * @param   String      $funcName       The name of the function to be called
+     * @param   int         $priority       The priority (ordering) of the hook
+     */
+    public static function remove($id, $funcName, $priority = 10) {
+
+        log_message("info", "[XCMS] Unregistering hook with id '{$id}'.");
+
+        if (isset(self::$_list[$id][$priority])) {
+
+            foreach (self::$_list[$id][$priority] as $key => $hook) {
+
+                if ($hook["function"] == $funcName) {
+                    unset(self::$_list[$id][$priority][$key]);
+                }
+
+            }
+
+        }
+
+    }
+
+
+    /**
+     * Removes all references from the XirtCMS hooks stack for the given hook ID
+     *
+     * @param   String      $id             The unique ID of this hook
+     */
+    public static function reset($id) {
+
+        log_message("info", "[XCMS] Unregistering all hooks with id '{$id}'.");
+        unset(self::$_list[$id]);
+
+    }
+
+
+    /**
      * Attempt to execute given hook from the internal list using given arguments
      *
      * @param   String      $id             The unique ID of this hook
@@ -116,19 +155,6 @@ class XCMS_Hooks {
             }
 
         } while (next(self::$_list[$id]) !== false);
-
-    }
-
-
-    /**
-     * Removes all references from the XirtCMS hooks stack for the given hook ID
-     *
-     * @param   String      $id             The unique ID of this hook
-     */
-    public static function reset($id) {
-
-        log_message("info", "[XCMS] Unregistering all hooks with id '{$id}'.");
-        unset(self::$_list[$id]);
 
     }
 
