@@ -4,7 +4,7 @@ require_once "XCMS_Node.php";
 require_once "XCMS_Tree.php";
 
 /**
- * Static utility class for XirtCMS menus
+ * Static utility class for XirtCMS categories
  *
  * @author      A.G. Gideonse
  * @version     3.0
@@ -106,6 +106,25 @@ class CategoryHelper {
         }
 
         return $tree;
+
+    }
+
+
+    /**
+     * Returns the category tree as list of category items
+     *
+     * @param   mixed      $category       The CategoryModel or category ID for which to retrieve the articles
+     * @return  Object                      The ArticlesModel with all articles found
+     */
+    public static function getArticles($category) {
+    
+        // Prerequisites
+        $CI =& get_instance();
+        $CI->load->model("ArticlesModel", false);
+
+        return (new ArticlesModel())->set(
+            "category", is_numeric($category) ? $category : $category->get("id"), false
+        )->load();
 
     }
 
