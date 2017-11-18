@@ -128,7 +128,7 @@ class Route extends XCMS_Controller {
         // Save item updates
         $this->route->set("public_url", $this->input->post("route_public_url"));
         $this->route->set("target_url", $this->input->post("route_target_url"));
-        $this->route->set("module_config", $this->input->post("route_module_config"));
+        $this->route->set("module_config", $this->input->post("route_module"));
         $this->route->set("master", $this->input->post("route_master"));
         $this->route->save();
 
