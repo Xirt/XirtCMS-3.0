@@ -24,7 +24,7 @@ class Moduleconfiguration extends XCMS_Controller {
 
         // Load helpers
         $this->load->helper("attribute");
-        $this->load->helper("moduleconfiguration");
+        $this->load->helper("module");
 
         // Load libraries
         $this->load->library('form_validation');
@@ -185,7 +185,7 @@ class Moduleconfiguration extends XCMS_Controller {
             return;
         }
 
-        resetDefaultModuleConfiguration($this->configuration->get("type"));
+        ModuleHelper::resetModuleConfiguration($this->configuration->get("type"));
         $this->configuration->set("default", $this->configuration->get("default") ? "0" : "1");
         $this->configuration->save();
 
