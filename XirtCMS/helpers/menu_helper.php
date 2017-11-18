@@ -125,15 +125,21 @@ class MenuHelper {
             switch ($item->get("type")) {
 
                 case "internal":
-                    $target = $item->get("public_url") . $item->get("uri");
+                    $publicURL = $item->get("public_url") . $item->get("uri");
+                    $targetURL = $item->get("target_url");
+                    $module    = $item->get("module_config");
                 break;
 
                 case "anchor":
-                    $target = $item->get("uri");
+                    $publicURL = $item->get("uri");
+                    $targetURL = null;
+                    $module    = null;
                 break;
 
                 default:
-                    $target = $item->get("uri");
+                    $publicURL = $item->get("uri");
+                    $targetURL = null;
+                    $module    = null;
                 break;
 
             }
@@ -148,7 +154,9 @@ class MenuHelper {
                 "sitemap"   => $item->get("sitemap"),
                 "home"      => $item->get("home"),
                 "type"      => $item->get("type"),
-                "target"    => $target
+                "target"    => $publicURL,
+                "targetURL" => $targetURL,
+                "module"    => $module
             ]));
 
         }
