@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Widget for showing a list of XirtCMS articles (e.g. overview)
  *
  * @author      A.G. Gideonse
  * @version     1.0
