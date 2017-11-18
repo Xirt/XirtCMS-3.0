@@ -43,9 +43,10 @@ class XCMS_Model extends CI_Model {
      *
      * @param   mixed       $attr           The key of the attribute to be set or array/object with attributes (key/value)
      * @param   mixed       $value          The value for the attribute to be set
+     * @param   boolean     $validate       Toggles validation against allowed model attributes
      * @return  Object                      Always this instance
      */
-    public function set($attr, $value = null) {
+    public function set($attr, $value = null, $validate = true) {
 
         // Ensure Array input
         if (is_object($attr) || !is_array($attr)) {
@@ -56,7 +57,7 @@ class XCMS_Model extends CI_Model {
         foreach ($attr as $key => $value) {
 
             // Skip invalid attributes
-            if (array_search($key, $this->_attr) === false) {
+            if ($validate && array_search($key, $this->_attr) === false) {
 
                 log_message("debug", "[Model] Attempt to set invalid attribute '{$key}'.");
                 continue;
@@ -94,10 +95,25 @@ class XCMS_Model extends CI_Model {
     /**
      * Getter for all model attributes as array
      *
+     * @param   boolean     $validate       Toggles validation against allowed model attributes
      * @return  array                       The attributes of the model as Array
      */
-    public function getArray() {
-        return $this->_data;
+    public function getArray($validate = false) {
+
+        if (($list = $this->_data) && $validate) {
+
+            foreach ($this->_data as $key => $value) {
+
+                if (!array_search($key, $this->_attr)) {
+                    unset($list[$key]);
+                }
+
+            }
+
+        }
+
+        return $list;
+
     }
 
 
@@ -118,6 +134,7 @@ class XCMS_Model extends CI_Model {
      */
     public function validate() {
         return true;
+
     }
 
 }
