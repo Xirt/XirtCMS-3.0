@@ -13,5 +13,13 @@
 			<option name="Yes" value="1" />
 			<option name="No" value="0" />
 		</param>
+		<param name="trigger_html_hooks" type="select" default="0" label="Expand (HTML)">
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
+		<param name="trigger_xml_hooks" type="select" default="1" label="Expand (XML)">
+			<option name="Yes" value="1" />
+			<option name="No" value="0" />
+		</param>
 	</params>
 </xirtcms>

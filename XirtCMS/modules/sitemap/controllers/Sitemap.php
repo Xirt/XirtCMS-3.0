@@ -21,9 +21,12 @@ class Sitemap extends XCMS_Controller {
         // Load helpers
         $this->load->helper("menu");
         $this->load->helper("url");
+        $this->load->helper("route");
 
         // Load models
         $this->load->model("MenusModel", "menus");
+        $this->load->model("ArticlesModel", false);
+        $this->load->model("ModuleConfigurationsModel", false);
 
     }
 
@@ -38,7 +41,7 @@ class Sitemap extends XCMS_Controller {
         $this->load->view("view_html.tpl", array(
             "css_name"   => $this->config("css_name", ""),
             "show_title" => $this->config("show_title", true),
-            "menus"      => $this->_getContent()
+            "menus"      => $this->_getContent($this->config("trigger_html_hooks", false))
         ));
 
     }
@@ -51,7 +54,7 @@ class Sitemap extends XCMS_Controller {
 
         // Prepare items
         $items = array();
-        foreach ($this->_getContent() as $menu) {
+        foreach ($this->_getContent($this->config("trigger_xml_hooks", true)) as $menu) {
 
             foreach ($menu->items as $item) {
 
@@ -79,9 +82,10 @@ class Sitemap extends XCMS_Controller {
     /**
      * Returns the list of menus (with entries) to be displayed in the sitemap
      *
+     * @param   boolean     $considerHooks  Toggle triggering of related hooks
      * @return  array                       Array containing all menus to be displayed
      */
-    private function _getContent() {
+    private function _getContent($considerHooks) {
 
         $this->menus->load();
         $menus = $this->menus->toArray();
@@ -101,6 +105,10 @@ class Sitemap extends XCMS_Controller {
 
             foreach (MenuHelper::getMenu($menu->id, true) as $item) {
 
+                if ($item->type != "internal") {
+                    continue;
+                }
+
                 // Filter hidden nodes
                 if (!$item->sitemap || in_array($item->parent_id, $hidden)) {
 
@@ -110,6 +118,17 @@ class Sitemap extends XCMS_Controller {
                 }
 
                 $menu->items[] = $item;
+
+                // Optional hooks
+                if ($considerHooks) {
+
+                    RouteList::init();
+                    XCMS_Hooks::execute("sitemap.add_item",
+                        array(&$menu->items, &$item)
+                    );
+
+                }
+
 
             }
 
