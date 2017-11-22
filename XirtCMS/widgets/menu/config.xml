@@ -16,6 +16,7 @@
 			<option name="List of plain links" value="0" />
 			<option name="List of DIV-containers" value="1" />
 			<option name="UL-list with leveling (tree structure)" value="2" />
+			<option name="Bootstrap Navbar" value="3" />
 		</param>
 		<param name="title" type="text" default="" label="Title" description="(Optionally) displayed" />
 		<param name="parent_id" type="text" default="" label="Parent id" description="Only children will be shown" />

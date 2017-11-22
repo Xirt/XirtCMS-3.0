@@ -36,6 +36,10 @@ class xwidget_menu extends XCMS_Widget {
                 $this->displayTreeList($menu);
                 break;
 
+            case 3:
+                $this->displayNavbar($menu);
+                break;
+
             default:
                 $this->displayPlainLinks($menu->toArray());
                 break;
@@ -94,6 +98,24 @@ class xwidget_menu extends XCMS_Widget {
         $this->_populateListSeperators($menuOutput);
 
         $this->view("tpl_list_tree.tpl", array(
+            "config" => $this->getConfig(),
+            "menu"   => $menuOutput
+        ));
+
+    }
+
+    /**
+     * Outputs given menu as a Bootstrap Navbar (using recursion)
+     *
+     * @param    Object     $menu           The menu as a tree
+     */
+    private function displayNavbar($menu) {
+
+        $menuOutput = array();
+        $this->_populateTreeListItems($menuOutput, $menu);
+        $this->_populateListSeperators($menuOutput);
+
+        $this->view("tpl_navbar_base.tpl", array(
             "config" => $this->getConfig(),
             "menu"   => $menuOutput
         ));
@@ -220,8 +242,8 @@ class xwidget_menu extends XCMS_Widget {
 
         $classes = array(
             ($node->active ? "active" : "inactive"),
-            "menu-item-" . $node->node_id,
-            "menu-item"
+            "nav-link-" . $node->node_id,
+            "nav-link"
         );
 
         return (object) [
