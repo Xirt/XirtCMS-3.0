@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /cache/
 Disallow: /system/
 Disallow: /application/
-Sitemap: /sitemap/xml
+Sitemap: https://www.yourdomain.com/sitemap.xml

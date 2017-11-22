@@ -53,6 +53,7 @@
  * Standard controllers for XirtCMS
  */
 $route["backend"]              = "backend/authentication";
+$route["sitemap.xml"]          = "sitemap/xml";
 $route["404_override"]         = "";
 $route["default_controller"]   = "home";
 $route["translate_uri_dashes"] = FALSE;
