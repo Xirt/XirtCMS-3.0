@@ -7,6 +7,7 @@
 	<copyright>XirtCMS</copyright>
 	<license>GNU General Public License</license>
 	<params>
+		<param name="css_name" type="text" default="" label="CSS Class name" description="Used for module identification" />
 		<param name="authorization_required" type="select" default="0" label="Require authorization" description="Toggles posting by non-authorized users.">
 			<option name="Yes" value="1" />
 			<option name="No" value="0" />
