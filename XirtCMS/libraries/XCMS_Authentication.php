@@ -153,21 +153,12 @@ class XCMS_Authentication {
     /**
      * Returns the UserModel for the currently authenticated user
      *
-     * @param   boolean     $skipCheck      Toggle skipping of the authentication check
      * @return  UserModel                   Returns the UserModel for current user
      */
-    private static function _getUserModel($skipCheck = false) {
+    private static function _getUserModel() {
         
-        $id = microtime();
-        
-        // Load model
-        self::$CI->load->model("UserModel", $id);
-
-        // Retrieve model
-        self::$_model = self::$CI->$id;
-        unset(self::$CI->$id);
-
-        return self::$_model->load(self::_getUserId());
+        self::$CI->load->helper("user");
+        return UserHelper::getUser(self::_getUserId(true));
 
     }
 
