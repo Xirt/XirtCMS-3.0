@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /cache/
-Disallow: /system/
-Disallow: /application/
-Sitemap: https://www.yourdomain.com/sitemap.xml
