@@ -12,6 +12,7 @@
 	<?php endif; ?>
 
 	<?php foreach ($comments as $comment): ?>
+    <a name="comment-<?php echo $comment->id; ?>" class="anchor"></a>
 	<div class="comment-box comment-level-<?php echo $comment->level; ?>">
 
 		<div class="comment-details">
@@ -56,7 +57,7 @@
 
 	<?php if (!$config->authorization_required || $authenticated): ?>
 
-		<form method="post" action="comment" class="form-comment">
+		<form method="post" action="comment/create" class="form-comment">
 
 			<label for="comment_content">Leave response:</label>
 
