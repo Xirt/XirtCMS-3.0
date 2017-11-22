@@ -84,7 +84,7 @@ $.LinkPanel.prototype = {
 		Xirt.populateForm($("#box-link"), data, { prefix : prefix });
 
 		// Update GUI
-		this._updateModuleConfigurations(data.module_type, data.module);
+		this._updateModuleConfigurations(data.module_type, data.module_config);
 		this._updateModuleView(data.target_url, data.public_url);
 		this._updateModuleMenu(data.module_type);
 		this._updateTabView(data.type);

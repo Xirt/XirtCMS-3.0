@@ -39,16 +39,16 @@
 
 						<label for="inp-url" class="col-sm-4 col-form-label col-form-label-sm">Public URI</label>
 						<div class="col-sm-8">
-						
+
 							<input type="text" class="form-control form-control-sm" id="inp-url" name="route_public_url" placeholder="" required />
-							
+
 							<div class="box-notify bg-danger text-white" id="box-exists">
 
 								<i class="fa fa-warning text-white"></i>
 								<i>This chosen URI is already in use. Please chose a different URI or modify the existing one.</i>
 
 							</div>
-							
+
 						</div>
 
 					</div>
@@ -168,7 +168,7 @@
 							<label for="sel-module-config" class="col-sm-4 col-form-label col-form-label-sm">Module Configuration</label>
 							<div class="col-sm-8">
 
-								<select class="form-control form-control-sm custom-select" name="route_module" id="sel-module-config" required >
+								<select class="form-control form-control-sm custom-select" name="route_module_config" id="sel-module-config" required >
 								</select>
 
 							</div>

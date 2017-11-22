@@ -52,18 +52,18 @@ class MenuItem extends XCMS_Controller {
 
         // Prepare data...
         $data = (object) [
-            "id"         => $this->menuitem->get("id"),
-            "name"       => $this->menuitem->get("name"),
-            "type"       => $this->menuitem->get("type"),
-            "module"     => $this->menuitem->get("module_config"),
-            "parent_id"  => $this->menuitem->get("parent_id"),
-            "menu_id"    => $this->menuitem->get("menu_id"),
-            "relations"  => $this->menuitem->get("relations"),
-            "anchor"     => $this->menuitem->get("anchor"),
-            "uri"        => $this->menuitem->get("uri"),
-            "extension"  => $this->menuitem->get("uri"),
-            "public_url" => $this->menuitem->get("public_url"),
-            "target_url" => $this->menuitem->get("target_url")
+            "id"            => $this->menuitem->get("id"),
+            "name"          => $this->menuitem->get("name"),
+            "type"          => $this->menuitem->get("type"),
+            "module_config" => $this->menuitem->get("module_config"),
+            "parent_id"     => $this->menuitem->get("parent_id"),
+            "menu_id"       => $this->menuitem->get("menu_id"),
+            "relations"     => $this->menuitem->get("relations"),
+            "anchor"        => $this->menuitem->get("anchor"),
+            "uri"           => $this->menuitem->get("uri"),
+            "extension"     => $this->menuitem->get("uri"),
+            "public_url"    => $this->menuitem->get("public_url"),
+            "target_url"    => $this->menuitem->get("target_url")
         ];
 
         // ...and output it as JSON
@@ -205,7 +205,7 @@ class MenuItem extends XCMS_Controller {
         }
 
         try {
-            
+
             // Save details
             switch ($this->input->post("menuitem_type")) {
 
@@ -220,7 +220,7 @@ class MenuItem extends XCMS_Controller {
                     $this->_updateRelation(
                         $this->input->post("menuitem_public_url"),
                         $this->input->post("menuitem_target_url"),
-                        $this->input->post("menuitem_module")
+                        $this->input->post("menuitem_module_config")
                     );
 
                 break;
@@ -238,7 +238,7 @@ class MenuItem extends XCMS_Controller {
                 break;
 
                 default:
-                    
+
                     // Save item details
                     $this->menuitem->set("type", "external");
                     $this->menuitem->set("uri",  $this->input->post("menuitem_uri"));
@@ -437,10 +437,10 @@ class MenuItem extends XCMS_Controller {
 
         $routeByPublic = RouteList::getByPublic($publicURL);
         $routeByTarget = RouteList::getByTarget($targetURL, $module);
-       
+
         // Complete match found (both public and target URL)
         if ($routeByPublic == $routeByTarget && $routeByPublic) {
-            
+
             RouteHelper::removeRelation(null, $this->menuitem);
             RouteHelper::createRelation($routeByPublic, $this->menuitem);
 
@@ -450,7 +450,7 @@ class MenuItem extends XCMS_Controller {
 
         // No match on target URL, but public URL found (update target)
         if ($routeByPublic) {
-            
+
             // Update route
             if ($route = (new RouteModel())->load($routeByPublic->id)) {
 
@@ -483,7 +483,7 @@ class MenuItem extends XCMS_Controller {
 
             return true;
 
-        }        
+        }
 
         return false;
 

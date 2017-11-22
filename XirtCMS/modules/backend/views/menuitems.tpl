@@ -254,7 +254,7 @@
 									<label for="sel-module-config" class="col-sm-4 col-form-label col-form-label-sm">Module Configuration</label>
 									<div class="col-sm-8">
 
-										<select class="form-control form-control-sm custom-select" name="menuitem_module" id="sel-module-config" required >
+										<select class="form-control form-control-sm custom-select" name="menuitem_module_config" id="sel-module-config" required >
 										</select>
 
 									</div>
