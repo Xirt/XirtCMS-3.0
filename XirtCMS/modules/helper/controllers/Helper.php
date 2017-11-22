@@ -15,19 +15,47 @@ class Helper extends XCMS_Controller {
      * Instantiates controller with required helpers, libraries and models
      */
     public function __construct() {
-        
+
         parent::__construct();
-        
+
         // Load helpers
         $this->load->helper("image");
-        
+
     }
+
+    /**
+     * Helper to show 'robots.txt' content
+     */
+    public function robots() {
+
+        // Disable default template...
+        XCMS_Config::set("USE_TEMPLATE", "FALSE");
+
+        // ... and show content
+        $this->output->set_content_type("text/plain");
+        $this->load->view("robots.tpl", array(
+            "base_url" => base_url()
+        ));
+
+    }
+
 
     /**
      * Placeholder for invalid requests
      */
     public function index() {
-        return show_404();
+        show_404();
+    }
+
+
+    /**
+     * Shows a generic "error 404"-page
+     */
+    public function show_404() {
+
+		header("HTTP/1.1 404 Not Found");
+        $this->load->view("error_404.tpl");
+
     }
 
 
@@ -41,10 +69,10 @@ class Helper extends XCMS_Controller {
 
         // Check given source file
         if (!($src = $this->input->get("src")) || !file_exists($src)) {
-            
+
             log_message("info", "[XCMS] Failed load image '{$src}' for thumbnail creation.");
             return show_404();
-            
+
         }
 
         // Retrieve thumbnail
@@ -56,11 +84,11 @@ class Helper extends XCMS_Controller {
             $this->output->set_content_type(mime_content_type($thumb));
             $this->output->set_output(file_get_contents($thumb));
             return;
-        
+
         }
-        
+
         return show_404();
-            
+
     }
 
 }
