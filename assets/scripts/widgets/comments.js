@@ -4,7 +4,7 @@ $(function() {
 	 * COMMENTS MANAGER *
 	 *******************/
 	$.CommentsManager = function(el) {
-		this.$_el = ($this);
+		this.$_el = (el);
 	};
 
 	$.CommentsManager.prototype = {
@@ -12,7 +12,7 @@ $(function() {
 		init: function() {
 
 			this.$_notificationBox = this.$_el.find(".box-notification");
-			this.$_commentForm = el.find(".form-comment");
+			this.$_commentForm =  this.$_el.find(".form-comment");
 
 			this._initButtons();
 			this._initForms();
@@ -31,13 +31,13 @@ $(function() {
 
 			});
 
-			this.$_el.find(".btn-comment, .x-widget-comments .btn-cancel").click(function(e) {
+			this.$_el.find(".btn-comment, .btn-cancel").click(function(e) {
 
 				for (var i = 0; i < 10; i++) {
 					that.$_commentForm.removeClass("comment-level-" + i);
 				}
 
-				$(".x-widget-comments").append(that.$_commentForm.removeClass("belowComment"));
+				that.$_el.append(that.$_commentForm.removeClass("belowComment"));
 				that._hideNotificationBox();
 
 				that.$_commentForm.find("label").text("Leave response");
@@ -113,6 +113,6 @@ $(function() {
 	/***********
 	 * TRIGGER *
 	 **********/
-	(new $.CommentsManager).init();
+	(new $.CommentsManager($(".x-widget-comments"))).init();
 
 });
