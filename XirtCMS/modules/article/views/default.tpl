@@ -10,7 +10,7 @@
 
 	<section class="author">
 		<?php if ($show_author): ?>
-			By <a href="<?php echo $author->id; ?>"><span itemprop="author"><?php echo $author->name; ?></span></a><?php if ($show_author && $show_created): ?>,<?php endif; ?>
+			By <span itemprop="author"><?php echo $author->name; ?></span><?php if ($show_author && $show_created): ?>,<?php endif; ?>
 		<?php endif; ?>
 
 		<?php if ($show_created): ?>
