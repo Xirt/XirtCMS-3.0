@@ -107,9 +107,14 @@ class Article extends XCMS_Controller {
      */
     private function _getArticleObject($article) {
 
+        // Prepare article
         $article = $this->article->getObject();
-        $article->dt_created = new DateTime($article->dt_created);
-        XCMS_Hooks::execute("article.parse", array(&$article->content));
+        $article->dt_created = ArticleHelper::getPublished($this->article);
+        
+        // Execute optional hooks
+        XCMS_Hooks::execute("article.parse",
+            array(&$article->content)
+        );
 
         return $article;
 
