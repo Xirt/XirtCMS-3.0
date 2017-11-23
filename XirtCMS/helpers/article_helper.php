@@ -29,18 +29,25 @@ class ArticleHelper {
 
 
     /**
-     * Returns the DateTime at which the article is scheduled as published
+     * Returns the DateTime at which the article is scheduled as published (taking into account creation)
      *
      * @param   Object      $article        The ArticleModel for which the information should be returned
      * @return  mixed                       The publish DateTime if set, otherwise null
      */
     public static function getPublished($article) {
 
-        if (!($date = $article->get("dt_publish"))) {
-            return null;
+        // Fallback option in case date is unknown
+        if (!($published = $article->get("dt_publish"))) {
+            return new DateTime($article->get("dt_created"));
         }
 
-        return new DateTime($date);
+        // Compare creation / published
+        $published = new DateTime($published);
+        if (($created = new DateTime($article->get("dt_created"))) && $published < $created) {
+            return $created;
+        }
+
+        return $published;
 
     }
 
