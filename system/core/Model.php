@@ -55,7 +55,8 @@ class CI_Model {
 	 */
 	public function __construct()
 	{
-		log_message('info', 'Model Class Initialized');
+	    // A. Gideonse (provides classname) - 27/NOV/1027
+	    log_message('info', 'Model Class Initialized: ' . get_class($this));
 	}
 
 	// --------------------------------------------------------------------
