@@ -16,7 +16,7 @@ class MenuitemModel extends XCMS_Model {
      */
     protected $_attr = array(
         "id", "menu_id", "name", "type", "level", "ordering", "parent_id", "home", "published", "sitemap", "relations",
-        "public_url", "target_url", "uri", "anchor", "module_config", "relations"
+        "public_url", "target_url", "uri", "anchor", "module_config", "relations", "access_min", "access_max"
     );
 
 
