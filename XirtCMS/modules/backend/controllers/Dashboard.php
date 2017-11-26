@@ -14,8 +14,10 @@ class Dashboard extends XCMS_Controller {
      * Instantiates controller with required helpers, libraries and models
      */
     public function __construct() {
-
+    
         parent::__construct(75, true);
+
+        $this->load->helper("filesystem");
 
     }
 
@@ -30,8 +32,43 @@ class Dashboard extends XCMS_Controller {
             "assets/css/backend/mng_dashboard.css"
         ));
 
-        $this->load->view("dashboard.tpl");
+        // Add page stylesheets
+        XCMS_Page::getInstance()->addScript(array(
+            "assets/scripts/backend/mng_dashboard.js"
+        ));
 
+        $this->load->view("dashboard.tpl", array(
+            "cacheSize" => formatBytes(getDirectorySize(XCMS_CONFIG::get("FOLDER_CACHE")), 0),
+            "logSize" => formatBytes(getDirectorySize(XCMS_CONFIG::get("FOLDER_LOGS")), 0)
+        ));
+
+    }
+    
+    
+    public function get_logfile($id) {
+        
+        $logs = $this->_getLogfiles();
+        if (!is_numeric($id) || !isset($logs[$id])) {
+            return;
+        }
+
+        // Disable default template...
+        XCMS_Config::set("USE_TEMPLATE", "FALSE");
+
+        // ... and show content
+        $this->output->set_content_type("text/plain");
+        print(nl2br(file_get_contents($logs[$id])));
+
+    }
+    
+    
+    /**
+     *
+     *
+     * @return  Array                       An Array with the filenames of the logs
+     */
+    public function _getLogfiles() {        
+        return get_filenames(XCMS_CONFIG::get("FOLDER_LOGS"), true);
     }
 
 }

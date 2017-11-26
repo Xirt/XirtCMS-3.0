@@ -1,0 +1,19 @@
+.card-img-top {
+	padding: 0;
+	background: #3074ae;
+	padding: 10% 0;
+	text-align: center;
+	font-weight: bold;
+	font-size: 300%;
+	color: #fff;
+}
+
+#logPanel .modal-dialog {
+	max-width: 900px;
+}
+
+#logBoard {
+	overflow: auto;
+	font-family: courier new;
+	font-size: 75%;
+}
