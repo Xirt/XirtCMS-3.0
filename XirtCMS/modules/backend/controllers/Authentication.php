@@ -172,7 +172,7 @@ class Authentication extends XCMS_Controller {
         if (XCMS_Authentication::check() && $method != "logout") {
 
             $this->load->helper('url');
-            redirect('backend/articles');
+            redirect('backend/dashboard');
             return;
 
         }
