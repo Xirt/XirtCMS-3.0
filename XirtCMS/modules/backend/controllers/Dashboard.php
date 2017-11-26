@@ -25,6 +25,11 @@ class Dashboard extends XCMS_Controller {
      */
     public function index() {
 
+        // Add page stylesheets
+        XCMS_Page::getInstance()->addStylesheet(array(
+            "assets/css/backend/mng_dashboard.css"
+        ));
+
         $this->load->view("dashboard.tpl");
 
     }
