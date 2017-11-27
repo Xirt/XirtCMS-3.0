@@ -30,10 +30,7 @@ $(function() {
 
 			// Activate "View logs"-button
 			$('.btn-view-logs').click(function() {
-
 				that._retrieveLog();
-				logModal.show();
-
 			});
 
 			// Activate "View logs"-button
@@ -68,6 +65,7 @@ $(function() {
 					$("#logPanel").find(".btn-next").data("log-id", data.next_id).toggle(data.next_id !== null);
 
 					Xirt.hideSpinner();
+					logModal.show();					
 					
 				}
 				
