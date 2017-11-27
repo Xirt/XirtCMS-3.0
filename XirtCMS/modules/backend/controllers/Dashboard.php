@@ -59,12 +59,45 @@ class Dashboard extends XCMS_Controller {
             return show_404();
         }
 
-        // Disable default template...
-        XCMS_Config::set("USE_TEMPLATE", "FALSE");
-
         // ... and show content
         $this->output->set_content_type("application/json");
-        $this->output->set_output(json_encode($this->_getLogFiles($id)));
+        $this->output->set_output(json_encode($this->_getLogFile($id)));
+
+    }
+
+
+    /**
+     * Removes all existing logs from the server
+     */
+    public function clear_logs() {
+
+        // Only allow AJAX requests
+        if (!$this->input->is_ajax_request()) {
+            return show_404();
+        }
+
+        // Remove all logs
+        foreach($this->_getLogFiles() as $file) {
+            delete_file($file, true);
+        }
+
+    }
+
+
+    /**
+     * Removes all existing cached files from the server
+     */
+    public function clear_cache() {
+
+        // Only allow AJAX requests
+        if (!$this->input->is_ajax_request()) {
+            return show_404();
+        }
+
+        // Remove all logs
+        foreach($this->_getCacheFiles() as $file) {
+            delete_file($file, true);
+        }
 
     }
 
@@ -75,9 +108,9 @@ class Dashboard extends XCMS_Controller {
      * @param   int         $id             The sequence no. of the log to be retrieved
      * @return  Array                       An Array with the filenames of the logs
      */
-    private function _getLogfiles($id) {
+    private function _getLogFile($id) {
 
-        $logs = get_filenames(XCMS_CONFIG::get("FOLDER_LOGS"), true);
+        $logs = $this->_getLogFiles();
         if (!rsort($logs) || !is_numeric($id) || !isset($logs[$id])) {
             return null;
         }
@@ -88,6 +121,26 @@ class Dashboard extends XCMS_Controller {
             "next_id" => isset($logs[$id + 1]) ? $id + 1 : null
         ];
 
+    }
+
+
+    /**
+     * Retrieves a list of all existing logs
+     *
+     * @return  Array                       An Array with the filenames of the logs
+     */
+    private function _getLogFiles() {
+        return get_filenames(XCMS_CONFIG::get("FOLDER_LOGS"), true);
+    }
+
+
+    /**
+     * Retrieves a list of all cache files
+     *
+     * @return  Array                       An Array with the files in the cache
+     */
+    private function _getCacheFiles() {
+        return get_filenames(XCMS_CONFIG::get("FOLDER_CACHE"), true);
     }
 
 }

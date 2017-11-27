@@ -14,7 +14,7 @@
 
 				<h4 class="card-title">Cache Usage</h4>
 				<p class="card-text">Caching improves your applications' performance, but does take up space. Flushing the cache might free up space or fix caching.</p>
-				<!-- <a href="#" class="btn btn-primary">Flush</a> //-->
+				<button type="button" class="btn btn-warning btn-clear-cache float-right">Flush</button>
 
 			</div>
 
@@ -35,7 +35,7 @@
 				<h4 class="card-title">Log Usage</h4>
 				<p class="card-text">Logs provide insights on (malfunctioning) functionality of your application. You can browse the logs or remove them to free up space.</p>
 				<button class="btn btn-primary btn-view-logs">View</button>
-				<!-- <a href="#" class="btn btn-primary">Flush</a> //-->
+				<button type="button" class="btn btn-warning btn-clear-logs float-right">Flush</button>
 
 			</div>
 
