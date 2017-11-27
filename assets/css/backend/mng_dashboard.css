@@ -2,6 +2,14 @@ h1 {
 	margin-bottom: 0.5em;
 }
 
+.row {
+	max-width: 960px;
+}
+
+.col-lg-4 {
+	margin-bottom: 5%;
+}
+
 .card-img-top {
 	padding: 0;
 	background: #3074ae;
