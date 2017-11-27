@@ -65,6 +65,8 @@
 
 			<div class="modal-footer">
 
+				<button type="button" class="btn btn-sm btn-info btn-prev">&laquo; Previous</button>
+				<button type="button" class="btn btn-sm btn-info btn-next">Next &raquo;</button>
 				<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
 
 			</div>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Controller for the "Dashboard"-GUI and related processes (back end)
  *
@@ -16,7 +17,8 @@ class Dashboard extends XCMS_Controller {
     public function __construct() {
     
         parent::__construct(75, true);
-
+        
+        // Load helper
         $this->load->helper("filesystem");
 
     }
@@ -45,30 +47,47 @@ class Dashboard extends XCMS_Controller {
     }
     
     
-    public function get_logfile($id) {
+    /**
+     * Retrieves the content of one of the log files
+     * 
+     * @param   int         $id             The sequence no. of the log to be retrieved
+     */
+    public function get_logfile($id = 0) {
         
-        $logs = $this->_getLogfiles();
-        if (!is_numeric($id) || !isset($logs[$id])) {
-            return;
+        // Only allow AJAX requests
+        if (!$this->input->is_ajax_request()) {
+            return show_404();
         }
 
         // Disable default template...
         XCMS_Config::set("USE_TEMPLATE", "FALSE");
 
         // ... and show content
-        $this->output->set_content_type("text/plain");
-        print(nl2br(file_get_contents($logs[$id])));
+        $this->output->set_content_type("application/json");
+        $this->output->set_output(json_encode($this->_getLogFiles($id)));
 
     }
-    
-    
+
+
     /**
      *
      *
+     * @param   int         $id             The sequence no. of the log to be retrieved
      * @return  Array                       An Array with the filenames of the logs
      */
-    public function _getLogfiles() {        
-        return get_filenames(XCMS_CONFIG::get("FOLDER_LOGS"), true);
+    private function _getLogfiles($id) {
+
+        $logs = get_filenames(XCMS_CONFIG::get("FOLDER_LOGS"), true);
+        if (!rsort($logs) || !is_numeric($id) || !isset($logs[$id])) {
+            return null;
+        }
+
+        return (object) [
+            "content" => file($logs[$id]),
+            "prev_id" => $id ? $id - 1 : null,
+            "next_id" => isset($logs[$id + 1]) ? $id + 1 : null
+        ];
+
     }
 
 }

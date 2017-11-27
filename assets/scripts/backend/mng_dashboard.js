@@ -36,15 +36,41 @@ $(function() {
 
 			});
 
+			// Activate "View logs"-button
+			$("#logPanel").find(".btn-prev").click(function() {
+				that._retrieveLog($(this).data("log-id"));
+			});
+
+			// Activate "View logs"-button
+			$("#logPanel").find(".btn-next").click(function() {
+				that._retrieveLog($(this).data("log-id"));
+			});
+
 		},
 
 
-		_retrieveLog: function() {
+		_retrieveLog: function(id) {
 
 			// Activate "View logs"-button
+			Xirt.showSpinner();
 			$("#logBoard").css("height", $(window).height() - 250);
-			$.get("backend/dashboard/get_logfile/0", function(data) {
-				$("#logBoard").html(data)
+			$.ajax("backend/dashboard/get_logfile/" + (id ? id : ""), {
+				
+				cache: false,
+				success : function(data) {
+					
+					var log = $("#logBoard").empty();
+					$.each(data.content, function(key, txt) {
+						log.append(txt + "<br />");
+					});
+
+					$("#logPanel").find(".btn-prev").data("log-id", data.prev_id).toggle(data.prev_id !== null);
+					$("#logPanel").find(".btn-next").data("log-id", data.next_id).toggle(data.next_id !== null);
+
+					Xirt.hideSpinner();
+					
+				}
+				
 			});
 
 		}
