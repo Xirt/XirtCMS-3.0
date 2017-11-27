@@ -134,6 +134,7 @@ if ( ! function_exists('delete_files'))
 			return FALSE;
 		}
 
+		// A.G. Gideonse: Added exclude for git files (27/NOV/2017)
 		while (FALSE !== ($filename = @readdir($current_dir)))
 		{
 			if ($filename !== '.' && $filename !== '..')
@@ -144,7 +145,7 @@ if ( ! function_exists('delete_files'))
 				{
 					delete_files($filepath, $del_dir, $htdocs, $_level + 1);
 				}
-				elseif ($htdocs !== TRUE OR ! preg_match('/^(\.htaccess|index\.(html|htm|php)|web\.config)$/i', $filename))
+				elseif ($htdocs !== TRUE OR ! preg_match('/^(\.gitignore|\.htaccess|index\.(html|htm|php)|web\.config)$/i', $filename))
 				{
 					@unlink($filepath);
 				}
