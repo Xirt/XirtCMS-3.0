@@ -15,9 +15,9 @@ class Dashboard extends XCMS_Controller {
      * Instantiates controller with required helpers, libraries and models
      */
     public function __construct() {
-    
+
         parent::__construct(75, true);
-        
+
         // Load helper
         $this->load->helper("filesystem");
 
@@ -45,15 +45,15 @@ class Dashboard extends XCMS_Controller {
         ));
 
     }
-    
-    
+
+
     /**
-     * Retrieves the content of one of the log files
-     * 
+     * Retrieves the content of one of the log files (incl. predecessor and successor IDs)
+     *
      * @param   int         $id             The sequence no. of the log to be retrieved
      */
     public function get_logfile($id = 0) {
-        
+
         // Only allow AJAX requests
         if (!$this->input->is_ajax_request()) {
             return show_404();
@@ -70,7 +70,7 @@ class Dashboard extends XCMS_Controller {
 
 
     /**
-     *
+     * Retrieves the content of one of the log files and provides insight on other logs
      *
      * @param   int         $id             The sequence no. of the log to be retrieved
      * @return  Array                       An Array with the filenames of the logs
