@@ -116,6 +116,19 @@ footer {
 /**************
  Grid Lay-out *
 **************/
+.bootgrid-header .actionBar {
+	padding-right: 0;
+	text-align: right;
+}
+
+.bootgrid-header .search {
+	margin: 5px 0 5px 0;
+}
+
+.bootgrid-header .actions {
+	margin: 5px 0 5px 20px;
+}
+
 .bootgrid-header {
 	margin-left: 40%;
 	width: 60%;
