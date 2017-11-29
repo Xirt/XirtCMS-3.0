@@ -116,6 +116,11 @@ footer {
 /**************
  Grid Lay-out *
 **************/
+.bootgrid-header {
+	margin-left: 40%;
+	width: 60%;
+}
+
 .bootgrid-header .actionBar {
 	padding-right: 0;
 	text-align: right;
@@ -127,11 +132,6 @@ footer {
 
 .bootgrid-header .actions {
 	margin: 5px 0 5px 20px;
-}
-
-.bootgrid-header {
-	margin-left: 40%;
-	width: 60%;
 }
 
 .bootgrid-header .dropdown-menu {
