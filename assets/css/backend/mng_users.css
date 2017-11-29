@@ -13,13 +13,17 @@
 }
 
 .table-row-commands {
-	width: 175px;
+	width: 95px;
 }
 
 
 /***************
  Modal Lay-out *
 ***************/
+#optionsModal .modal-dialog {
+	max-width: 750px;
+}
+
 textarea {
 	height: 100px;
 	resize: none;

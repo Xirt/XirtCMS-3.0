@@ -68,11 +68,14 @@ $(function() {
 			createModal = new $.XirtModal($("#createModal")).init();
 			modifyModal = new $.XirtModal($("#modifyModal")).init();
 			configModal = new $.XirtModal($("#configModal")).init();
+			optionsModal = new $.XirtModal($("#optionsModal")).init();
 
 		},
 
 
 		_initButtons: function() {
+
+			var that = this;
 
 			// Activate creation button
 			$(".btn-create").click(function(e) {
@@ -84,6 +87,22 @@ $(function() {
 				$("#page-selector").prop("disabled", $(this).prop("checked"));
 				}
 			);
+
+			// Active "Edit main properties"-option
+			$(".btn-edit-main").click(function() {
+
+				optionsModal.hide();
+				that.grid.modifyModal(current);
+
+			});
+
+			// Active "Edit configuration"-option
+			$(".btn-edit-attributes").click(function() {
+
+				optionsModal.hide();
+				that.grid.modifyConfigModal(current);
+
+			});
 
 		}
 
@@ -163,12 +182,6 @@ $(function() {
 							},
 
 							{
-								classNames : "command-config",
-								data : { id : row.id },
-								icon : "gears",
-							},
-
-							{
 								classNames : "command-delete",
 								data : { id : row.id },
 								icon : "trash-o",
@@ -192,8 +205,7 @@ $(function() {
 
 		_onload: function() {
 
-			this.element.find(".command-edit").on("click", this._modifyContentModal);
-			this.element.find(".command-config").on("click", this._modifyConfigModal);
+			this.element.find(".command-edit").on("click", this._optionsModal);
 			this.element.find(".command-order-up").on("click", this._moveItemUp);
 			this.element.find(".command-order-down").on("click", this._moveItemDown);
 			this.element.find(".command-published").on("click", this._togglePublished);
@@ -201,11 +213,18 @@ $(function() {
 
 		},
 
-		_modifyContentModal: function() {
+		_optionsModal: function() {
+
+			optionsModal.show();
+			current = $(this).data("id");
+
+		},
+
+		modifyModal: function() {
 
 			modifyModal.load({
 
-				url	: "backend/widget/view/" + $(this).data("id"),
+				url	: "backend/widget/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "widget_", converters: {
@@ -218,11 +237,11 @@ $(function() {
 
 		},
 
-		_modifyConfigModal: function() {
+		modifyConfigModal: function() {
 
 			configModal.load({
 
-				url	: "backend/widget/view/" + $(this).data("id"),
+				url	: "backend/widget/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-config"), json, { prefix : "widget_", converters: {
@@ -293,7 +312,8 @@ $(function() {
 	/***********
 	 * TRIGGER *
 	 **********/
-	var createModal, modifyModal, configModal;
+	var current;
+	var optionsModal, createModal, modifyModal, configModal;
 	(new $.PageManager()).init();
 
 });

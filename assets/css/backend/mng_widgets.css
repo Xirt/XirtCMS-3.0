@@ -1,14 +1,14 @@
 /**************
  Grid Lay-out *
 **************/
+.table-row-commands {
+	width: 95px;
+}
+
 .table-row-item_id,
 .table-row-ordering,
 .table-row-published {
 	width: 100px;
-}
-
-.table-row-commands {
-	width: 135px;
 }
 
 .table-row-type,
@@ -20,6 +20,10 @@
 /***************
  Modal Lay-out *
 ***************/
+#optionsModal .modal-dialog {
+	max-width: 500px;
+}
+
 label[for="opt-toggle-page"],
 label[for="opt-page-default"] {
 	font-style: italic;

@@ -13,3 +13,11 @@
 .table-row-type {
 	width: 150px;
 }
+
+
+/***************
+ Modal Lay-out *
+***************/
+#optionsModal .modal-dialog {
+	max-width: 500px;
+}

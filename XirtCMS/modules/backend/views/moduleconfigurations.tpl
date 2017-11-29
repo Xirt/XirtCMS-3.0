@@ -19,6 +19,52 @@
 </thead>
 </table>
 
+<div id="optionsModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<div class="modal-content">
+
+			<div class="modal-header">
+
+				<h5 class="modal-title">What do you want to do?</h5>
+
+			</div>
+
+			<div class="modal-body row">
+
+				<div class="col-sm-6">
+
+					<button class="btn btn-info btn-edit-main">
+						<i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i>
+						<p>Modify user</p>
+					</button>
+
+				</div>
+
+				<div class="col-sm-6">
+
+					<button class="btn btn-info btn-edit-config">
+						<i class="fa fa-gears fa-5x" aria-hidden="true"></i>
+						<p>Modify configuration</p>
+					</button>
+
+				</div>
+
+			</div>
+
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-sm btn-default btn-close">Cancel</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
 <div id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 
 	<div class="modal-dialog" role="document">
@@ -65,7 +111,7 @@
 
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Create item</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
+					<button type="button" class="btn btn-sm btn-default btn-close">Close</button>
 				</div>
 
 			</div>
@@ -115,7 +161,7 @@
 				<div class="modal-footer">
 
 					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
+					<button type="button" class="btn btn-sm btn-default btn-close">Close</button>
 
 				</div>
 
@@ -168,7 +214,7 @@
 				<div class="modal-footer">
 
 					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
+					<button type="button" class="btn btn-sm btn-default btn-close">Close</button>
 
 				</div>
 

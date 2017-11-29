@@ -81,6 +81,7 @@ $(function() {
 
 			createModal	= new $.XirtModal($("#createModal")).init();
 			modifyModal	= new $.XirtModal($("#modifyModal")).init();
+			optionsModal = new $.XirtModal($("#optionsModal")).init();
 			attributesModal	= new $.XirtModal($("#attrModal")).init();
 			passwordModal	= new $.XirtModal($("#passwordModal")).init();
 
@@ -89,9 +90,35 @@ $(function() {
 
 		_initButtons: function() {
 
+			var that = this;
+
 			// Activate "Create item"-button
 			$('.btn-create').click(function(e) {
 				createModal.show();
+			});
+
+			// Active "Edit main properties"-option
+			$(".btn-edit-main").click(function() {
+
+				optionsModal.hide();
+				that.grid.modifyModal(current);
+
+			});
+
+			// Active "Edit user attributes"-option
+			$(".btn-edit-attributes").click(function() {
+
+				optionsModal.hide();
+				that.grid.modifyAttributesModal(current);
+
+			});
+
+			// Active "Edit user password"-option
+			$(".btn-edit-password").click(function() {
+
+				optionsModal.hide();
+				that.grid._modifyPasswordModal(current);
+
 			});
 
 		}
@@ -137,18 +164,6 @@ $(function() {
 							},
 
 							{
-								classNames : "command-attributes",
-								data : { id : row.id },
-								icon : "user-circle-o",
-							},
-
-							{
-								classNames : "command-password",
-								data : { id : row.id },
-								icon : "unlock-alt",
-							},
-
-							{
 								additionalAttributes : (row.id == 1) ? "disabled=\"disabled\"" : "",
 								classNames : "command-delete",
 								data : { id : row.id },
@@ -175,18 +190,23 @@ $(function() {
 
 		_onload: function() {
 
-			this.element.find(".command-edit").on("click", this._modifyContentModal);
-			this.element.find(".command-attributes").on("click", this._modifyAttributesModal);
-			this.element.find(".command-password").on("click", this._modifyPasswordModal);
+			this.element.find(".command-edit").on("click", this._optionsModal);
 			this.element.find(".command-delete").on("click", $.proxy(this._deleteItemModal, this));
 
 		},
 
-		_modifyContentModal: function() {
+		_optionsModal: function() {
+
+			optionsModal.show();
+			current = $(this).data("id");
+
+		},
+
+		modifyModal: function() {
 
 			modifyModal.load({
 
-				url	: "backend/user/view/" + $(this).data("id"),
+				url	: "backend/user/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "user_", converters: {
@@ -199,11 +219,11 @@ $(function() {
 
 		},
 
-		_modifyAttributesModal: function() {
+		modifyAttributesModal: function() {
 
 			attributesModal.load({
 
-				url	: "backend/user/view/" + $(this).data("id"),
+				url	: "backend/user/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-attr"), json, { prefix : "user_", converters: {
@@ -222,7 +242,7 @@ $(function() {
 
 			passwordModal.load({
 
-				url	: "backend/user/view/" + $(this).data("id"),
+				url	: "backend/user/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-password"), json, { prefix : "user_", converters: {
@@ -256,7 +276,8 @@ $(function() {
 	/***********
 	 * TRIGGER *
 	 **********/
-	var createModal, modifyModal, attributesModal, passwordModal;
+	var subject;
+	var optionsModal, createModal, modifyModal, attributesModal, passwordModal;
 	(new $.PageManager()).init();
 
 });
