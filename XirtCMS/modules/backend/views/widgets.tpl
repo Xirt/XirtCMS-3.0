@@ -38,8 +38,8 @@
 				<div class="col col-sm-6">
 
 					<button class="btn btn-info btn-edit-main">
-						<i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i>
-						<p>Modify user</p>
+						<i class="fa fa-list-alt fa-5x" aria-hidden="true"></i>
+						<p>Modify appearance</p>
 					</button>
 
 				</div>
@@ -47,8 +47,8 @@
 				<div class="col col-sm-6">
 
 					<button class="btn btn-info btn-edit-attributes">
-						<i class="fa fa-address-card-o fa-5x" aria-hidden="true"></i>
-						<p>Modify attributes</p>
+						<i class="fa fa-gears fa-5x" aria-hidden="true"></i>
+						<p>Modify configuration</p>
 					</button>
 
 				</div>
@@ -244,7 +244,7 @@
 				<div class="modal-footer">
 
 					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-default">Close</button>
+					<button type="button" class="btn btn-sm btn-default btn-close">Close</button>
 
 				</div>
 
@@ -297,7 +297,7 @@
 				<div class="modal-footer">
 
 					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-default">Close</button>
+					<button type="button" class="btn btn-sm btn-default btn-close">Close</button>
 
 				</div>
 
