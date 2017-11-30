@@ -12,8 +12,4 @@
 <?php foreach ($styleSheets as $stylesheet): ?>
 <link type="text/css" href="<?php echo $stylesheet; ?>" rel="stylesheet" />
 <?php endforeach; ?>
-
-<?php foreach ($scripts as $script): ?>
-<script type="text/javascript" src="<?php echo $script; ?>"></script>
-<?php endforeach; ?>
 <!-- CSS / JS Includes [End] -->

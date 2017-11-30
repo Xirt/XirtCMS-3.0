@@ -61,7 +61,6 @@ class XCMS_RenderEngine {
             "base_url"    => base_url(),
             "title"       => XCMS_Page::getInstance()->getTitle(),
             "metaTags"    => XCMS_Page::getInstance()->getMetaTags(),
-            "scripts"     => XCMS_Page::getInstance()->getScripts(),
             "styleSheets" => XCMS_Page::getInstance()->getStylesheets()
         ));
 
@@ -107,7 +106,9 @@ class XCMS_RenderEngine {
     public static function footer() {
 
         $CI =& get_instance();
-        $CI->load->view("xcms_footer");
+        $CI->load->view("xcms_footer", array(
+            "scripts" => XCMS_Page::getInstance()->getScripts()
+        ));
 
     }
 

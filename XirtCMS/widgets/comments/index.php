@@ -57,6 +57,12 @@ class xwidget_comments extends XCMS_Widget {
 
         }
 
+        // Add page scripts
+        XCMS_Page::getInstance()->addScript(array(
+            "assets/scripts/widgets/comments.js"
+        ));
+ 
+        // Show template
         $this->view("default.tpl", array(
             "authenticated" => XCMS_Authentication::check(),
             "article_id"    => $this->_getArticleId(),

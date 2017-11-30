@@ -1,6 +1,5 @@
 
 <!-- xComments [Start] //-->
-<script src="assets/scripts/widgets/comments.js"></script>
 <section class="x-widget-comments <?php echo $config->css_name; ?>">
 
 	<h2>Responses (<?php print(count($comments)); ?>)</h2>
