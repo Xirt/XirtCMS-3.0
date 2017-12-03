@@ -37,6 +37,7 @@ h1 {
 	color: rgba(0,0,0,.4);
 }
 
+.btn,
 button {
 	cursor: pointer;
 }
@@ -50,10 +51,10 @@ button.btn-warning:hover {
 	margin-left: 20px;
 }
 
-.btn-default:active,
-.btn-default.active,
-.btn-default.active[disabled],
-.btn-default.active:focus {
+btn.btn-default:active,
+btn.btn-default.active,
+btn.btn-default.active[disabled],
+btn.btn-default.active:focus {
 	background-color: #b9e8b9;
 }
 

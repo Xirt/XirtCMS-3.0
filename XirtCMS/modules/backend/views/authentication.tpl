@@ -28,12 +28,9 @@
 
 		<div class="form-group row">
 
-			<div class="offset-sm-4 col-sm-8 text-left">
-
-				<label for="user_cookies" class="form-check-label">
-					<input type="checkbox" id="user_cookies" name="user_cookies" class="form-check-input" /> Remember me
-				</label>
-
+			<label for="user_cookies" class="col-sm-4 col-form-label col-form-label-sm">Type</label>
+			<div class="col-sm-8">
+				<input type="checkbox" name="user_cookies" id="user_cookies" data-on="Persistent login" data-off="Single session" data-onstyle="default" data-offstyle="default" data-toggle="toggle" data-size="small" />
 			</div>
 
 		</div>
