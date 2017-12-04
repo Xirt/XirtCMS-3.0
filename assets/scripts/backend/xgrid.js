@@ -28,7 +28,7 @@
 		this.filter = "";
 		this.ordering = {};
 		//this.currentRows = [];
-		//this.rowCount = ($.isArray(rowCount)) ? rowCount[this.options.defaultRowCount] : rowCount;
+		this.rowCount = ($.isArray(this.options.rowCount)) ? this.options.rowCount[this.options.defaultRowCount] : this.options.rowCount;
 		//this.rows = [];
 		//this.selectedRows = [];
 		//this.sortDictionary = {};
@@ -114,6 +114,8 @@
 
 		_renderToolbar: function() {
 
+			var that = this;
+
 			var toolbar = $(document.createElement("div"))
 				.insertBefore(this.element)
 				.addClass("xgrid-toolbar");
@@ -132,11 +134,28 @@
 				.attr("type", "text")
 				.appendTo(group);
 
-			var that = this;
+			var config = $(document.createElement("button"))
+				.addClass("btn btn-primary btn-sm config")
+				.appendTo(toolbar);
+
+			$(document.createElement("span"))
+				.addClass("fa fa-gears")
+				.appendTo(config);
+			
 			search.on("keyup", function() {
 
 				that.setFilter($(this).val());
 				that.reload();
+
+			});
+			
+			config.on("click", function() {
+				
+				new $.XirtMessage({
+					title: "Filter settings",
+					message: "This is still a work in progress...",
+					type: "primary"					
+				});
 
 			});
 
@@ -243,7 +262,7 @@
 			});
 
 			// Create button "current"
-			var current = this._createPaginationItem(page + " of " + Math.ceil(total / rowCount), true,  false);
+			var current = this._createPaginationItem("page " + page + " of " + Math.ceil(total / rowCount), true,  false);
 			current.on("click", function() {
 				that._onPageSwitch(page);
 			});
@@ -261,7 +280,7 @@
 		_createPaginationItem: function(text, active, disabled) {
 
 			var button = $(document.createElement("button"))
-				.addClass(active ? "btn-primary active" : "btn-light")
+				.addClass(active ? "btn-primary" : "btn-light")
 				.addClass("btn btn-sm")
 				.html(text);
 
@@ -307,9 +326,9 @@
 
 				method: "POST",
 				data : {
-					current: this.current,
-					rowCount: 1,
 					sort: this.ordering,
+					current: this.current,
+					rowCount: this.rowCount,
 					searchPhrase: this.filter
 				},
 				success : function(data) {
