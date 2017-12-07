@@ -148,14 +148,62 @@
 				that.reload();
 
 			});
-			
-			config.on("click", function() {
 				
-				new $.XirtMessage({
-					title: "Filter settings",
-					message: "This is still a work in progress...",
-					type: "primary"					
-				});
+				config.on("click", function() {
+	
+					var $el = new $.XirtModalObject({
+						
+						type: "primary",
+						title: "Filter settings",
+						message: null,
+						buttons: [{
+							id		: "ok",
+							type	: "warning",
+							label	: "Ok"
+
+						},
+						{
+							id		: "close",
+							type	: "default",
+							label	: "Cancel"
+
+						}]
+						
+					});
+
+					var $modal = (new $.XirtModal($el)).init();		
+					var $modalBody = $modal.element.find(".modal-body").first().empty();
+					
+					$.each(that.columns, function(key, column) {
+						
+						if (!column.hidable) {
+							return;
+						}
+
+						$modalBody.append($(
+							'<div class="form-group row">' + 
+								'<label for="create_username" class="col-sm-4 col-form-label col-form-label-sm">' + column.text + '</label>' + 
+								'<div class="col-sm-8">' +
+								'<input type="checkbox" id="toggle_' + column.id +'" ' + (column.visible ? ' checked' : '') +'/>' +
+								'</div>' + 
+							'</div>'
+						));
+						
+					});
+
+					$modalBody.find("input").on("change", function() {
+						that.setVisibility($(this).attr("id").substr(7), $(this).prop("checked"));			
+					});
+							
+					$modal.show();
+
+					// Active button 'Ok'
+					$el.find(".modal-footer .btn").off("click").on("click", function() {
+						
+						that._renderTable();
+						$modal.hide();
+						
+					});
 
 			});
 
@@ -359,6 +407,16 @@
 
 		setFilter: function (filter) {
 			this.filter = filter;
+		},
+		
+		setVisibility(column, visible) {
+			
+			$.each(this.columns, function(key, candidate) {
+				if (candidate.id == column) {
+					candidate.visible = visible;
+				}
+			});
+			
 		},
 
 		_checkColumnVisibility: function(value) {
