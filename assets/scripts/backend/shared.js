@@ -25,6 +25,30 @@ function confirmRemoval(url, id, grid) {
 }
 
 
+/****************
+ * MODAL HELPER *
+ ***************/
+var ModalHelper = {
+		
+	getFormElementContainer : function(id, text) {
+
+		var label = $(document.createElement("label"))
+			.addClass("col-sm-4 col-form-label col-form-label-sm")
+			.attr("for", id)
+			.text(text);
+		
+		var container = $(document.createElement("div"))
+			.addClass("col-sm-8 input-container");
+		
+		return $(document.createElement("div"))
+			.addClass("form-group row")
+			.append(label, container);
+		
+	}
+		
+};
+
+
 /**************
  * LINK PANEL *
  *************/
