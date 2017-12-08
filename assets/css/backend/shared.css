@@ -287,13 +287,13 @@ input.input-info {
 	-webkit-box-shadow: none;
 }
 
-form .col-form-label {
+label.col-form-label {
 	font-weight: bold;
 }
 
 @media screen and (min-width: 576px) {
 
-	form .col-form-label {
+	label.col-form-label {
 		text-align: right;
 	}
 
