@@ -44,6 +44,7 @@
 			this._initialize();
 			this._renderToolbar();
 			this._renderTable();
+			this._wrapTable();
 
 			return this;
 
@@ -184,12 +185,17 @@
 							return;
 						}
 
-						container.append($(document.createElement("button"))
+						var item = $(document.createElement("a"))
 							.addClass("list-group-item list-group-item-action")
 							.addClass(column.visible ? "list-group-item-primary" : "")
-							.attr("type", "button")
 							.data("id", column.id)
-							.text(column.text));
+							.text(column.text)
+							.appendTo(container);
+
+						item.append($(document.createElement("button"))
+							.addClass("btn btn-sm btn-primary")
+							.attr("type", "button")
+							.text(column.visible ? "hide" : "show"));
 
 					});
 
@@ -198,14 +204,17 @@
 
 					// Activate visibility buttons
 					$modalBody.find("button").on("click", function() {
-						$(this).toggleClass("list-group-item-primary");
+						
+						$(this).parent().toggleClass("list-group-item-primary");
+						$(this).text($(this).parent().hasClass("list-group-item-primary") ? "hide" : "show");
+					
 					});
 
 					// Active modal buttons
 					$el.find(".modal-footer .btn-ok").off("click").on("click", function() {
 
 						//that.setRowCount("1");
-						$.each(container.find("button"), function() {
+						$.each(container.find("a"), function() {
 							that.setVisibility($(this).data("id"), $(this).hasClass("list-group-item-primary"));
 						});
 
@@ -358,6 +367,15 @@
 
 			return button;
 
+		},
+		
+		_wrapTable: function() {
+
+			$(document.createElement("div"))
+				.addClass("table-container")
+				.insertBefore(this.element)
+				.append(this.element);
+			
 		},
 
 		_onSort: function(e) {

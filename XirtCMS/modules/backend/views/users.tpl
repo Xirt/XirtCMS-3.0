@@ -11,7 +11,7 @@
 <thead>
 	<tr>
 		<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-converter="identifier" data-order="asc">ID #</th>
-		<th data-column-id="username" data-header-css-class="table-row-username align-middle" data-css-class="table-row-username align-middle">Username</th>
+		<th data-column-id="username" data-header-css-class="table-row-username align-middle" data-css-class="table-row-username align-middle" data-visible-in-selection="false">Username</th>
 		<th data-column-id="real_name" data-header-css-class="table-row-real_name align-middle text-center" data-css-class="table-row-real_name align-middle text-center" data-visible="1250">Name</th>
 		<th data-column-id="email" data-header-css-class="table-row-email align-middle text-center" data-css-class="table-row-email align-middle text-center" data-visible="1250">E-mail</th>
 		<th data-column-id="usergroup" data-header-css-class="table-row-usergroup align-middle text-center" data-css-class="table-row-usergroup align-middle text-center" data-visible="1000">Usergroup</th>

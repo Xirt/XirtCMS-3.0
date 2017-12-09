@@ -36,7 +36,8 @@ class Users extends XCMS_Controller {
 
         // Add page scripts
         XCMS_Page::getInstance()->addScript(array(
-            "assets/scripts/backend/mng_users.js"
+            "assets/scripts/backend/mng_users.js",
+            "assets/scripts/backend/xgrid.js"
         ));
 
         // Add page stylesheets

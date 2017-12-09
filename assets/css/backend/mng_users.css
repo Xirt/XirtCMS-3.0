@@ -13,8 +13,10 @@
 }
 
 .table-row-commands {
-	width: 95px;
+	width: 125px;
 }
+
+
 
 
 /***************
@@ -27,4 +29,129 @@
 textarea {
 	height: 100px;
 	resize: none;
+}
+
+h1 {
+	padding-top: 7px;
+}
+
+.bootgrid-table td {
+	padding-right: 0;
+}
+
+
+.bootgrid-table button.btn {
+	width: 50px;
+}
+
+@media screen and (min-width: 576px) {
+
+	.bootgrid-table button.btn {
+		width: 95px;
+	}
+
+	.table-row-commands {
+		width: 225px;
+	}
+
+}
+
+.bootgrid-table button b {
+	display: block;
+	font-weight: normal;
+	font-size: 75%;
+	margin-bottom: -3px;
+}
+
+.xgrid-toolbar {
+	float: right;
+	margin: 10px auto;
+}
+
+.xgrid-toolbar .input-group {
+	width: auto;
+	display: inline-flex;
+}
+
+.xgrid-toolbar .search-field {
+	-webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+	transition: width 1s;
+	width: 100px;
+}
+
+.xgrid-toolbar .btn.config {
+	margin-left: 5px;
+}
+
+.xgrid-toolbar .search-field:focus {
+		width: 200px;
+}
+
+.bootgrid-table th button {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	background: inherit;
+	border: 0;
+	text-align: left;
+	font-weight: bold;
+}
+
+.bootgrid-table th button:focus {
+	outline: 0;
+}
+
+.bootgrid-table th.text-center button {
+	text-align: center;	
+}
+
+.bootgrid-table th.text-right button {
+	text-align: right;	
+}
+
+.bootgrid-table th button span {
+	padding-top: 8px;
+}
+
+.xgrid-pagination {
+	text-align: center;
+}
+
+.xgrid-pagination .btn {
+	min-width: 35px;
+	opacity: 0.75;
+	text-shadow: none;
+	border: 0;
+	padding: .35rem .5rem;
+}
+
+.xgrid-pagination .btn:disabled {
+	cursor: not-allowed;
+	opacity: 0.75;
+}
+
+.xgrid-pagination .active {
+	font-weight: bold;
+	padding: 0 1rem;
+	opacity: 1;
+}
+
+.modal-body a {
+	transition: background-color 0.5s ease;
+}
+
+.modal-body .list-group .btn {
+	float: right;
+	margin-right: -5px;
+	padding: .05rem .5rem;
+	font-size: 80%;
+	width: 25%;
+}
+
+.table-container {
+	clear: both;
+	overflow: auto;
+	margin-bottom: 1rem;
+	box-shadow: 0 5px 15px rgba(0,0,0,.2);
 }
