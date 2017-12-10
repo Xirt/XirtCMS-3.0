@@ -21,19 +21,12 @@
 
 		}, options);
 
-		this.identifier = null;
-		this.columns = [];
-
-		this.current = 1;
-		this.filter = "";
-		this.ordering = {};
-		//this.currentRows = [];
-		this.rowCount = ($.isArray(this.options.rowCount)) ? this.options.rowCount[this.options.defaultRowCount] : this.options.rowCount;
-		//this.rows = [];
-		//this.selectedRows = [];
-		//this.sortDictionary = {};
-		//this.total = 0;
-		//this.totalPages = 0;
+		this.identifier	= null;
+		this.columns	= [];
+		this.current	= 1;
+		this.filter	= "";
+		this.ordering	= {};
+		this.rowCount	= ($.isArray(this.options.rowCount)) ? this.options.rowCount[this.options.defaultRowCount] : this.options.rowCount;
 
 	};
 
@@ -63,27 +56,27 @@
 
 				var column = {
 
-					id				: data.columnId,
-					identifier		: that.identifier == null && data.identifier || false,
-					text			: $this.text(),
-					bodyClasses		: data.cssClass || "",
+					id		: data.columnId,
+					identifier	: that.identifier == null && data.identifier || false,
+					text		: $this.text(),
+					bodyClasses	: data.cssClass || "",
 					headerClasses	: data.headerCssClass || "",
-					formatter		: that.options.formatters[data.columnId] ? true : false,
-					order			: (that.options.sortable && (data.order === "asc" || data.order === "desc")) ? data.order : null,
-					sortable		: !(data.sortable === false),
-					visible			: that._checkColumnVisibility(data.visible),
-					hidable			: !(data.visibleInSelection === false), // default: true
+					formatter	: that.options.formatters[data.columnId] ? true : false,
+					order		: (that.options.sortable && (data.order === "asc" || data.order === "desc")) ? data.order : null,
+					sortable	: !(data.sortable === false),
+					visible		: that._checkColumnVisibility(data.visible),
+					hidable		: !(data.visibleInSelection === false),
 
 				};
 
 				// Make sure there is an identifier
-	            if (column.identifier || !that.identifier) {
-	                that.identifier = column.id;
-	            }
+				if (column.identifier || !that.identifier) {
+					that.identifier = column.id;
+				}
 
-	            if (column.order != null) {
-	            	that.setOrdering(column.id, column.order);
-	            }
+				if (column.order != null) {
+					that.setOrdering(column.id, column.order);
+				}
 
 				that.columns.push(column);
 				$this.remove();
@@ -238,8 +231,8 @@
 			// Optional formaters
 			var id = options["id"];
 			if (options.formatter && $.type(this.options.formatters[id]) === "function") {
-            	cell.html(this.options.formatters[id](row.data(this.identifier), value));
-            }
+				cell.html(this.options.formatters[id](row.data(this.identifier), value));
+			}
 
 		},
 
@@ -258,7 +251,7 @@
 			});
 
 			// Create button "current"
-			var current = this._createPaginationItem("page " + page + " of " + Math.ceil(total / rowCount), true,  false);
+			var current = this._createPaginationItem("page " + page + " of " + Math.ceil(total / rowCount), true, false);
 			current.on("click", function() {
 				that._onPageSwitch(page);
 			});
@@ -291,14 +284,14 @@
 			return button;
 
 		},
-		
+
 		_wrapTable: function() {
 
 			$(document.createElement("div"))
 				.addClass("table-container")
 				.insertBefore(this.element)
 				.append(this.element);
-			
+
 		},
 
 		_onSort: function(e) {
@@ -380,6 +373,19 @@
 
 		},
 
+		isVisible: function(column) {
+
+			var result = false;
+			$.each(this.columns, function(key, candidate) {
+				if (candidate.id == column && candidate.visible) {
+					return (result = true);
+				}
+			});
+
+			return result;
+
+		},
+
 		_checkColumnVisibility: function(value) {
 
 			if (typeof value == 'number') {
@@ -401,13 +407,13 @@
 			title: "Filter settings",
 			message: null,
 			buttons: [{
-				id		: "ok",
+				id	: "ok",
 				type	: "warning",
 				label	: "Ok"
 
 			},
 			{
-				id		: "close",
+				id	: "close",
 				type	: "default",
 				label	: "Cancel"
 
@@ -416,21 +422,22 @@
 		});
 
 	};
-	
+
 	$.XirtGridModal.prototype = {
-			
+
 		init : function() {
 
 			var that = this;
-			
+
 			this.$modal = (new $.XirtModal(this.$element)).init();
-			var $modalBody = this.$modal.element.find(".modal-body").first().empty();
+			var $modalBody = this.getModalBody().empty();
 			this._renderColumnSelector($modalBody, this.$grid.columns);
+			this._renderCountSelector($modalBody, this.$grid);
 
 			// Activate modal button "ok"
 			this.$element.find(".modal-footer .btn-ok").off("click").on("click", function() {
 
-				//that.setRowCount("1");
+				that.$grid.setRowCount($modalBody.find("select").val());
 				$.each($modalBody.find("a"), function() {
 					that.$grid.setVisibility($(this).data("id"), $(this).hasClass("list-group-item-primary"));
 				});
@@ -442,31 +449,36 @@
 
 			// Activate modal button "close"
 			this.$element.find(".modal-footer .btn-close").off("click").on("click", function() {
+				that.reset();
 				that.hide();
 			});
-			
+
 			return this;
-			
+
 		},
-		
+
 		show: function() {
-			
+
 			this.$modal.show();
 			return this;
-			
+
 		},
-		
+
 		hide: function() {
-			
+
 			this.$modal.hide();
 			return this;
-			
+
 		},
-		
+
+		getModalBody: function() {
+			return this.$modal.element.find(".modal-body").first();
+		},
+
 		_renderColumnSelector: function(container, columns) {
-			
-			var elementContainer = ModalHelper.getFormElementContainer("toggle", "Visiblity");
-			var groupContainer =  $(document.createElement("div")).addClass("list-group");
+
+			var elementContainer = ModalHelper.getFormElementContainer("toggle", "Column visiblity");
+			var groupContainer = $(document.createElement("div")).addClass("list-group");
 			$.each(columns, function(key, column) {
 
 				if (!column.hidable) {
@@ -492,16 +504,60 @@
 
 			// Activate visibility buttons
 			container.find("button").on("click", function() {
-				
+
 				$(this).parent().toggleClass("list-group-item-primary");
 				$(this).text($(this).parent().hasClass("list-group-item-primary") ? "hide" : "show");
-			
+
 			});
-			
+
 		},
-			
+
+		_renderCountSelector: function(container, $grid) {
+
+			var elementContainer = ModalHelper.getFormElementContainer("count", "Rows per page");
+			var groupContainer = $(document.createElement("select")).addClass("form-control");
+			$.each($grid.options.rowCount, function(key, count) {
+
+				var item = $(document.createElement("option"))
+					.text(count < 0 ? "All" : count)
+					.appendTo(groupContainer)
+					.val(count);
+
+			});
+
+			elementContainer.find(".input-container").append(groupContainer.val($grid.rowCount));
+			container.append(elementContainer);
+
+		},
+
+		reset: function() {
+
+			var $that = this;
+
+			// Reverting row count
+			this.getModalBody().find("select").val(this.$grid.rowCount);
+
+			// Reverting visibility
+			$.each(this.getModalBody().find("button"), function() {
+
+				var $button = $(this);
+
+				// Revert unconfirmed hiding of column
+				if ($button.parent().hasClass("list-group-item-primary") && !$that.$grid.isVisible($button.parent().data("id"))) {
+					$button.trigger("click");
+				}
+
+				// Revert unconfirmed showing of column
+				if (!$button.parent().hasClass("list-group-item-primary") && $that.$grid.isVisible($button.parent().data("id"))) {
+					$button.trigger("click");
+				}
+
+			});
+
+		}
+
 	};
-	
+
 
 	$.fn.xgrid = function (options) {
 
