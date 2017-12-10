@@ -191,7 +191,7 @@ $(function() {
 
 		reload: function() {
 
-			this.element.bootgrid("reload");
+			this.element.xgrid("reload");
 
 		},
 
