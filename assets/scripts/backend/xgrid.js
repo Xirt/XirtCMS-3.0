@@ -150,86 +150,9 @@
 
 			});
 
-				config.on("click", function() {
-
-					var $el = new $.XirtModalObject({
-
-						type: "primary",
-						title: "Filter settings",
-						message: null,
-						buttons: [{
-							id		: "ok",
-							type	: "warning",
-							label	: "Ok"
-
-						},
-						{
-							id		: "close",
-							type	: "default",
-							label	: "Cancel"
-
-						}]
-
-					});
-
-					var $modal = (new $.XirtModal($el)).init();
-					var $modalBody = $modal.element.find(".modal-body").first().empty();
-					var visibilityContainer = ModalHelper.getFormElementContainer("toggle", "Visiblity");
-					var countContainer = ModalHelper.getFormElementContainer("count", "Row count");
-
-
-					var container =  $(document.createElement("div")).addClass("list-group");
-					$.each(that.columns, function(key, column) {
-
-						if (!column.hidable) {
-							return;
-						}
-
-						var item = $(document.createElement("a"))
-							.addClass("list-group-item list-group-item-action")
-							.addClass(column.visible ? "list-group-item-primary" : "")
-							.data("id", column.id)
-							.text(column.text)
-							.appendTo(container);
-
-						item.append($(document.createElement("button"))
-							.addClass("btn btn-sm btn-primary")
-							.attr("type", "button")
-							.text(column.visible ? "hide" : "show"));
-
-					});
-
-					visibilityContainer.find(".input-container").append(container);
-					$modalBody.append(visibilityContainer, countContainer);
-
-					// Activate visibility buttons
-					$modalBody.find("button").on("click", function() {
-						
-						$(this).parent().toggleClass("list-group-item-primary");
-						$(this).text($(this).parent().hasClass("list-group-item-primary") ? "hide" : "show");
-					
-					});
-
-					// Active modal buttons
-					$el.find(".modal-footer .btn-ok").off("click").on("click", function() {
-
-						//that.setRowCount("1");
-						$.each(container.find("a"), function() {
-							that.setVisibility($(this).data("id"), $(this).hasClass("list-group-item-primary"));
-						});
-
-						$modal.hide();
-						that._renderTable();
-
-					});
-
-					// Active modal buttons
-					$el.find(".modal-footer .btn-close").off("click").on("click", function() {
-						$modal.hide();
-					});
-
-					$modal.show();
-
+			var modal = (new $.XirtGridModal(that)).init();
+			config.on("click", function() {
+				modal.show();
 			});
 
 		},
@@ -468,6 +391,117 @@
 
 	};
 
+
+	$.XirtGridModal = function(grid) {
+
+		this.$grid = grid;
+		this.$element = new $.XirtModalObject({
+
+			type: "primary",
+			title: "Filter settings",
+			message: null,
+			buttons: [{
+				id		: "ok",
+				type	: "warning",
+				label	: "Ok"
+
+			},
+			{
+				id		: "close",
+				type	: "default",
+				label	: "Cancel"
+
+			}]
+
+		});
+
+	};
+	
+	$.XirtGridModal.prototype = {
+			
+		init : function() {
+
+			var that = this;
+			
+			this.$modal = (new $.XirtModal(this.$element)).init();
+			var $modalBody = this.$modal.element.find(".modal-body").first().empty();
+			this._renderColumnSelector($modalBody, this.$grid.columns);
+
+			// Activate modal button "ok"
+			this.$element.find(".modal-footer .btn-ok").off("click").on("click", function() {
+
+				//that.setRowCount("1");
+				$.each($modalBody.find("a"), function() {
+					that.$grid.setVisibility($(this).data("id"), $(this).hasClass("list-group-item-primary"));
+				});
+
+				that.hide();
+				that.$grid._renderTable();
+
+			});
+
+			// Activate modal button "close"
+			this.$element.find(".modal-footer .btn-close").off("click").on("click", function() {
+				that.hide();
+			});
+			
+			return this;
+			
+		},
+		
+		show: function() {
+			
+			this.$modal.show();
+			return this;
+			
+		},
+		
+		hide: function() {
+			
+			this.$modal.hide();
+			return this;
+			
+		},
+		
+		_renderColumnSelector: function(container, columns) {
+			
+			var elementContainer = ModalHelper.getFormElementContainer("toggle", "Visiblity");
+			var groupContainer =  $(document.createElement("div")).addClass("list-group");
+			$.each(columns, function(key, column) {
+
+				if (!column.hidable) {
+					return;
+				}
+
+				var item = $(document.createElement("a"))
+					.addClass("list-group-item list-group-item-action")
+					.addClass(column.visible ? "list-group-item-primary" : "")
+					.data("id", column.id)
+					.text(column.text)
+					.appendTo(groupContainer);
+
+				item.append($(document.createElement("button"))
+					.addClass("btn btn-sm btn-primary")
+					.attr("type", "button")
+					.text(column.visible ? "hide" : "show"));
+
+			});
+
+			elementContainer.find(".input-container").append(groupContainer);
+			container.append(elementContainer);
+
+			// Activate visibility buttons
+			container.find("button").on("click", function() {
+				
+				$(this).parent().toggleClass("list-group-item-primary");
+				$(this).text($(this).parent().hasClass("list-group-item-primary") ? "hide" : "show");
+			
+			});
+			
+		},
+			
+	};
+	
 
 	$.fn.xgrid = function (options) {
 
