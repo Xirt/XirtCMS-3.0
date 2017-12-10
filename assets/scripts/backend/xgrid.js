@@ -93,6 +93,10 @@
 			return this.element.find("tbody");
 		},
 
+		_getFooterContainer: function() {
+			return this.element.find("tfoot");
+		},
+
 		_renderTable: function() {
 
 			var that = this;
@@ -102,6 +106,7 @@
 				that._renderTableHeaderCell(primaryHeader, column);
 			});
 
+			that._updateTableFooter(primaryHeader.find("th").length);
 			this.reload();
 
 		},
@@ -153,14 +158,19 @@
 		_renderTableHeaderCell: function(row, options) {
 
 			// Skip obsolete items
-			if (!options.visible) {
-				return;
+			if (options.visible) {
+
+				var cell = $(document.createElement("th"))
+					.addClass(options.headerClasses)
+					.toggle(options.visible)
+					.appendTo(row);
+
 			}
 
-			var cell = $(document.createElement("th"))
-				.addClass(options.headerClasses)
-				.toggle(options.visible)
-				.appendTo(row);
+			// Skip obsolete items
+			if (!options.visible || !options.text.length) {
+				return;
+			}
 
 			var button =$(document.createElement("button"))
 				.addClass("column-header-anchor")
@@ -173,7 +183,7 @@
 				.addClass("icon fa")
 				.appendTo(button);
 
-			 if (options.sortable) {
+			if (options.sortable) {
 
 				 button.addClass("sortable");
 				 if (this.ordering[options.id]) {
@@ -232,6 +242,15 @@
 			var id = options["id"];
 			if (options.formatter && $.type(this.options.formatters[id]) === "function") {
 				cell.html(this.options.formatters[id](row.data(this.identifier), value));
+			}
+
+		},
+
+		_updateTableFooter: function(tableColumnCount) {
+
+			var footerColumnCount = this._getFooterContainer().find("tr > td").length;
+			if (footerColumnCount && footerColumnCount < tableColumnCount) {
+				this._getFooterContainer().find("tr > td:last").attr("colspan", tableColumnCount - footerColumnCount + 1);
 			}
 
 		},
@@ -564,7 +583,16 @@
 		this.each(function(index) {
 
 			var $this = $(this);
-			(new $.XirtGrid($this, options)).init();
+
+			var instance = $this.data("xgrid");
+			if (instance && $.type(options) == "string") {
+
+				instance[options].apply(instance);
+				return;
+
+			}
+
+			$this.data("xgrid", (instance = new $.XirtGrid($this, options)).init());
 
 		});
 
