@@ -142,7 +142,7 @@ class ArticleBlocksModel extends XCMS_Model {
      *
      * @param   int         $id             The article ID to remove blocks for
      */
-    public function remove($ref = null) {
+    public function remove($id = null) {
 
         if (!is_int($id)) {
 
