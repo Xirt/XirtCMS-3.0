@@ -29,7 +29,12 @@ class Contact extends XCMS_Controller {
      *
      */
     public function index() {
-        $this->load->view("form");
+        show_404();
+    }
+    
+    
+    public function show_form() {
+        //$this->load->view("form");
     }
 
 
