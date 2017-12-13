@@ -30,7 +30,7 @@ tinyMCE_Full = {
 
 		{
 			title: "Lightbox Image",
-			value: "nofollow lightbox"
+			value: "lightbox nofollow"
 		}
 
 	],
