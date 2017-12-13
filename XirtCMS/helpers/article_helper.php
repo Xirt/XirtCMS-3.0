@@ -11,15 +11,33 @@
 class ArticleHelper {
 
     /**
-     * Attempts to return the summary section from the given html text
+     * Returns the output HTML for the given article
      *
-     * @param   String      $html           The html of the article to analyze
+     * @param   Object      $article        The ArticleModel for which to return the HTML
+     * @return  String                      The content as HTML
+     */
+    public static function getContent(ArticleModel $article) {
+
+        $output = array();
+        foreach ($article->getArticleBlocks()->toArray() as $block) {
+            $output[] = $block->get("content");
+        }
+
+        return implode("", $output);
+
+    }
+
+
+    /**
+     * Attempts to return the summary section from the given article blocks
+     *
+     * @param   Object      $model          The model containing the article blocks for this article
      * @return  mixed                       The summary section contents on success, null otherwise
      */
-    public static function getSummary($html) {
+    public static function getSummary(ArticleModel $article) {
 
         $doc = new DOMDocument("1.0", "utf-8");
-        if (@$doc->loadHTML($html) && ($summary = $doc->getElementById("introduction"))) {
+        if (@$doc->loadHTML(ArticleHelper::getContent($article)) && ($summary = $doc->getElementById("introduction"))) {
             return strip_tags($summary->nodeValue);
         }
 

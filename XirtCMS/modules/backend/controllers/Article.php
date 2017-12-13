@@ -55,12 +55,12 @@ class Article extends XCMS_Controller {
         $data = (Object)array(
             "id"           => $this->article->get("id"),
             "title"        => $this->article->get("title"),
-            "content"      => $this->article->get("content"),
             "published"    => $this->article->get("published"),
             "dt_publish"   => $this->article->get("dt_publish"),
             "dt_unpublish" => $this->article->get("dt_unpublish"),
             "categories"   => $this->article->getCategories(),
-            "attributes"   => $this->article->getAttributes()
+            "attributes"   => $this->article->getAttributes(),
+            "content"      => ArticleHelper::getContent($this->article)
         );
 
         // ...and output it as JSON
@@ -129,8 +129,14 @@ class Article extends XCMS_Controller {
             }
 
             // Set & save new updates
-            $this->article->set("title",   $this->input->post("article_title"));
-            $this->article->set("content", $this->input->post("article_content"));
+            $this->article->set("title",   $this->input->post("article_title"));            
+            $this->article->setArticleBlocks((new ArticleBlockModel())->set((object)[
+                "ordering" => 0,
+                "ref_id"   => $id,
+                "settings" => "{}",
+                "type"     => "content",
+                "content"  => $this->input->post("article_content")
+            ]), true);
             $this->article->validate();
             $this->article->save();
 

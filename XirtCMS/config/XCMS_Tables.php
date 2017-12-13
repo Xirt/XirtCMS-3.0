@@ -13,6 +13,7 @@ class XCMS_Tables {
 	const TABLE_ARTICLES			 = "xcms_articles";
 	const TABLE_ARTICLES_ATTR		 = "xcms_articles_attributes";
 	const TABLE_ARTICLES_CATEGORIES	 = "xcms_articles_categories";
+	const TABLE_ARTICLES_BLOCKS      = "xcms_articles_blocks";
 	const TABLE_ARTICLES_COMMENTS	 = "xcms_articles_comments";
 	const TABLE_CATEGORIES			 = "xcms_categories";
 	const TABLE_CATEGORIES_RELATIONS = "xcms_categories_relations";

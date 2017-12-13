@@ -44,6 +44,7 @@ class ArticlesModel extends XCMS_Model {
         if ($this->_loadArticles()) {
 
             $this->_loadUsers();
+            $this->_loadContent();
             $this->_loadAttributes();
             $this->_parseAndFilterArticles();
 
@@ -92,6 +93,23 @@ class ArticlesModel extends XCMS_Model {
 
 
     /**
+     * Loads content for all items currently in the list
+     */
+    protected function _loadContent() {
+
+        $query = $this->_buildContentQuery()->get(XCMS_Tables::TABLE_ARTICLES_BLOCKS);
+        foreach ($query->result() as $row) {
+
+            $this->_list[$row->ref_id]->setArticleBlocks(
+                (new ArticleBlockModel())->set((array)$row)
+            );
+
+        }
+
+    }
+
+
+    /**
      * Loads users for all items currently in the list
      */
     protected function _loadUsers() {
@@ -131,11 +149,11 @@ class ArticlesModel extends XCMS_Model {
     protected function _parseAndFilterArticles() {
 
         foreach ($this->_list as $article) {
-            
+
             XCMS_Hooks::execute("articles.parse_article", array(
                 &$article
             ));
-            
+
         }
 
     }
@@ -162,6 +180,29 @@ class ArticlesModel extends XCMS_Model {
         XCMS_Hooks::execute("articles.build_article_query", array(
             &$this, &$this->db, $filterOnly
         ));
+
+        return $this->db;
+
+    }
+
+
+    /**
+     * Creates query (using CI QueryBuilder) for retrieving article blocks (content)
+     *
+     * @return  Object                      CI Database Instance for chaining purposes
+     */
+    protected function _buildContentQuery() {
+
+        $articles = array();
+        foreach ($this->_list as $article) {
+            $articles[] = $article->get("id");
+        }
+
+        // Create requested query
+        $this->db->where_in("ref_id", $articles);
+        XCMS_Hooks::execute("articles.build_content_query", array(
+            &$this, &$this->db, $articles)
+        );
 
         return $this->db;
 

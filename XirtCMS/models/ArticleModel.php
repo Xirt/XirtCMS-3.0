@@ -15,7 +15,7 @@ class ArticleModel extends XCMS_Model {
      * @var array
      */
     protected $_attr = array(
-        "id", "title", "content", "author_id", "dt_created", "published", "dt_publish", "dt_unpublish", "version"
+        "id", "title", "author_id", "dt_created", "published", "dt_publish", "dt_unpublish", "version"
     );
 
 
@@ -51,9 +51,11 @@ class ArticleModel extends XCMS_Model {
         // Load models
         $this->load->model("UserModel", false);
         $this->load->model("AttributesModel", false);
+        $this->load->model("ArticleBlocksModel", false);
 
         // Initialize default attributes
         $this->_author = new UserModel();
+        $this->_content = new ArticleBlocksModel();
         $this->_attributes = (new AttributesModel())->init(
             XCMS_Tables::TABLE_ARTICLES_ATTR, "article"
         );
@@ -76,6 +78,7 @@ class ArticleModel extends XCMS_Model {
 
             // Populate model
             $this->set($result->row());
+            $this->_content->load($id);
 
             if ($extArticle) {
 
@@ -98,7 +101,7 @@ class ArticleModel extends XCMS_Model {
     /**
      * Validates the internal integrity of the model
      *
-     * @throws  InputException              Exception in case validation failed
+     * @throws  Exception                   Exception in case validation failed
      * @return  boolean                     Always true
      */
     public function validate() {
@@ -198,6 +201,43 @@ class ArticleModel extends XCMS_Model {
 
 
     /**
+     * Setter for article content (blocks)
+     *
+     * @param   Object      $content        The ArticleBlocksModel to set as new content
+     * @param   boolean     $rest           Toggles between adding vs. resetting of article blocks
+     * @return  Object                      Always this instance
+     */
+    public function setArticleBlocks($content, $reset = false) {
+
+        if (get_class($content) == "ArticleBlocksModel") {
+
+            $this->_content = $content;
+            return $this;
+
+        } else if ($reset) {
+
+            $this->_content = new ArticleBlocksModel();
+
+        }
+
+        $this->_content->add($content);
+
+        return $this;
+
+    }
+
+
+    /**
+     * Getter for article content (blocks)
+     *
+     * @return  object                      The ArticleBlocksModel for this article
+     */
+    public function getArticleBlocks() {
+        return $this->_content;
+    }
+
+
+    /**
      * Setter for article categories
      *
      * @param   array       $attr           The categories to add to this article
@@ -278,6 +318,7 @@ class ArticleModel extends XCMS_Model {
 
         $this->db->replace(XCMS_Tables::TABLE_ARTICLES, $this->_data);
         $this->_attributes->save();
+        $this->_content->save();
         $this->_saveCategories();
 
     }

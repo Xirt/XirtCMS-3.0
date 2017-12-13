@@ -16,7 +16,7 @@ class Articles extends XCMS_Controller {
      */
     const ARTICLE_URL = "article/view/";
 
-    
+
     /*
      * CONSTRUCTOR
      * Instantiates controller with required helpers, libraries and models
@@ -50,10 +50,10 @@ class Articles extends XCMS_Controller {
         foreach ($this->_retrieveArticles($category) as $article) {
 
             // Enrich article
-            $article = $article->getObject();
-            $article->link = $this->_getLink($article->id);
-            $article->introduction = $this->_getIntroduction($article->content);
-            $articles[] = $article;
+            $articleObj = $article->getObject();
+            $articleObj->link = $this->_getLink($articleObj->id);
+            $articleObj->introduction = $this->_getIntroduction($article);
+            $articles[] = $articleObj;
 
         }
 
@@ -127,7 +127,7 @@ class Articles extends XCMS_Controller {
      * @return  Array                       List containing all loaded articles
      */
     private function _retrieveArticles($category = null) {
-        
+
         $articles = (new ExtArticlesModel())
             ->set("sorting",  $this->config("sorting") ?? "dt_publish DESC")
             ->set("limit",    $this->config("limit"))
@@ -135,21 +135,21 @@ class Articles extends XCMS_Controller {
             ->load();
 
         return $articles->toArray();
-        
+
     }
 
 
     /**
      * Retrieves the introduction part of the given content
      *
-     * @param   String      $content        The context text out of which to retrieve the summary
+     * @param   String      $article        The context text out of which to retrieve the summary
      * @return  String                      The introduction part of the content
      */
-    private function _getIntroduction($content) {
+    private function _getIntroduction($article) {
 
         // Retrieve introduction
-        if (!($introduction = strip_tags(ArticleHelper::getSummary($content)))) {
-            $introduction = strip_tags($content);
+        if (!($introduction = strip_tags(ArticleHelper::getSummary($article)))) {
+            $introduction = strip_tags(ArticleHelper::getContent($article));
         }
 
         // Reduce introduction size (optional)

@@ -51,8 +51,8 @@ class Article extends XCMS_Controller {
         // Show content
         $this->_setHeaders($this->article);
         $this->load->view("default.tpl", array(
-            "author"       => $this->_getAuthorObject($this->article),
-            "article"      => $this->_getArticleObject($this->article),
+            "author"       => $this->_getAuthorObject(),
+            "article"      => $this->_getArticleObject(),
             "css_name"     => $this->config("css_name", ""),
             "show_title"   => $this->config("show_title", true),
             "show_author"  => $this->config("show_author", false),
@@ -87,7 +87,7 @@ class Article extends XCMS_Controller {
         }
 
         // Check article publish status
-        if (!ArticleHelper::isArticlePublished($this->article)) {
+        if (!ArticleHelper::isPublished($this->article)) {
 
             log_message("info", "[XCMS] Requested article '{$id}' has been unpublished.");
             return false;
@@ -105,12 +105,13 @@ class Article extends XCMS_Controller {
      * @param   Object      $article        Reference to the ArticleModel to use for this request
      * @return  Object                      Object containing requested details
      */
-    private function _getArticleObject($article) {
+    private function _getArticleObject() {
 
         // Prepare article
         $article = $this->article->getObject();
+        $article->content = ArticleHelper::getContent($this->article);
         $article->dt_created = ArticleHelper::getPublished($this->article);
-        
+
         // Execute optional hooks
         XCMS_Hooks::execute("article.parse",
             array(&$article->content)
@@ -124,20 +125,21 @@ class Article extends XCMS_Controller {
     /**
      * Retrieves retrieve author name for the given author
      *
-     * @param   Object      $author         Reference to the UserModel to use for this request
      * @return  String                      The name to display according to current configuration
      */
-    private function _getAuthorName($author) {
+    private function _getAuthorName() {
+
+        $article = $this->article;
 
         if ($this->config("use_username")) {
-            return $author->get("username");
+            return $article->get("username");
         }
 
-        if ($name = $author->getAttribute("name_display", true, $author->get("username"))) {
+        if ($name = $article->getAttribute("name_display", true, $article->get("username"))) {
             return $name;
         }
 
-        return $author->get("username");
+        return $article->get("username");
 
     }
 
@@ -145,14 +147,13 @@ class Article extends XCMS_Controller {
     /**
      * Retrieves the author details required for page generation
      *
-     * @param   Object      $article        Reference to the ArticleModel to use for this request
      * @return  Object                      Object containing requested details
      */
-    private function _getAuthorObject($article) {
+    private function _getAuthorObject() {
 
         return (object) [
-            "id"   => $article->getAuthor()->get("id"),
-            "name" => $this->_getAuthorName($article->getAuthor())
+            "id"   => $this->article->getAuthor()->get("id"),
+            "name" => $this->_getAuthorName($this->article->getAuthor())
         ];
 
     }
