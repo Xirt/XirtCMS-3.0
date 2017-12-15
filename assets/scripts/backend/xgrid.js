@@ -3,11 +3,11 @@
 	$.XirtGrid = function(element, options) {
 
 		// Identify containers
-		this.element = $(element);
+		this.$table = $(element);
 
 		this.pagination = $(document.createElement("nav"))
 			.addClass("xgrid-pagination")
-			.insertAfter(this.element);
+			.insertAfter(this.$table);
 
 		this.options = $.extend(true, {
 
@@ -24,11 +24,21 @@
 		this.identifier	= null;
 		this.columns	= [];
 		this.current	= 1;
-		this.filter	= "";
+		this.filter		= "";
 		this.ordering	= {};
 		this.rowCount	= ($.isArray(this.options.rowCount)) ? this.options.rowCount[this.options.defaultRowCount] : this.options.rowCount;
 
+		this.templates = {
+
+			// Toolbar templates
+			"toolbarContainer" : '<div class="xgrid-toolbar"></div>',
+			"toolbarSearch"    : '<div class="input-group"><span class="icon fa input-group-addon fa-search"></span><input class="search-field form-control form-control-sm" placeholder="Search..." type="text"></div>',
+			"toolbarConfig"    : '<button class="btn btn-primary btn-sm config"><span class="fa fa-gears"></span></button>'
+
+		};
+
 	};
+
 
 	$.XirtGrid.prototype = {
 
@@ -46,36 +56,35 @@
 		_initialize: function() {
 
 			var that = this;
-			var primaryHeader = this._getHeaderContainer();
 
-			$.each(primaryHeader.children(), function() {
+			// Retrieve initial column properties
+			$.each(this._getHeaderContainer().children(), function() {
 
 				var $this = $(this);
 				var data = $this.data();
 
-
+				// Initialize
 				var column = {
 
-					id		: data.columnId,
-					identifier	: that.identifier == null && data.identifier || false,
-					text		: $this.text(),
-					bodyClasses	: data.cssClass || "",
+					id				: data.columnId,
+					label			: $this.text(),
+					bodyClasses		: data.cssClass || "",
 					headerClasses	: data.headerCssClass || "",
-					formatter	: that.options.formatters[data.columnId] ? true : false,
-					order		: (that.options.sortable && (data.order === "asc" || data.order === "desc")) ? data.order : null,
-					sortable	: !(data.sortable === false),
-					visible		: that._checkColumnVisibility(data.visible),
-					hidable		: !(data.visibleInSelection === false),
+					isSortable		: !(data.sortable === false),
+					isSelectable	: !(data.visibleInSelection === false),
+					isVisible		: that._checkColumnVisibility(data.visible),
+					formatter		: that.options.formatters[data.columnId] ? true : false,
 
 				};
 
-				// Make sure there is an identifier
-				if (column.identifier || !that.identifier) {
+				// [Optional] Set column as identifier
+				if (data.identifier || !that.identifier) {
 					that.identifier = column.id;
 				}
 
-				if (column.order != null) {
-					that.setOrdering(column.id, column.order);
+				// [Optional] Set ordering for this column
+				if (!(data.sortable === false) && data.order) {
+					that.setOrdering(column.id, (data.order == "asc" ? "desc" : "asc"));
 				}
 
 				that.columns.push(column);
@@ -86,15 +95,39 @@
 		},
 
 		_getHeaderContainer: function() {
-			return this.element.find("thead > tr").first();
+			return this.$table.find("thead > tr").first();
 		},
 
 		_getBodyContainer: function() {
-			return this.element.find("tbody");
+			return this.$table.find("tbody");
 		},
 
 		_getFooterContainer: function() {
-			return this.element.find("tfoot");
+			return this.$table.find("tfoot");
+		},
+
+		_renderToolbar: function() {
+
+			var that = this;
+
+			// To be rewritten
+			var $toolbar = $(this.templates.toolbarContainer)
+				.append($(this.templates.toolbarSearch))
+				.append($(this.templates.toolbarConfig))
+				.insertBefore(this.$table);
+
+			$toolbar.find(".search-field").on("keyup", function() {
+
+				that.setFilter($(this).val());
+				that.reload();
+
+			});
+
+			var modal = (new $.XirtGridModal(that)).init();
+			$toolbar.find(".btn.config").on("click", function() {
+				modal.show();
+			});
+
 		},
 
 		_renderTable: function() {
@@ -111,64 +144,19 @@
 
 		},
 
-		_renderToolbar: function() {
-
-			var that = this;
-
-			var toolbar = $(document.createElement("div"))
-				.insertBefore(this.element)
-				.addClass("xgrid-toolbar");
-
-			var group = $(document.createElement("div"))
-				.addClass("input-group")
-				.appendTo(toolbar);
-
-			$(document.createElement("span"))
-				.addClass("icon fa input-group-addon fa-search")
-				.appendTo(group);
-
-			var search = $(document.createElement("input"))
-				.addClass("search-field form-control form-control-sm")
-				.attr("placeholder", "Search...")
-				.attr("type", "text")
-				.appendTo(group);
-
-			var config = $(document.createElement("button"))
-				.addClass("btn btn-primary btn-sm config")
-				.appendTo(toolbar);
-
-			$(document.createElement("span"))
-				.addClass("fa fa-gears")
-				.appendTo(config);
-
-			search.on("keyup", function() {
-
-				that.setFilter($(this).val());
-				that.reload();
-
-			});
-
-			var modal = (new $.XirtGridModal(that)).init();
-			config.on("click", function() {
-				modal.show();
-			});
-
-		},
-
 		_renderTableHeaderCell: function(row, options) {
 
 			// Skip obsolete items
-			if (options.visible) {
+			if (options.isVisible) {
 
 				var cell = $(document.createElement("th"))
 					.addClass(options.headerClasses)
-					.toggle(options.visible)
+					.toggle(options.isVisible)
 					.appendTo(row);
 
 			}
 
-			// Skip obsolete items
-			if (!options.visible || !options.text.length) {
+			if (!options.isVisible || !options.label.length) {
 				return;
 			}
 
@@ -176,14 +164,14 @@
 				.addClass("column-header-anchor")
 				.data("id", options.id)
 				.attr("tabindex", -1)
-				.text(options.text)
+				.text(options.label)
 				.appendTo(cell);
 
 			var arrow = $(document.createElement("span"))
 				.addClass("icon fa")
 				.appendTo(button);
 
-			if (options.sortable) {
+			if (options.isSortable) {
 
 				 button.addClass("sortable");
 				 if (this.ordering[options.id]) {
@@ -228,7 +216,7 @@
 		_renderTableBodyCell: function(row, options, value) {
 
 			// Skip obsolete items
-			if (!options.visible) {
+			if (!options.isVisible) {
 				return;
 			}
 
@@ -308,8 +296,8 @@
 
 			$(document.createElement("div"))
 				.addClass("table-container")
-				.insertBefore(this.element)
-				.append(this.element);
+				.insertBefore(this.$table)
+				.append(this.$table);
 
 		},
 
@@ -382,11 +370,11 @@
 			this.filter = filter;
 		},
 
-		setVisibility(column, visible) {
+		setVisibility(column, visibility) {
 
 			$.each(this.columns, function(key, candidate) {
 				if (candidate.id == column) {
-					candidate.visible = visible;
+					candidate.isVisible = visibility;
 				}
 			});
 
@@ -396,7 +384,7 @@
 
 			var result = false;
 			$.each(this.columns, function(key, candidate) {
-				if (candidate.id == column && candidate.visible) {
+				if (candidate.id == column && candidate.isVisible) {
 					return (result = true);
 				}
 			});
@@ -500,21 +488,21 @@
 			var groupContainer = $(document.createElement("div")).addClass("list-group");
 			$.each(columns, function(key, column) {
 
-				if (!column.hidable) {
+				if (!column.isSelectable) {
 					return;
 				}
 
 				var item = $(document.createElement("a"))
 					.addClass("list-group-item list-group-item-action")
-					.addClass(column.visible ? "list-group-item-primary" : "")
+					.addClass(column.isVisible ? "list-group-item-primary" : "")
 					.data("id", column.id)
-					.text(column.text)
+					.text(column.label)
 					.appendTo(groupContainer);
 
 				item.append($(document.createElement("button"))
 					.addClass("btn btn-sm btn-primary")
 					.attr("type", "button")
-					.text(column.visible ? "hide" : "show"));
+					.text(column.isVisible ? "hide" : "show"));
 
 			});
 
