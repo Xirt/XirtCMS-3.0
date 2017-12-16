@@ -26,6 +26,7 @@ class Articles extends XCMS_Controller {
         parent::__construct();
 
         // Load helpers
+        $this->load->helper("url");
         $this->load->helper("route");
         $this->load->helper("article");
 
@@ -33,6 +34,8 @@ class Articles extends XCMS_Controller {
         $this->load->model("ArticlesModel", false);
         $this->load->model("ExtArticlesModel", "articles");
 
+        RouteHelper::init();
+        
     }
 
 
@@ -43,32 +46,56 @@ class Articles extends XCMS_Controller {
      */
     public function index($category = null) {
 
-        RouteHelper::init();
-
         // Populate models
         $articles = array();
         foreach ($this->_retrieveArticles($category) as $article) {
-
-            // Enrich article
-            $articleObj = $article->getObject();
-            $articleObj->link = $this->_getLink($articleObj->id);
-            $articleObj->introduction = $this->_getIntroduction($article);
-            $articles[] = $articleObj;
-
+            $articles[] = $this->_createArticleObject($article, false);
         }
-
+        
         $this->load->view("default.tpl", array(
             "show_title" => $this->config("show_title", true),
             "css_name"   => $this->config("css_name", ""),
-            "title"      => $this->_getTitle(),
+            "title"      => $this->_getPageTitle(),
+            "url"        => $this->_getPageURL(),
             "articles"   => $articles
         ));
-
+            
+    }
+    
+    
+    /**
+     * Shows all articles or all articles in given category as RSS feed
+     *
+     * @param   int         $category       The ID of the category to retrieve
+     */
+    public function rss($category = null) {
+        
+        $this->setConfig("max_length", 500);
+        
+        // Populate models
+        $articles = array();
+        foreach ($this->_retrieveArticles($category) as $article) {
+            $articles[] = $this->_createArticleObject($article, true);
+        }
+        
+        // Disable default template...
+        XCMS_Config::set("USE_TEMPLATE", "FALSE");
+        
+        // ... and show content
+        $this->output->set_content_type("application/rss+xml");        
+        $this->load->view("rss.tpl", array(
+            "show_title" => $this->config("show_title", true),
+            "css_name"   => $this->config("css_name", ""),
+            "title"      => $this->_getPageTitle(),
+            "url"        => $this->_getPageURL(),
+            "articles"   => $articles
+        ));
+        
     }
 
 
     /**
-     * Shows all articles
+     * ALTERNATIVE: Shows all articles
      */
     public function all() {
         $this->index();
@@ -76,7 +103,7 @@ class Articles extends XCMS_Controller {
 
 
     /**
-     * Shows all articles in the requested category
+     * ALTERNATIVE: Shows all articles in the requested category
      *
      * @param   int         $category       The ID of the category to retrieve
      */
@@ -92,7 +119,7 @@ class Articles extends XCMS_Controller {
      *
      * @return  String                      The introduction part of the content
      */
-    private function _getTitle() {
+    private function _getPageTitle() {
 
         $conf = $this->router->module_config;
         $query = $this->db->get_where(XCMS_Tables::TABLE_MODULES, array(
@@ -118,6 +145,16 @@ class Articles extends XCMS_Controller {
         return $title;
 
     }
+    
+    
+    /**
+     * Retrieves the URL of the current page
+     *
+     * @return  String                      The URL for the current page
+     */
+    private function _getPageURL() {
+        return current_url();
+    }
 
 
     /**
@@ -137,12 +174,44 @@ class Articles extends XCMS_Controller {
         return $articles->toArray();
 
     }
+    
+    
+    /**
+     * Creates object with article details for given article and output format
+     *
+     * @param   Object      $category       The ArticleModel for which to create the Object
+     * @param   boolean     $rss            Toggless between regular and RSS format output
+     * @return  Object                      The created Object
+     */
+    private function _createArticleObject($article, $rss = false) {
+
+        $obj = $article->getObject();
+        
+        
+        if ($rss) {
+            
+            $obj->intro   = htmlspecialchars($this->_getIntroduction($article));
+            $obj->title   = htmlspecialchars($obj->title);
+            $obj->link    = base_url() . $this->_getLink($obj->id);
+            $obj->pubDate = $this->_getPublishDate($article);
+            $obj->guid    = $this->_getGUID($obj->id);
+            
+        } else {
+            
+            $obj->intro   = htmlspecialchars($this->_getIntroduction($article));
+            $obj->link    = $this->_getLink($obj->id);
+            
+        }
+        
+        return $obj;
+        
+    }
 
 
     /**
      * Retrieves the introduction part of the given content
      *
-     * @param   String      $article        The context text out of which to retrieve the summary
+     * @param   String      $article        The ArticleModel for which to retrieve the summary
      * @return  String                      The introduction part of the content
      */
     private function _getIntroduction($article) {
@@ -177,6 +246,34 @@ class Articles extends XCMS_Controller {
 
         return RouteHelper::getByTarget(self::ARTICLE_URL . $id, $config)->public_url;
 
+    }
+    
+    
+    /**
+     * Retrieves the GUID for the given article
+     *
+     * @param   int         $id             The article ID for which the link is requested
+     * @return  String                      The GUID (hashed MD5 value) for the given article
+     */
+    private function _getGUID($id) {
+        return md5(self::ARTICLE_URL . $id);
+    }
+    
+    
+    /**
+     * Retrieves the publishing date for the given article
+     *
+     * @param   Object      $article        The ArticleModel for which to retrieve the publishing date
+     * @return  Object                      The DateTime publishing date
+     */
+    private function _getPublishDate($article) {
+        
+        if (!$pubDate = ArticleHelper::getPublished($article)) {
+            $pubDate = new DateTime();
+        }
+        
+        return $pubDate->format(DateTime::RSS);
+        
     }
 
 }

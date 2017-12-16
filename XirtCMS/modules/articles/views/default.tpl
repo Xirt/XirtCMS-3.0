@@ -14,7 +14,7 @@
 		<h2><?php echo $article->title; ?></h2>
 		<section>
 
-			<?php echo $article->introduction; ?>
+			<?php echo $article->intro; ?>
 			<a href="<?php echo $article->link; ?>">Read more &raquo;</a>
 
 		</section>
