@@ -5,7 +5,7 @@
 	<?php if ($show_title): ?>
 	<h1><?php echo $title; ?></h1>
 	<?php endif; ?>
-	
+
 	<?php XCMS_RenderEngine::widget("module_top"); ?>
 
 	<?php foreach ($articles as $article): ?>
@@ -21,7 +21,7 @@
 
 	</article>
 	<?php endforeach; ?>
-	
+
 	<?php XCMS_RenderEngine::widget("module_bottom"); ?>
 
 </div>

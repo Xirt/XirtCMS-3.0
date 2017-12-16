@@ -11,8 +11,8 @@
 class Articles extends XCMS_Controller {
 
     /**
-     * @var string
      * Base URL for viewing articles
+     * @var string
      */
     const ARTICLE_URL = "article/view/";
 
@@ -31,11 +31,13 @@ class Articles extends XCMS_Controller {
         $this->load->helper("article");
 
         // Load models
+        $this->load->model("CategoryModel", false);
         $this->load->model("ArticlesModel", false);
-        $this->load->model("ExtArticlesModel", "articles");
+        $this->load->model("ExtArticlesModel", false);
+        $this->load->model("SimplifiedArticleModel", false);
 
         RouteHelper::init();
-        
+
     }
 
 
@@ -46,51 +48,46 @@ class Articles extends XCMS_Controller {
      */
     public function index($category = null) {
 
-        // Populate models
-        $articles = array();
-        foreach ($this->_retrieveArticles($category) as $article) {
-            $articles[] = $this->_createArticleObject($article, false);
+        // Check for valid category
+        if (!is_numeric($category) || !$category = $this->_retrieveCategory($category)) {
+            return show_404();
         }
-        
+
         $this->load->view("default.tpl", array(
-            "show_title" => $this->config("show_title", true),
             "css_name"   => $this->config("css_name", ""),
-            "title"      => $this->_getPageTitle(),
-            "url"        => $this->_getPageURL(),
-            "articles"   => $articles
+            "show_title" => $this->config("show_title", true),
+            "channel"    => $this->_retrieveSummary($category, false),
+            "articles"   => $this->_retrieveArticles($category, false)
         ));
-            
+
     }
-    
-    
+
+
     /**
      * Shows all articles or all articles in given category as RSS feed
      *
      * @param   int         $category       The ID of the category to retrieve
      */
     public function rss($category = null) {
-        
-        $this->setConfig("max_length", 500);
-        
-        // Populate models
-        $articles = array();
-        foreach ($this->_retrieveArticles($category) as $article) {
-            $articles[] = $this->_createArticleObject($article, true);
+
+        // Check for valid category
+        if ($category && (!is_numeric($category) || !$category = $this->_retrieveCategory($category))) {
+            return show_404();
         }
-        
-        // Disable default template...
+
+        // Configure application...
+        $this->setConfig("max_length", 500);
         XCMS_Config::set("USE_TEMPLATE", "FALSE");
-        
+
         // ... and show content
-        $this->output->set_content_type("application/rss+xml");        
+        $this->output->set_content_type("application/rss+xml");
         $this->load->view("rss.tpl", array(
-            "show_title" => $this->config("show_title", true),
             "css_name"   => $this->config("css_name", ""),
-            "title"      => $this->_getPageTitle(),
-            "url"        => $this->_getPageURL(),
-            "articles"   => $articles
+            "show_title" => $this->config("show_title", true),
+            "channel"    => $this->_retrieveSummary($category, true),
+            "articles"   => $this->_retrieveArticles($category, true)
         ));
-        
+
     }
 
 
@@ -108,52 +105,7 @@ class Articles extends XCMS_Controller {
      * @param   int         $category       The ID of the category to retrieve
      */
     public function category($category) {
-
         $this->index($category);
-
-    }
-
-
-    /**
-     * Retrieves the title of the current module configuration
-     *
-     * @return  String                      The introduction part of the content
-     */
-    private function _getPageTitle() {
-
-        $conf = $this->router->module_config;
-        $query = $this->db->get_where(XCMS_Tables::TABLE_MODULES, array(
-            "type" => $this->router->class
-        ));
-
-        // Parse results
-        $title = "Articles";
-        foreach ($query->result() as $row) {
-
-            // Load requested config
-            if ($conf && $conf == $row->id) {
-                return $row->name;
-            }
-
-            // Or default if not preference
-            if (!$conf && $row->default) {
-                $title = $row->name;
-            }
-
-        }
-
-        return $title;
-
-    }
-    
-    
-    /**
-     * Retrieves the URL of the current page
-     *
-     * @return  String                      The URL for the current page
-     */
-    private function _getPageURL() {
-        return current_url();
     }
 
 
@@ -163,117 +115,144 @@ class Articles extends XCMS_Controller {
      * @param   int         $category       The ID of the category to retrieve
      * @return  Array                       List containing all loaded articles
      */
-    private function _retrieveArticles($category = null) {
+    private function _retrieveCategory($category = null) {
 
-        $articles = (new ExtArticlesModel())
+        // Attempt to retrieve category
+        if (!$category = (new CategoryModel())->load($category)) {
+            return null;
+        }
+
+        // Check category status
+        if (!$category->get("published")) {
+            return null;
+        }
+
+        return $category;
+
+    }
+
+
+    /**
+     * Retrieves articles using given search attributes
+     *
+     * @param   Object      $category       The CategoryModel for which to retrieve the object
+     * @param   boolean     $rss            Toggless between regular and RSS format output
+     * @return  Array                       List containing all loaded articles
+     */
+    private function _retrieveArticles($category = null, $rss = false) {
+
+        // Retrieve articles
+        $model = (new ExtArticlesModel())
             ->set("sorting",  $this->config("sorting") ?? "dt_publish DESC")
+            ->set("category", $category ? $category->get("id") : 0)
             ->set("limit",    $this->config("limit"))
-            ->set("category", $category)
             ->load();
 
-        return $articles->toArray();
+        // Prepare output
+        $articles = array();
+        foreach ($model->toArray() as $article) {
+            $articles[] = (new SimplifiedArticleModel($article))->toObject($rss);
+        }
+
+        return $articles;
 
     }
     
     
     /**
-     * Creates object with article details for given article and output format
+     * Creates object with details for given output articles
      *
-     * @param   Object      $category       The ArticleModel for which to create the Object
+     * @param   Object      $category       The CategoryModel for which to retrieve the object
      * @param   boolean     $rss            Toggless between regular and RSS format output
      * @return  Object                      The created Object
      */
-    private function _createArticleObject($article, $rss = false) {
-
-        $obj = $article->getObject();
+    private function _retrieveSummary($category = null, $rss = false) {
         
-        
-        if ($rss) {
+        if ($category) {
             
-            $obj->intro   = htmlspecialchars($this->_getIntroduction($article));
-            $obj->title   = htmlspecialchars($obj->title);
-            $obj->link    = base_url() . $this->_getLink($obj->id);
-            $obj->pubDate = $this->_getPublishDate($article);
-            $obj->guid    = $this->_getGUID($obj->id);
-            
-        } else {
-            
-            $obj->intro   = htmlspecialchars($this->_getIntroduction($article));
-            $obj->link    = $this->_getLink($obj->id);
+            return (object) [
+                "url"       => current_url(),
+                "title"     => $this->_getPageTitle($category, $rss),
+                "desc"      => $this->_getPageDescription(),
+                "pubDate"   => (new DateTime())->format(DateTime::RSS),
+                "generator" => XCMS_Config::get("WEBSITE_GENERATOR")
+            ];
             
         }
         
-        return $obj;
+        return (object) [
+            "url"     => current_url(),
+            "title"   => $this->_getPageTitle($category, $rss),
+            "desc"    => XCMS_Config::get("WEBSITE_DESCRIPTION"),
+            "pubDate" => (new DateTime())->format(DateTime::RSS),
+            "generator" => XCMS_Config::get("WEBSITE_GENERATOR")
+        ];
         
     }
-
-
+    
+    
     /**
-     * Retrieves the introduction part of the given content
+     * Retrieves the title of the current module configuration
      *
-     * @param   String      $article        The ArticleModel for which to retrieve the summary
+     * @param   boolean     $rss            Toggless between regular and RSS format output
      * @return  String                      The introduction part of the content
      */
-    private function _getIntroduction($article) {
-
-        // Retrieve introduction
-        if (!($introduction = strip_tags(ArticleHelper::getSummary($article)))) {
-            $introduction = strip_tags(ArticleHelper::getContent($article));
+    private function _getPageTitle($category, $rss = false) {
+        
+        $title = XCMS_Config::get("WEBSITE_TITLE");
+        if (!$rss && $moduleTitle = $this->_getModuleTitle()) {
+            return $moduleTitle;
         }
-
-        // Reduce introduction size (optional)
-        if (($max = $this->config("max_length", 0)) > 0 && strlen($introduction) > $max) {
-            return rtrim(substr($introduction, 0, strpos($introduction, ' ', $max))) . "&#8230;";
+        
+        if ($category) {
+            return $title . " - " . $category->get("name");
         }
-
-        return $introduction;
-
-    }
-
-
-    /**
-     * Retrieves the link to the given article
-     *
-     * @param   int         $id             The article ID for which the link is requested
-     * @return  String                      The link towards the given article
-     */
-    private function _getLink($id) {
-
-        // Retrieve parameter (module config)
-        if (!($config = abs($this->config("module_config"))) || $config < 1) {
-            $config = null;
-        }
-
-        return RouteHelper::getByTarget(self::ARTICLE_URL . $id, $config)->public_url;
-
+        
+        return $title;
+        
     }
     
     
     /**
-     * Retrieves the GUID for the given article
+     * Retrieves the title of the current module configuration
      *
-     * @param   int         $id             The article ID for which the link is requested
-     * @return  String                      The GUID (hashed MD5 value) for the given article
+     * @return  String                      The introduction part of the content
      */
-    private function _getGUID($id) {
-        return md5(self::ARTICLE_URL . $id);
+    private function _getModuleTitle() {
+        
+        $conf = $this->router->module_config;
+        $query = $this->db->get_where(XCMS_Tables::TABLE_MODULES, array(
+            "type" => $this->router->class
+        ));
+        
+        // Parse results
+        $title = "Articles";
+        foreach ($query->result() as $row) {
+            
+            // Load requested config
+            if ($conf && $conf == $row->id) {
+                return $row->name;
+            }
+            
+            // Or default if not preference
+            if (!$conf && $row->default) {
+                $title = $row->name;
+            }
+            
+        }
+        
+        return $title;
+        
     }
     
     
     /**
-     * Retrieves the publishing date for the given article
+     * Retrieves the description for the current request
      *
-     * @param   Object      $article        The ArticleModel for which to retrieve the publishing date
-     * @return  Object                      The DateTime publishing date
+     * @return  String                      The description for the current request
      */
-    private function _getPublishDate($article) {
-        
-        if (!$pubDate = ArticleHelper::getPublished($article)) {
-            $pubDate = new DateTime();
-        }
-        
-        return $pubDate->format(DateTime::RSS);
-        
+    private function _getPageDescription() {
+        return XCMS_Config::get("WEBSITE_DESCRIPTION");
     }
 
 }
