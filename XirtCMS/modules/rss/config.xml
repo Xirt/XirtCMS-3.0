@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xirtcms>
+<xirtcms type="module">
+	<name>RSS Feed</name>
+	<version>1.0</version>
+	<authorName>A.G. Gideonse</authorName>
+	<authorUrl>http://www.xirtcms.com</authorUrl>
+	<copyright>XirtCMS</copyright>
+	<license>GNU General Public License</license>
+	<params>
+		<param name="count" type="text" default="" label="Article Count" description="Limits loaded articles." />
+		<param name="max_length" type="text" default="500" label="Max. length" description="The maximum of characters for the text to show." />
+	</params>
+	<menu>
+		<param name="action" type="select" default="" label="Type">
+			<option name="Default" value="all" />
+			<option name="Category" value="category" />
+		</param>
+		<param name="category_id" type="category" default="" label="Category" description="The category for which to include the articles." />
+	</menu>
+</xirtcms>
