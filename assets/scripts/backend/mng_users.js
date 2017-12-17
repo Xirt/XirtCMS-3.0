@@ -40,7 +40,6 @@ $(function() {
 					user_email: { required: true, maxlength: 64, email: true }
 				}
 
-
 			});
 
 			Form.validate("#form-modify", {
@@ -138,39 +137,38 @@ $(function() {
 		init: function() {
 
 			var that = this;
-			
+
 			this.element.xgrid({
 
-				rowCount: [10, 20, 50, -1],
+				rowCount: [10, 15, 20, 50, -1],
 				defaultRowCount: +($(window).height() > 1100),
-				ajax: true,
 				url: "backend/users/view",
 				formatters: {
 
-					"id" : function (id, value) {
-						
-						return Xirt.pad(value, 5, "0");
-						
+					"id" : function (data) {
+
+						return Xirt.pad(data.id, 5, "0");
+
 					},
-					
-					"commands": function(id, value)
+
+					"commands": function(data)
 					{
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { id : id },
+								data : { id : data.id },
 								label : "Modify",
-								icon : "pencil",
+								icon : "pencil"
 							},
 
 							{
-								additionalAttributes : (id == 1) ? "disabled=\"disabled\"" : "",
+								additionalAttributes : (data.id == 1) ? "disabled=\"disabled\"" : "",
 								classNames : "command-delete",
-								data : { id : id },
+								data : { id : data.id },
 								label : "Trash",
-								icon : "trash-o",
+								icon : "trash-o"
 							}
 
 						]);
@@ -178,7 +176,7 @@ $(function() {
 					}
 
 				},
-				
+
 				onComplete: function() {
 					that._onload();
 				}

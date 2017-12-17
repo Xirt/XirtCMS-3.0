@@ -208,12 +208,12 @@
 			// Create cols
 			var that = this;
 			$.each(this.columns, function(key, column) {
-				that._renderTableBodyCell(row, column, data[column.id]);
+				that._renderTableBodyCell(row, column, data, data[column.id]);
 			});
 
 		},
 
-		_renderTableBodyCell: function(row, options, value) {
+		_renderTableBodyCell: function(row, options, data, value) {
 
 			// Skip obsolete items
 			if (!options.isVisible) {
@@ -229,7 +229,7 @@
 			// Optional formaters
 			var id = options["id"];
 			if (options.formatter && $.type(this.options.formatters[id]) === "function") {
-				cell.html(this.options.formatters[id](row.data(this.identifier), value));
+				cell.html(this.options.formatters[id](data));
 			}
 
 		},
@@ -245,11 +245,14 @@
 
 		_renderPagination: function(page, rowCount, total) {
 
-			var that = this;
+			if (this.pagination.empty() && rowCount < 0) {
+				return;
+			}
 
+			var that = this;
 			var list = $(document.createElement("div"))
 				.addClass("btn-group")
-				.appendTo(this.pagination.empty());
+				.appendTo(this.pagination);
 
 			// Create button "previous"
 			var prev = this._createPaginationItem("&laquo;", false, page == 1);
