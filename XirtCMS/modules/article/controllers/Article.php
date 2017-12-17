@@ -123,23 +123,22 @@ class Article extends XCMS_Controller {
 
 
     /**
-     * Retrieves retrieve author name for the given author
+     * Retrieves author name from the given author
      *
+     * @param   Object      $author         The UserModel to use as a source
      * @return  String                      The name to display according to current configuration
      */
-    private function _getAuthorName() {
-
-        $article = $this->article;
+    private function _getAuthorName($author) {
 
         if ($this->config("use_username")) {
-            return $article->get("username");
+            return $author->get("username");
         }
 
-        if ($name = $article->getAttribute("name_display", true, $article->get("username"))) {
+        if ($name = $author->getAttribute("name_display", true, $author->get("username"))) {
             return $name;
         }
 
-        return $article->get("username");
+        return $author->get("username");
 
     }
 
