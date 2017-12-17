@@ -24,7 +24,7 @@ class ExtArticlesModel extends ArticlesModel {
 
         parent::__construct();
 
-        // Remove & add (prevent duplicate hooks)
+        // Remove & add (prevent duplicate hooks in case of no garbage collection)
         XCMS_Hooks::remove("articles.build_article_query", array($this, "_buildQueryCallback"));
         XCMS_Hooks::add("articles.build_article_query", array($this, "_buildQueryCallback"));
 

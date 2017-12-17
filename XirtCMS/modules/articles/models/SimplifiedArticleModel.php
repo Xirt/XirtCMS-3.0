@@ -52,34 +52,12 @@ class SimplifiedArticleModel {
      */
     public function toObject($rss = false) {
 
-        if ($rss) {
-
-            return (object) [
-                "title"   => $this->_getTitle(),
-                "link"    => $this->_getLink($rss),
-                "pubDate" => $this->_getPublishDate(),
-                "intro"   => $this->_getSummary(),
-                "guid"    => $this->_getGUID()
-            ];
-
-        }
-
         return (object) [
             "title" => $this->_getTitle(),
             "intro" => $this->_getSummary(),
             "link"  => $this->_getLink()
         ];
 
-    }
-
-
-    /**
-     * Retrieves the GUID for the current article
-     *
-     * @return  String                      The GUID (hashed MD5 value) for the given article
-     */
-    private function _getGUID() {
-        return md5(Articles::ARTICLE_URL . $this->_id);
     }
 
 
@@ -111,7 +89,7 @@ class SimplifiedArticleModel {
             return rtrim(substr($summary, 0, strpos($summary, ' ', $max))) . "&#8230;";
         }
 
-        return htmlspecialchars($summary);
+        return $summary;
 
     }
 
@@ -119,34 +97,16 @@ class SimplifiedArticleModel {
     /**
      * Retrieves the link for the given article
      *
-     * @param   boolean     $rss            Toggless between regular and RSS format output
      * @return  String                      The link towards the given article
      */
-    private function _getLink($rss = false) {
+    private function _getLink() {
 
         // Retrieve parameter (module config)
         if (!($config = abs(get_instance()->config("module_config"))) || $config < 1) {
             $config = null;
         }
 
-        $url = RouteHelper::getByTarget(Articles::ARTICLE_URL . $this->_id, $config)->public_url;
-        return $rss ? base_url() . $url : $url;
-
-    }
-
-
-    /**
-     * Retrieves the publishing date for the given article
-     *
-     * @return  Object                      The DateTime publishing date
-     */
-    private function _getPublishDate() {
-
-        if (!$pubDate = ArticleHelper::getPublished($this->_article)) {
-            $pubDate = new DateTime();
-        }
-
-        return $pubDate->format(DateTime::RSS);
+        return RouteHelper::getByTarget(Articles::ARTICLE_URL . $this->_id, $config)->public_url;
 
     }
 
