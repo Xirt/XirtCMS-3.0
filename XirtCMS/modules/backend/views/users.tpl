@@ -1,15 +1,15 @@
 <h1>Users</h1>
 
-<table id="grid-basic" class="table table-sm table-hover table-striped bootgrid-table" data-toggle="bootgrid">
+<table id="grid-basic" class="table table-sm table-hover table-striped xgrid-table" data-toggle="bootgrid">
 <thead>
 	<tr>
-		<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-converter="identifier" data-order="asc">ID #</th>
+		<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-order="asc">ID #</th>
 		<th data-column-id="username" data-header-css-class="table-row-username align-middle" data-css-class="table-row-username align-middle" data-visible-in-selection="false">Username</th>
 		<th data-column-id="real_name" data-header-css-class="table-row-real_name align-middle text-center" data-css-class="table-row-real_name align-middle text-center" data-visible="1250">Name</th>
 		<th data-column-id="email" data-header-css-class="table-row-email align-middle text-center" data-css-class="table-row-email align-middle text-center" data-visible="1250">E-mail</th>
 		<th data-column-id="usergroup" data-header-css-class="table-row-usergroup align-middle text-center" data-css-class="table-row-usergroup align-middle text-center" data-visible="1000">Usergroup</th>
 		<th data-column-id="dt_created" data-header-css-class="table-row-dt_created align-middle text-center" data-css-class="table-row-dt_created align-middle text-center" data-visible="false">Created</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false" data-sortable="false"></th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-visible-in-selection="false" data-sortable="false"></th>
 	</tr>
 </thead>
 <tbody></tbody>
