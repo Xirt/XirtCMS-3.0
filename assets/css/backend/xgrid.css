@@ -1,0 +1,200 @@
+.xgrid-table {
+    table-layout: fixed
+}
+
+.bootgrid-table td,
+.bootgrid-table th {
+	padding: 0.3rem 1rem;
+}
+
+.xgrid-table button.btn-default {
+	width: 50px;
+}
+
+@media screen and (min-width: 576px) {
+
+	.xgrid-table button.btn-default {
+		width: 95px;
+	}
+
+}
+
+.xgrid-table th:hover {
+    background: #fafafa
+}
+
+.xgrid-table th > .column-header-anchor {
+    display: block;
+    position: relative;
+    color: #333;
+    cursor: not-allowed;
+}
+
+.xgrid-table th > .column-header-anchor.sortable {
+    cursor: pointer;
+}
+
+.xgrid-table th > .column-header-anchor > .icon {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 2px
+}
+
+.xgrid-table td {
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.xgrid-header {
+	margin-left: 40%;
+	width: 60%;
+}
+
+.xgrid-header .actionBar {
+	padding-right: 0;
+	text-align: right;
+}
+
+.xgrid-header .search {
+	margin: 5px 0 5px 0;
+}
+
+.xgrid-header .actions {
+	margin: 5px 0 5px 20px;
+}
+
+.xgrid-header .dropdown-menu {
+	min-width: 0;
+}
+
+.xgrid-table {
+	background: #fff;
+	margin-bottom: 0; /* old boostrap */
+}
+
+.xgrid-table th {
+	height: 49px;
+}
+
+.xgrid-table th > .column-header-anchor {
+	cursor: default;
+}
+
+.xgrid-table td.table-row-commands {
+	padding-right: 15px;
+}
+
+.xgrid-footer li[aria-disabled=false] {
+	cursor: pointer;
+}
+
+
+.xgrid-table button b {
+	display: block;
+	font-weight: normal;
+	font-size: 75%;
+	margin-bottom: -3px;
+}
+
+.xgrid-toolbar {
+	float: right;
+	margin: 10px auto;
+}
+
+.xgrid-toolbar .input-group {
+	width: auto;
+	display: inline-flex;
+}
+
+.xgrid-toolbar .search-field {
+	-webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+	transition: width 1s;
+	width: 100px;
+}
+
+.xgrid-toolbar .btn.config {
+	margin-left: 5px;
+}
+
+.xgrid-toolbar .search-field:focus {
+		width: 200px;
+}
+
+.xgrid-table th button.column-header-anchor {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	background: inherit;
+	border: 0;
+	text-align: left;
+	font-weight: bold;
+}
+
+.xgrid-table th button:focus {
+	outline: 0;
+}
+
+.xgrid-table th.text-center button {
+	text-align: center;
+}
+
+.xgrid-table th.text-right button {
+	text-align: right;
+}
+
+.xgrid-table th button span {
+	padding-top: 8px;
+}
+
+.xgrid-pagination {
+	text-align: center;
+}
+
+.xgrid-pagination .btn {
+	min-width: 35px;
+	opacity: 0.75;
+	text-shadow: none;
+	border: 0;
+	padding: .35rem .5rem;
+}
+
+.xgrid-pagination .btn:disabled {
+	cursor: not-allowed;
+	opacity: 0.75;
+}
+
+.xgrid-pagination .active {
+	font-weight: bold;
+	padding: 0 1rem;
+	opacity: 1;
+}
+
+.modal-body a {
+	transition: background-color 0.5s ease;
+}
+
+.modal-body .list-group .btn {
+	float: right;
+	margin-right: -5px;
+	padding: .05rem .5rem;
+	font-size: 80%;
+	width: 25%;
+}
+
+.table-container {
+	clear: both;
+	overflow: auto;
+	margin-bottom: 1rem;
+	box-shadow: 0 5px 15px rgba(0,0,0,.2);
+}
+
+.xgrid-table tfoot td {
+	text-align: right;
+	padding: 0.5rem 1rem !important;
+	border-top: 1px solid #d9dadc;
+}
