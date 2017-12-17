@@ -109,81 +109,66 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			var that = this;
 
-				search: true,
-				sorting: true,
+			this.element.xgrid({
+
 				rowCount: [-1],
-				ajax: true,
 				url: "backend/templates/view",
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
 				formatters: {
 
-					"ordering": function(column, row) {
+					"id" : function (data) {
+
+						return Xirt.pad(data.id, 5, "0");
+
+					},
+
+					"published": function(data) {
 
 						return XCMS.createButtons([
 
 							{
-								classNames : "command-order-down",
-								data : { id : row.id },
-								icon : "arrow-down",
-							},
-
-							{
-								classNames : "command-order-up",
-								data : { id : row.id },
-								icon : "arrow-up",
+								additionalAttributes : (data.published == 1) ? "disabled=\"disabled\"" : "",
+								classNames : "command-published " + ((data.published == 1) ? "active" : "inactive"),
+								data : { id : data.id },
+								label: "Toggle",
+								icon : "globe"
 							}
 
 						]);
 
 					},
 
-					"published": function(column, row) {
-
-						return XCMS.createButtons([
-
-							{
-								additionalAttributes : (row.published == 1) ? "disabled=\"disabled\"" : "",
-								classNames : "command-published " + ((row.published == 1) ? "active" : "inactive"),
-								data : { id : row.id },
-								icon : "globe",
-							}
-
-						]);
-
-					},
-
-					"commands": function(column, row) {
+					"commands": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { id : row.id },
-								icon : "pencil",
+								data : { id : data.id },
+								label : "Modify",
+								icon : "pencil"
 							},
 
 							{
-								additionalAttributes : (row.published == 1) ? "disabled=\"disabled\"" : "",
+								additionalAttributes : (data.published == 1) ? "disabled=\"disabled\"" : "",
 								classNames : "command-delete",
-								data : { id : row.id },
-								icon : "trash-o",
+								data : { id : data.id },
+								label : "Trash",
+								icon : "trash-o"
 							}
 
 						]);
 
 					}
 
+				},
+
+				onComplete: function() {
+					that._onload();
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 

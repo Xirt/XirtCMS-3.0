@@ -8,9 +8,16 @@
 }
 
 .table-row-commands {
-	width: 80px;
+	width: 125px;
 }
 
+@media screen and (min-width: 576px) {
+
+	.table-row-commands {
+		width: 225px;
+	}
+
+}
 
 /***************
  Modal Lay-out *

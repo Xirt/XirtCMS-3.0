@@ -88,47 +88,51 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			var that = this;
 
-				search: true,
-				sorting: true,
+			this.element.xgrid({
+
 				rowCount: [10, 20, 50, -1],
 				defaultRowCount: +($(window).height() > 1100),
-				ajax: true,
 				url: "backend/usergroups/view",
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
 				formatters: {
 
-					"commands": function(column, row) {
+					"id" : function (data) {
+
+						return Xirt.pad(data.id, 5, "0");
+
+					},
+
+					"commands": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { id : row.id },
-								icon : "pencil",
+								data : { id : data.id },
+								label : "Modify",
+								icon : "pencil"
 							},
 
 							{
-								additionalAttributes : parseInt(row.users) ? "disabled=\"disabled\"" : "",
+								additionalAttributes : parseInt(data.users) ? "disabled=\"disabled\"" : "",
 								classNames : "command-delete",
-								data : { id : row.id },
-								icon : "trash-o",
+								data : { id : data.id },
+								label : "Trash",
+								icon : "trash-o"
 							}
 
 						]);
 
 					}
 
+				},
+
+				onComplete: function() {
+					that._onload();
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 

@@ -62,40 +62,37 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			var that = this;
 
-				search: true,
-				sorting: true,
-				rowCount: [10, 20, 50, -1],
+			this.element.xgrid({
+
+				rowCount: [10, 15, 20, 50, -1],
 				defaultRowCount: +($(window).height() > 1100),
-				ajax: true,
 				url: "backend/settings/view",
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
 				formatters: {
 
-					"commands": function(column, row) {
+					"commands": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { name : row.name },
-								icon : "pencil",
+								data : { name : data.name },
+								label : "modify",
+								icon : "pencil"
 							}
 
 						]);
 
 					}
 
+				},
+
+				onComplete: function() {
+					that._onload();
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 

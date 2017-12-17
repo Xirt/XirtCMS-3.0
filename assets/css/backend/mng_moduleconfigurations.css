@@ -1,17 +1,32 @@
 /**************
  Grid Lay-out *
 **************/
-.table-row-item_id,
-.table-row-default {
+.table-row-item_id {
 	width: 100px;
-}
-
-.table-row-commands {
-	width: 135px;
 }
 
 .table-row-type {
 	width: 150px;
+}
+
+.table-row-default {
+	width: 75px;
+}
+
+.table-row-commands {
+	width: 125px;
+}
+
+@media screen and (min-width: 576px) {
+
+	.table-row-default {
+		width: 125px;
+	}
+
+	.table-row-commands {
+		width: 225px;
+	}
+
 }
 
 

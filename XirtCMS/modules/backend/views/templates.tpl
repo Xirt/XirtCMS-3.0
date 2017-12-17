@@ -1,22 +1,21 @@
-<h1>
+<h1>Templates</h1>
 
-	Templates
-	<div class="btn-group create" />
-		<button class="btn btn-sm btn-success btn-create">Add New</button>
-	</div>
-
-</h1>
-
-<table id="grid-basic" class="table table-sm table-hover table-striped" data-toggle="bootgrid">
+<table id="grid-basic" class="table table-sm table-hover table-striped xgrid-table" data-toggle="bootgrid">
 <thead>
 	<tr>
-		<th data-column-id="id" data-header-css-class="table-row-item_id align-middle text-center" data-css-class="table-row-item_id align-middle text-center" data-converter="identifier" data-order="asc">ID #</th>
+		<th data-column-id="id" data-header-css-class="table-row-item_id align-middle text-center" data-css-class="table-row-item_id align-middle text-center" data-order="asc">ID #</th>
 		<th data-column-id="name" data-header-css-class="table-row-name align-middle" data-css-class="table-row-name align-middle" data-visible-in-selection="false">Name</th>
 		<th data-column-id="folder" data-header-css-class="table-row-folder align-middle text-center" data-css-class="table-row-folder align-middle text-center" data-visible-in-selection="false">Folder</th>
-		<th data-column-id="published" data-header-css-class="table-row-published align-middle text-center" data-css-class="table-row-published align-middle text-center" data-formatter="published">Active</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
+		<th data-column-id="published" data-header-css-class="table-row-published align-middle text-center" data-css-class="table-row-published align-middle text-center">Active</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-visible-in-selection="false">&nbsp;</th>
 	</tr>
 </thead>
+<tbody></tbody>
+<tfoot>
+<tr>
+	<td><button class="btn btn-sm btn-success btn-create">Create template</button></td>
+</tr>
+</tfoot>
 </table>
 
 <div id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">

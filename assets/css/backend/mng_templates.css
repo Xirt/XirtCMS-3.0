@@ -2,13 +2,28 @@
  Grid Lay-out *
 **************/
 .table-row-folder,
-.table-row-item_id,
-.table-row-published {
+.table-row-item_id {
 	width: 100px;
 }
 
+.table-row-published {
+	width: 75px;
+}
+
 .table-row-commands {
-	width: 95px;
+	width: 125px;
+}
+
+@media screen and (min-width: 576px) {
+
+	.table-row-published {
+		width: 125px;
+	}
+
+	.table-row-commands {
+		width: 225px;
+	}
+
 }
 
 .list-group {

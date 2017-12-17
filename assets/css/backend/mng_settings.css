@@ -7,5 +7,13 @@
 }
 
 .table-row-commands {
-	width: 55px;
+	width: 75px;
+}
+
+@media screen and (min-width: 576px) {
+
+	.table-row-commands {
+		width: 125px;
+	}
+
 }

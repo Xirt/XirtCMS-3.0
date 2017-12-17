@@ -113,61 +113,64 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			this.element.xgrid({
 
-				search: true,
-				sorting: true,
-				rowCount: [10, 20, 50, -1],
+				rowCount: [10, 15, 20, 50, -1],
 				defaultRowCount: +($(window).height() > 1100),
-				ajax: true,
 				url: "backend/moduleconfigurations/view",
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
 				formatters: {
 
-					"default": function(column, row) {
+					"id" : function (data) {
+
+						return Xirt.pad(data.id, 5, "0");
+
+					},
+
+					"default": function(data) {
 
 						return XCMS.createButtons([
 
 							{
-								classNames : "command-default " + ((row.default == 1) ? "active" : "inactive"),
-								additionalAttributes : (row.default == 1) ? "disabled" : "",
-								data : { id : row.id },
-								icon : "globe",
+								classNames : "command-default " + ((data.default == 1) ? "active" : "inactive"),
+								additionalAttributes : (data.default == 1) ? "disabled" : "",
+								data : { id : data.id },
+								label: "Toggle",
+								icon : "globe"
 							}
 
 						]);
 
 					},
 
-					"commands": function(column, row) {
+					"commands": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { id : row.id },
-								icon : "pencil",
+								data : { id : data.id },
+								label: "Modify",
+								icon : "pencil"
 							},
 
 							{
 								classNames : "command-delete",
-								data : { id : row.id },
-								icon : "trash-o",
+								data : { id : data.id },
+								label: "Trash",
+								icon : "trash-o"
 							}
 
 						]);
 
 					}
 
+				},
+
+				onComplete: function() {
+					that._onload();
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 
