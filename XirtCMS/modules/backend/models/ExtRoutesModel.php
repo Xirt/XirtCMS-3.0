@@ -41,8 +41,12 @@ class ExtRoutesModel extends RoutesModel {
                     $stmt->limit($rowCount, ($model->get("current") - 1) * $rowCount);
                 }
 
-                $stmt->order_by($model->get("sortColumn"), $model->get("sortOrder"));
+                if ($model->get("sortColumn") == "menu_item_id") {       
+                    $model->set("sortColumn", "count(menuitem_id)");
+                }
 
+                $stmt->order_by($model->get("sortColumn"), $model->get("sortOrder"));
+                
             }
 
         });
