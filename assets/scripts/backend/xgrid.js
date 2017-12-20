@@ -33,7 +33,7 @@
 			// Toolbar templates
 			"toolbarContainer" : '<div class="xgrid-toolbar"></div>',
 			"toolbarSearch"    : '<div class="input-group"><span class="icon fa input-group-addon fa-search"></span><input class="search-field form-control form-control-sm" placeholder="Search..." type="text"></div>',
-			"toolbarConfig"    : '<button class="btn btn-primary btn-sm config"><span class="fa fa-gears"></span></button>'
+			"toolbarConfig"    : '<button class="btn btn-primary btn-sm config"><span class="fa fa-gears"></span><span class="label">Filters</span></button>'
 
 		};
 
@@ -70,9 +70,9 @@
 					label			: $this.text(),
 					bodyClasses		: data.cssClass || "",
 					headerClasses	: data.headerCssClass || "",
-					isSortable		: !(data.sortable === false),
 					isSelectable	: !(data.visibleInSelection === false),
 					isVisible		: that._checkColumnVisibility(data.visible),
+					isSortable		: that.options.sortable && !(data.sortable === false),
 					formatter		: that.options.formatters[data.columnId] ? true : false,
 
 				};
@@ -112,19 +112,21 @@
 
 			// To be rewritten
 			var $toolbar = $(this.templates.toolbarContainer)
-				.append($(this.templates.toolbarSearch))
-				.append($(this.templates.toolbarConfig))
 				.insertBefore(this.$table);
 
-			$toolbar.find(".search-field").on("keyup", function() {
+			if (this.options.searchable) {
 
-				that.setFilter($(this).val());
-				that.reload();
+				$toolbar.append($(this.templates.toolbarSearch)).find(".search-field").on("keyup", function() {
 
-			});
+					that.setFilter($(this).val());
+					that.reload();
+
+				});
+
+			}
 
 			var modal = (new $.XirtGridModal(that)).init();
-			$toolbar.find(".btn.config").on("click", function() {
+			$toolbar.append($(this.templates.toolbarConfig)).find(".btn.config").on("click", function() {
 				modal.show();
 			});
 
