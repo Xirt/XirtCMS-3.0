@@ -1,22 +1,21 @@
-<h1>
+<h1>Routes</h1>
 
-	Routes
-	<div class="btn-group create" />
-		<button class="btn btn-sm btn-success btn-create">Add New</button>
-	</div>
-
-</h1>
-
-<table id="grid-basic" class="table table-sm table-hover table-striped" data-toggle="bootgrid">
+<table id="grid-basic" class="table table-sm table-hover table-striped xgrid-table" data-toggle="bootgrid">
 <thead>
 	<tr>
-		<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-converter="identifier" data-order="asc">ID #</th>
-		<th data-column-id="public_url" data-header-css-class="table-row-public_url align-middle" data-css-class="table-row-public_url align-middle" data-visible-in-selection="true" data-order="asc">SEF URI</th>
-		<th data-column-id="target_url" data-header-css-class="table-row-target_url align-middle" data-css-class="table-row-target_url align-middle" data-visible-in-selection="true">Internal URI</th>
-		<th data-column-id="menu_item_id" data-header-css-class="table-row-menu_item_id align-middle text-center" data-css-class="table-row-menu_item_id align-middle text-center" data-formatter="menu_id" data-visible-in-selection="true">Menu</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
+		<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-order="asc">ID #</th>
+		<th data-column-id="public_url" data-header-css-class="table-row-public_url align-middle" data-css-class="table-row-public_url align-middle">SEF URI</th>
+		<th data-column-id="target_url" data-header-css-class="table-row-target_url align-middle" data-css-class="table-row-target_url align-middle">Internal URI</th>
+		<th data-column-id="menu_item_id" data-header-css-class="table-row-menu_item_id align-middle text-center" data-css-class="table-row-menu_item_id align-middle text-center" data-visible="1000">Menu</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-visible-in-selection="false">&nbsp;</th>
 	</tr>
 </thead>
+<tbody></tbody>
+<tfoot>
+<tr>
+	<td><button class="btn btn-sm btn-success btn-create">Create route</button></td>
+</tr>
+</tfoot>
 </table>
 
 <div id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">

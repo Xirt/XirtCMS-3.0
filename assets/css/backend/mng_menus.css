@@ -1,12 +1,37 @@
 /**************
  Grid Lay-out *
 **************/
-.table-row-id,
-.table-row-sitemap,
-.table-row-ordering {
+.table-row-id {
 	width: 100px;
 }
 
+.table-row-sitemap {
+	width: 75px;
+}
+
+
+.table-row-ordering {
+	width: 125px;
+}
+
 .table-row-commands {
-	width: 135px;
+	width: 175px;
+}
+
+@media screen and (min-width: 576px) {
+
+
+	.table-row-sitemap {
+		width: 125px;
+	}
+
+
+	.table-row-ordering {
+		width: 225px;
+	}
+
+	.table-row-commands {
+		width: 325px;
+	}
+
 }

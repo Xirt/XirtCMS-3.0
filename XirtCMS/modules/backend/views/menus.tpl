@@ -1,22 +1,21 @@
-<h1>
+<h1>Menus</h1>
 
-	Menus
-	<div class="btn-group create" />
-		<button class="btn btn-sm btn-success btn-create">Add New</button>
-	</div>
-
-</h1>
-
-<table id="grid-basic" class="table table-sm table-hover table-striped" data-toggle="bootgrid">
+<table id="grid-basic" class="table table-sm table-hover table-striped xgrid-table" data-toggle="bootgrid">
 <thead>
 	<tr>
-		<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-converter="identifier" data-order="asc">ID #</th>
+		<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-order="asc">ID #</th>
 		<th data-column-id="name" data-header-css-class="table-row-name align-middle" data-css-class="table-row-name align-middle" data-visible-in-selection="false">Name</th>
-		<th data-column-id="ordering" data-header-css-class="table-row-ordering align-middle text-center" data-css-class="table-row-ordering align-middle text-center" data-formatter="ordering">Ordering</th>
-		<th data-column-id="sitemap" data-header-css-class="table-row-sitemap align-middle text-center" data-css-class="table-row-sitemap align-middle text-center" data-formatter="sitemap">Sitemap</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands align-middle" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
+		<th data-column-id="ordering" data-header-css-class="table-row-ordering align-middle text-center" data-css-class="table-row-ordering align-middle text-center" data-visible="1000">Ordering</th>
+		<th data-column-id="sitemap" data-header-css-class="table-row-sitemap align-middle text-center" data-css-class="table-row-sitemap align-middle text-center" data-visible="1000">Sitemap</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands align-middle" data-css-class="table-row-commands text-right" data-visible-in-selection="false">&nbsp;</th>
 	</tr>
 </thead>
+<tbody></tbody>
+<tfoot>
+<tr>
+	<td><button class="btn btn-sm btn-success btn-create">Create menu</button></td>
+</tr>
+</tfoot>
 </table>
 
 <div id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">

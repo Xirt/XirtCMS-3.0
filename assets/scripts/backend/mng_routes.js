@@ -88,41 +88,41 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			var that = this;
 
-				search: true,
-				sorting: true,
-				rowCount: [10, 20, 50, 100],
+			this.element.xgrid({
+
+				rowCount: [10, 15, 20, 50, -1],
 				defaultRowCount: +($(window).height() > 1100),
-				ajax: true,
 				url: "backend/routes/view",
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
 				formatters: {
 
-					"menu_id": function(column, row) {
-						return row.menu_items ? "<i class=\"fa fa-check\"></i>" : "";
+					"id" : function (data) {
+
+						return Xirt.pad(data.id, 5, "0");
+
 					},
 
-					"commands": function(column, row) {
+					"menu_item_id": function(data) {
+						return data.menu_items ? "<i class=\"fa fa-check\"></i>" : "";
+					},
+
+					"commands": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Modify",
 								icon : "pencil",
 							},
 
 							{
-								additionalAttributes : (row.published == 1) ? "disabled=\"disabled\"" : "",
+								additionalAttributes : (data.published == 1) ? "disabled=\"disabled\"" : "",
 								classNames : "command-delete",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Trash",
 								icon : "trash-o",
 							}
 
@@ -130,18 +130,20 @@ $(function() {
 
 					}
 
+				},
+
+				onComplete: function() {
+					that._onload();
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 
 		},
 
 		reload: function() {
-
-			this.element.bootgrid("reload");
-
+			this.element.xgrid("reload");
 		},
 
 		_onload: function() {

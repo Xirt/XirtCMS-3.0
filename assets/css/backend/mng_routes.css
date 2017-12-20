@@ -7,7 +7,15 @@
 }
 
 .table-row-commands {
-	width: 95px;
+	width: 125px;
+}
+
+@media screen and (min-width: 576px) {
+
+	.table-row-commands {
+		width: 225px;
+	}
+
 }
 
 
@@ -25,6 +33,6 @@
 }
 
 .modal-dialog.configuration #btn-editor {
-	float: right;	
+	float: right;
 	margin: 2px 0;
 }

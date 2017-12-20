@@ -86,35 +86,37 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			var that = this;
 
-				search: false,
-				sorting: false,
+			this.element.xgrid({
+
+				searchable: false,
+				sortable: false,
 				rowCount: [-1],
-				ajax: true,
 				url: "backend/menus/view",
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
 				formatters: {
 
-					"ordering": function(column, row) {
+					"id" : function (data) {
+
+						return Xirt.pad(data.id, 5, "0");
+
+					},
+
+					"ordering": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-order-down",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Move up",
 								icon : "arrow-down",
 							},
 
 							{
 								classNames : "command-order-up",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Move down",
 								icon : "arrow-up",
 							}
 
@@ -122,13 +124,14 @@ $(function() {
 
 					},
 
-					"sitemap": function(column, row) {
+					"sitemap": function(data) {
 
 						return XCMS.createButtons([
 
 							{
-								classNames : "command-sitemap " + ((row.sitemap == 1) ? "active" : "inactive"),
-								data : { id : row.id },
+								classNames : "command-sitemap " + ((data.sitemap == 1) ? "active" : "inactive"),
+								data : { id : data.id },
+								label : "Toggle",
 								icon : "sitemap",
 							}
 
@@ -136,25 +139,28 @@ $(function() {
 
 					},
 
-					"commands": function(column, row) {
+					"commands": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Modify",
 								icon : "pencil",
 							},
 
 							{
 								classNames : "command-menu",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Entries",
 								icon : "bars",
 							},
 
 							{
 								classNames : "command-delete",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Trash",
 								icon : "trash-o",
 							}
 
@@ -162,16 +168,20 @@ $(function() {
 
 					}
 
+				},
+
+				onComplete: function() {
+					that._onload();
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 
 		},
 
 		reload: function() {
-			this.element.bootgrid("reload");
+			this.element.xgrid("reload");
 		},
 
 		_onload: function() {
