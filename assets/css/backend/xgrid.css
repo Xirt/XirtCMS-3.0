@@ -11,7 +11,16 @@
 	width: 50px;
 }
 
+.xgrid-toolbar .btn.config span.label {
+	display: none;
+}
+
 @media screen and (min-width: 576px) {
+
+	.xgrid-toolbar .btn.config span.label {
+		display: inline-block;
+		margin-left: 10px;
+	}
 
 	.xgrid-table button.btn-default {
 		width: 95px;
