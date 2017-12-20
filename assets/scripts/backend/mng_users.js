@@ -188,9 +188,7 @@ $(function() {
 		},
 
 		reload: function() {
-
 			this.element.xgrid("reload");
-
 		},
 
 		_onload: function() {
