@@ -1,24 +1,87 @@
-<h1>
+<h1>Articles</h1>
 
-	Articles
-	<div class="btn-group create" />
-		<button class="btn btn-sm btn-success btn-create">Add New</button>
-	</div>
-
-</h1>
-
-<table id="grid-basic" class="table table-sm table-hover table-striped" data-toggle="bootgrid">
+<table id="grid-basic" class="table table-sm table-hover table-striped xgrid-table" data-toggle="bootgrid">
 <thead>
 <tr>
-	<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-converter="identifier" data-order="asc">ID #</th>
+	<th data-column-id="id" data-header-css-class="table-row-id align-middle text-center" data-css-class="table-row-id align-middle text-center" data-order="asc">ID #</th>
 	<th data-column-id="title" data-header-css-class="table-row-title align-middle" data-css-class="table-row-title align-middle">Title</th>
 	<th data-column-id="dt_created" data-header-css-class="table-row-dt_created align-middle text-center" data-css-class="table-row-dt_created align-middle text-center" data-visible="false">Created</th>
 	<th data-column-id="author" data-header-css-class="table-row-author align-middle text-center" data-css-class="table-row-author align-middle text-center" data-visible="false">Author</th>
-	<th data-column-id="published" data-header-css-class="table-row-published text-center" data-css-class="table-row-published text-center" data-formatter="published" data-sortable="false">Status</th>
-	<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false" data-sortable="false">&nbsp;</th>
+	<th data-column-id="published" data-header-css-class="table-row-published text-center" data-css-class="table-row-published align-middle text-center" data-sortable="false" data-visible="1000">Published</th>
+	<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-visible-in-selection="false" data-sortable="false">&nbsp;</th>
 </tr>
 </thead>
+<tbody></tbody>
+<tfoot>
+<tr>
+	<td><button class="btn btn-sm btn-success btn-create">Create article</button></td>
+</tr>
+</tfoot>
 </table>
+
+<div id="optionsModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<div class="modal-content">
+
+			<div class="modal-header">
+
+				<h5 class="modal-title">What do you want to do?</h5>
+
+			</div>
+
+			<div class="modal-body row">
+
+				<div class="col-sm-3">
+
+					<button class="btn btn-info btn-edit-content">
+						<i class="fa fa-pencil fa-5x" aria-hidden="true"></i>
+						<p>Modify content</p>
+					</button>
+
+				</div>
+
+				<div class="col-sm-3">
+
+					<button class="btn btn-info btn-edit-properties">
+						<i class="fa fa-gears fa-5x" aria-hidden="true"></i>
+						<p>Modify properties</p>
+					</button>
+
+				</div>
+
+				<div class="col-sm-3">
+
+					<button class="btn btn-info btn-edit-status">
+						<i class="fa fa-calendar  fa-5x" aria-hidden="true"></i>
+						<p>Schedule publishing</p>
+					</button>
+
+				</div>
+
+				<div class="col-sm-3">
+
+					<button class="btn btn-info btn-edit-categories">
+						<i class="fa fa-unlock-alt fa-5x" aria-hidden="true"></i>
+						<p>Relate categories</p>
+					</button>
+
+				</div>
+
+			</div>
+
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-sm btn-default btn-close">Cancel</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
 
 <div id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 

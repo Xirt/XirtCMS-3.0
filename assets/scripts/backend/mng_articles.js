@@ -93,8 +93,9 @@ $(function() {
 
 		_initModals: function(initializedEditors) {
 
-			createModal	= new $.XirtModal($("#createModal")).init();
-			configModal	= new $.XirtModal($("#configModal")).init();
+			createModal	    = new $.XirtModal($("#createModal")).init();
+			configModal	    = new $.XirtModal($("#configModal")).init();
+			optionsModal    = new $.XirtModal($("#optionsModal")).init();
 			publishModal	= new $.XirtModal($("#publishModal")).init();
 			categoriesModal = new $.XirtModal($("#categoriesModal")).init();
 
@@ -107,6 +108,8 @@ $(function() {
 
 		_initButtons: function() {
 
+			var that = this;
+
 			// Activate publishing button
 			$("#article_published").on("change", function() {
 				$(".publish-dates").toggle(this.checked);
@@ -115,6 +118,38 @@ $(function() {
 			// Activate creation button
 			$('.btn-create').click(function(e) {
 				createModal.show();
+			});
+
+			// Active "Edit content"-option
+			$(".btn-edit-content").click(function() {
+
+				optionsModal.hide();
+				that.grid.showModifyContentModal(current);
+
+			});
+
+			// Active "Edit main properties"-option
+			$(".btn-edit-properties").click(function() {
+
+				optionsModal.hide();
+				that.grid.showModifyPropertiesModal(current);
+
+			});
+
+			// Active "Edit publishing schedule"-option
+			$(".btn-edit-status").click(function() {
+
+				optionsModal.hide();
+				that.grid.showModifyPublicationModal(current);
+
+			});
+
+			// Active "Edit categories"-option
+			$(".btn-edit-categories").click(function() {
+
+				optionsModal.hide();
+				that.grid.showModifyCategoriesModal(current);
+
 			});
 
 		},
@@ -156,60 +191,40 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			var that = this;
 
-				rowCount: [10, 25, 50, -1],
+			this.element.xgrid({
+
+				rowCount: [10, 15, 20, 50, -1],
 				defaultRowCount: +($(window).height() > 1100),
-				ajax: true,
 				url: "backend/articles/view",
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
 				formatters: {
 
-					"published": function(column, row) {
+					"id" : function (data) {
 
-						return XCMS.createButtons([
-
-							{
-								classNames : "command-published " + ((row.published == 1) ? "active" : "inactive"),
-								data : { id : row.id },
-								icon : "globe",
-							}
-
-						]);
+						return Xirt.pad(data.id, 5, "0");
 
 					},
 
-					"commands": function(column, row) {
+					"published": function(data) {
+						return (data.published == 1) ? "<i class=\"fa fa-check\"></i>" : "";
+					},
+
+					"commands": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Modify",
 								icon : "pencil",
 							},
 
 							{
-								classNames : "command-config",
-								data : { id : row.id },
-								icon : "gears",
-							},
-
-							{
-								classNames : "command-categories",
-								data : { id : row.id },
-								icon : "list-ul",
-							},
-
-							{
 								classNames : "command-delete",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Trash",
 								icon : "trash-o",
 							}
 
@@ -217,36 +232,44 @@ $(function() {
 
 					}
 
+				},
+
+				onComplete: function() {
+					that._onload();
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 
 		},
 
 		reload: function() {
-			this.element.bootgrid("reload");
+			this.element.xgrid("reload");
 		},
 
 		_onload: function() {
 
-			this.element.find(".command-edit").on("click", this._modifyContentModal);
-			this.element.find(".command-config").on("click", this._modifyConfigModal);
-			this.element.find(".command-categories").on("click", this._modifyCategoriesModal);
-			this.element.find(".command-published").on("click", this._modifyPublicationModal);
+			this.element.find(".command-edit").on("click", this._showOptionsModal);
 			this.element.find(".command-delete").on("click", $.proxy(this._deleteItemModal, this));
 
 		},
 
-		_modifyContentModal: function() {
+		_showOptionsModal: function() {
+
+			optionsModal.show();
+			current = $(this).data("id");
+
+		},
+
+		showModifyContentModal: function() {
 
 			tinyMCE.activeEditor.setContent("");
 			tinyMCE.activeEditor.setProgressState(true);
 
 			modifyModal.load({
 
-				url	: "backend/article/view/" + $(this).data("id"),
+				url	: "backend/article/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "article_", converters: {
@@ -264,11 +287,11 @@ $(function() {
 
 		},
 
-		_modifyConfigModal: function() {
+		showModifyPropertiesModal: function() {
 
 			configModal.load({
 
-				url	: "backend/article/view/" + $(this).data("id"),
+				url	: "backend/article/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-config"), json, { prefix : "article_", converters: {
@@ -283,11 +306,11 @@ $(function() {
 
 		},
 
-		_modifyCategoriesModal: function() {
+		showModifyCategoriesModal: function() {
 
 			categoriesModal.load({
 
-				url	: "backend/article/view/" + $(this).data("id"),
+				url	: "backend/article/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-categories"), json, { prefix : "article_", converters: {
@@ -300,7 +323,7 @@ $(function() {
 
 		},
 
-		_modifyPublicationModal: function() {
+		showModifyPublicationModal: function() {
 
 			publishModal.load({
 
@@ -355,7 +378,7 @@ $(function() {
 	/***********
 	 * TRIGGER *
 	 **********/
-	var createModal, configModal, publishModal, categoriesModal, modifyModal;
+	var createModal, optionsModal, configModal, publishModal, categoriesModal, modifyModal;
 	(new $.PageManager()).init();
 
 });
