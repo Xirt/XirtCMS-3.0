@@ -100,7 +100,7 @@ $(function() {
 			$(".btn-edit-main").click(function() {
 
 				optionsModal.hide();
-				that.grid.modifyModal(current);
+				that.grid.showModifyModal(current);
 
 			});
 
@@ -108,7 +108,7 @@ $(function() {
 			$(".btn-edit-attributes").click(function() {
 
 				optionsModal.hide();
-				that.grid.modifyAttributesModal(current);
+				that.grid.showAttributesModal(current);
 
 			});
 
@@ -116,7 +116,7 @@ $(function() {
 			$(".btn-edit-password").click(function() {
 
 				optionsModal.hide();
-				that.grid._modifyPasswordModal(current);
+				that.grid.showModifyPasswordModal(current);
 
 			});
 
@@ -193,19 +193,19 @@ $(function() {
 
 		_onload: function() {
 
-			this.element.find(".command-edit").on("click", this._optionsModal);
+			this.element.find(".command-edit").on("click", this._showOptionsModal);
 			this.element.find(".command-delete").on("click", $.proxy(this._deleteItemModal, this));
 
 		},
 
-		_optionsModal: function() {
+		_showOptionsModal: function() {
 
 			optionsModal.show();
 			current = $(this).data("id");
 
 		},
 
-		modifyModal: function() {
+		showModifyModal: function() {
 
 			modifyModal.load({
 
@@ -222,7 +222,7 @@ $(function() {
 
 		},
 
-		modifyAttributesModal: function() {
+		showAttributesModal: function() {
 
 			attributesModal.load({
 
@@ -241,7 +241,7 @@ $(function() {
 
 		},
 
-		_modifyPasswordModal: function() {
+		showModifyPasswordModal: function() {
 
 			passwordModal.load({
 
