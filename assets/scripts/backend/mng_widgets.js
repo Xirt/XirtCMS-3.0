@@ -69,6 +69,7 @@ $(function() {
 			modifyModal = new $.XirtModal($("#modifyModal")).init();
 			configModal = new $.XirtModal($("#configModal")).init();
 			optionsModal = new $.XirtModal($("#optionsModal")).init();
+			priorityModal = new $.XirtModal($("#priorityModal")).init();
 
 		},
 
@@ -104,6 +105,14 @@ $(function() {
 
 			});
 
+			// Active "Edit priorities"-option
+			$(".btn-edit-priorities").click(function() {
+
+				optionsModal.hide();
+				that.grid.modifyPrioritiesModal(current);
+
+			});
+
 		}
 
 	};
@@ -120,70 +129,52 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			var that = this;
 
-				search: true,
-				sorting: false,
-				rowCount: [10, 25, 50, -1],
+			this.element.xgrid({
+
+				sortable: false,
+				rowCount: [10, 15, 20, 50, -1],
 				defaultRowCount: +($(window).height() > 1100),
-				ajax: true,
 				url: "backend/widgets/view",
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
 				formatters: {
 
-					"ordering": function(column, row) {
+					"id" : function (data) {
+
+						return Xirt.pad(data.id, 5, "0");
+
+					},
+
+					"published": function(data) {
 
 						return XCMS.createButtons([
 
 							{
-								classNames : "command-order-down",
-								data : { id : row.id },
-								icon : "arrow-down",
-							},
-
-							{
-								classNames : "command-order-up",
-								data : { id : row.id },
-								icon : "arrow-up",
+								classNames : "command-published " + ((data.published == 1) ? "active" : "inactive"),
+								icon : (data.published == 1) ? "eye" : "eye-slash",
+								data : { id : data.id },
+								label : "Toggle",
 							}
 
 						]);
 
 					},
 
-					"published": function(column, row) {
-
-						return XCMS.createButtons([
-
-							{
-								classNames : "command-published " + ((row.published == 1) ? "active" : "inactive"),
-								data : { id : row.id },
-								icon : "globe",
-							}
-
-						]);
-
-					},
-
-					"commands": function(column, row) {
+					"commands": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { id : row.id },
+								data : { id : data.id },
+								label: "Modify",
 								icon : "pencil",
 							},
 
 							{
 								classNames : "command-delete",
-								data : { id : row.id },
+								data : { id : data.id },
+								label: "Trash",
 								icon : "trash-o",
 							}
 
@@ -191,23 +182,25 @@ $(function() {
 
 					}
 
+				},
+
+				onComplete: function() {
+					that._onload();
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 
 		},
 
 		reload: function() {
-			this.element.bootgrid("reload");
+			this.element.xgrid("reload");
 		},
 
 		_onload: function() {
 
 			this.element.find(".command-edit").on("click", this._optionsModal);
-			this.element.find(".command-order-up").on("click", this._moveItemUp);
-			this.element.find(".command-order-down").on("click", this._moveItemDown);
 			this.element.find(".command-published").on("click", this._togglePublished);
 			this.element.find(".command-delete").on("click", $.proxy(this._deleteItemModal, this));
 
@@ -256,6 +249,23 @@ $(function() {
 
 		},
 
+		modifyPrioritiesModal: function() {
+
+			priorityModal.load({
+
+				url	: "backend/widget/view/" + current,
+				onLoad	: function(json) {
+
+					Xirt.populateForm($("#form-priorities"), json, { prefix : "widget_", converters: {
+						id: function (value) { return Xirt.pad(value, 5, "0"); }
+					}});
+
+				}
+
+			});
+
+		},
+
 		_moveItemUp: function() {
 
 			new $.XirtMessage({
@@ -286,7 +296,11 @@ $(function() {
 
 			var el = $(this);
 			$.get("backend/widget/toggle_published/" + el.data("id"), function () {
+
+				el.find("span").toggleClass("fa-eye-slash");
+				el.find("span").toggleClass("fa-eye");
 				el.toggleClass("inactive active");
+
 			});
 
 		},
@@ -313,7 +327,7 @@ $(function() {
 	 * TRIGGER *
 	 **********/
 	var current;
-	var optionsModal, createModal, modifyModal, configModal;
+	var optionsModal, createModal, modifyModal, configModal, priorityModal;
 	(new $.PageManager()).init();
 
 });

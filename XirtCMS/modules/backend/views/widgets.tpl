@@ -1,24 +1,29 @@
-<h1>
+<h1>Widget Configurations</h1>
 
-	Widgets
-	<div class="btn-group create" />
-		<button class="btn btn-sm btn-success btn-create">Add New</button>
-	</div>
-
-</h1>
-
-<table id="grid-basic" class="table table-sm table-hover table-striped" data-toggle="bootgrid">
+<table id="grid-basic" class="table table-sm table-hover table-striped xgrid-table" data-toggle="bootgrid">
 <thead>
 	<tr>
-		<th data-column-id="id" data-header-css-class="table-row-item_id align-middle text-center" data-css-class="table-row-item_id align-middle text-center" data-converter="identifier">ID #</th>
-		<th data-column-id="name" data-header-css-class="table-row-name align-middle" data-css-class="table-row-name align-middle" data-formatter="name" data-visible-in-selection="false">Name</th>
+		<th data-column-id="id" data-header-css-class="table-row-item_id align-middle text-center" data-css-class="table-row-item_id align-middle text-center">ID #</th>
+		<th data-column-id="name" data-header-css-class="table-row-name align-middle" data-css-class="table-row-name align-middle" data-visible-in-selection="false">Name</th>
 		<th data-column-id="type" data-header-css-class="table-row-type align-middle text-center" data-css-class="table-row-type align-middle text-center">Type</th>
 		<th data-column-id="position" data-header-css-class="table-row-position align-middle text-center" data-css-class="table-row-position align-middle text-center">Position</th>
-		<th data-column-id="ordering" data-header-css-class="table-row-ordering align-middle text-center" data-css-class="table-row-ordering align-middle text-center" data-formatter="ordering">Ordering</th>
-		<th data-column-id="published" data-header-css-class="table-row-published align-middle text-center" data-css-class="table-row-published align-middle text-center" data-formatter="published">Published</th>
-		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-formatter="commands" data-visible-in-selection="false">&nbsp;</th>
+		<th data-column-id="published" data-header-css-class="table-row-published align-middle text-center" data-css-class="table-row-published align-middle text-center">Published</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-visible-in-selection="false">&nbsp;</th>
 	</tr>
 </thead>
+<tbody></tbody>
+<tfoot>
+<tr>
+	<td>
+	
+		<button class="btn btn-sm btn-success btn-create">
+			<i class="fa fa-plus-square"></i>
+			New configuration
+		</button>
+	
+	</td>
+</tr>
+</tfoot>
 </table>
 
 <div id="optionsModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -35,7 +40,7 @@
 
 			<div class="modal-body row">
 
-				<div class="col col-sm-6">
+				<div class="col col-sm-4">
 
 					<button class="btn btn-info btn-edit-main">
 						<i class="fa fa-list-alt fa-5x" aria-hidden="true"></i>
@@ -44,11 +49,20 @@
 
 				</div>
 
-				<div class="col col-sm-6">
+				<div class="col col-sm-4">
 
 					<button class="btn btn-info btn-edit-attributes">
 						<i class="fa fa-gears fa-5x" aria-hidden="true"></i>
 						<p>Modify configuration</p>
+					</button>
+
+				</div>
+
+				<div class="col col-sm-4">
+
+					<button class="btn btn-info btn-edit-priorities">
+						<i class="fa fa-gears fa-5x" aria-hidden="true"></i>
+						<p>Modify priorities</p>
 					</button>
 
 				</div>
@@ -267,6 +281,59 @@
 				<div class="modal-header">
 
 					<h5 class="modal-title">Widget Configuration</h5>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="id" disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="name" disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div id="settingsBox"></div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
+					<button type="button" class="btn btn-sm btn-default btn-close">Close</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
+
+<div id="priorityModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<form id="form-priorities" action="backend/widget/modify_priority" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title">Widget Priority</h5>
 
 				</div>
 

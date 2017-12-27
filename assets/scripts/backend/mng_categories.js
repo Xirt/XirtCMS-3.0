@@ -86,12 +86,13 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			var that = this;
 
-				search: false,
-				sorting: false,
+			this.element.xgrid({
+
+				searchable: false,
+				sortable: false,
 				rowCount: [-1],
-				ajax: true,
 				url: "backend/categories/view",
 				responseHandler: function (response) {
 
@@ -116,29 +117,29 @@ $(function() {
 
 					return response;
 				},
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
 				formatters: {
 
-					"name": function(column, row) {
+					"id" : function (data) {
 
-						var leadingSpaces = Xirt.lead('', row.level * 3);
-						return $("<span>" + leadingSpaces + (row.level ? "<sup>L</sup>" : "") + row.name + "</span>").html();
+						return Xirt.pad(data.id, 5, "0");
 
 					},
 
-					"published": function(column, row) {
+					"name": function(data) {
+
+						var leadingSpaces = Xirt.lead('', data.level * 3);
+						return $("<span>" + leadingSpaces + (data.level ? "<sup>L</sup>" : "") + data.name + "</span>").html();
+
+					},
+
+					"published": function(data) {
 
 						return	XCMS.createButtons([
 
 							{
-								classNames : "command-published " + ((row.published == 1) ? "active" : "inactive"),
-								data : { id : row.id },
+								classNames : "command-published " + ((data.published == 1) ? "active" : "inactive"),
+								data : { id : data.id },
+								label : "Toggle",
 								icon : "globe",
 							}
 
@@ -146,19 +147,21 @@ $(function() {
 
 					},
 
-					"ordering": function(column, row) {
+					"ordering": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-order-down",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Move",
 								icon : "arrow-down",
 							},
 
 							{
 								classNames : "command-order-up",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Move",
 								icon : "arrow-up",
 							}
 
@@ -166,19 +169,21 @@ $(function() {
 
 					},
 
-					"commands": function(column, row) {
+					"commands": function(data) {
 
 						return XCMS.createButtons([
 
 							{
 								classNames : "command-edit",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "Modify",
 								icon : "pencil",
 							},
 
 							{
 								classNames : "command-delete",
-								data : { id : row.id },
+								data : { id : data.id },
+								label : "trash",
 								icon : "trash-o",
 							}
 
@@ -186,16 +191,20 @@ $(function() {
 
 					}
 
+				},
+
+				onComplete: function() {
+					that._onload();
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 
 		},
 
 		reload: function() {
-			this.element.bootgrid("reload");
+			this.element.xgrid("reload");
 		},
 
 		_onload: function() {

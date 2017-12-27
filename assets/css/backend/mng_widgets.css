@@ -1,12 +1,7 @@
 /**************
  Grid Lay-out *
 **************/
-.table-row-commands {
-	width: 95px;
-}
-
 .table-row-item_id,
-.table-row-ordering,
 .table-row-published {
 	width: 100px;
 }
@@ -16,12 +11,24 @@
 	width: 150px;
 }
 
+.table-row-commands {
+	width: 125px;
+}
+
+@media screen and (min-width: 576px) {
+
+	.table-row-commands {
+		width: 225px;
+	}
+
+}
+
 
 /***************
  Modal Lay-out *
 ***************/
 #optionsModal .modal-dialog {
-	max-width: 500px;
+	max-width: 750px;
 }
 
 label[for="opt-toggle-page"],
