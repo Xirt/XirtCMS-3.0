@@ -346,7 +346,7 @@
 					that._renderTableBody(data.rows);
 					that._renderPagination(data.current, data.rowCount, data.total);
 					if ($.type(that.options.onComplete) === "function") {
-						that.options.onComplete();
+						that.options.onComplete(data);
 					}
 
 				}
