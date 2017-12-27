@@ -106,21 +106,131 @@ $(function() {
 
 		init: function() {
 
-			this.element.bootgrid({
+			var that = this;
 
-				search: false,
-				sorting: false,
+			this.element.xgrid({
+
+				rowCount: [10, 15, 20, 50, -1],
+				defaultRowCount: +($(window).height() > 1100),
+
+				searchable: false,
+				sortable: false,
 				rowCount: [-1],
-				ajax: true,
 				url: "backend/menuitems/view/" + menuId,
-				responseHandler: function (response) {
+				formatters: {
+
+					"item_id" : function (data) {
+
+						return Xirt.pad(data.item_id, 5, "0");
+
+					},
+
+					"name": function(data) {
+
+						var leadingSpaces = Xirt.lead('', data.level * 3);
+						var nameValue = "<span>" + leadingSpaces + (data.level ? "<sup>L</sup>" : "") + data.name + "</span>";
+						return (data.home == 1) ? nameValue + "<i><span class=\"fa indicator fa-home\"></span></i>" : nameValue;
+
+					},
+
+					"ordering": function(data) {
+
+						return XCMS.createButtons([
+
+							{
+								classNames : "command-order-down",
+								data : { id : data.item_id },
+								label : "Move",
+								icon : "arrow-down"
+							},
+
+							{
+								classNames : "command-order-up",
+								data : { id : data.item_id },
+								label : "Move",
+								icon : "arrow-up"
+							}
+
+						]);
+
+					},
+
+					"published": function(data) {
+
+						return	XCMS.createButtons([
+
+							{
+								classNames : "command-published " + ((data.published == 1) ? "active" : "inactive"),
+								data : { id : data.item_id },
+								label : "Toggle",
+								icon : "globe"
+							}
+
+						]);
+
+					},
+
+					"sitemap": function(data) {
+
+						return	XCMS.createButtons([
+
+							{
+								classNames : "command-sitemap " + ((data.sitemap == 1) ? "active" : "inactive"),
+								data : { id : data.item_id },
+								label : "Toggle",
+								icon : "sitemap"
+							}
+
+						]);
+
+					},
+
+					"commands": function(data) {
+
+						return XCMS.createButtons([
+
+							{
+								classNames : "command-edit",
+								data : { id : data.item_id },
+								label : "Modify",
+								icon : "pencil"
+							},
+
+							{
+								classNames : "command-config",
+								data : { id : data.item_id },
+								label : "Config",
+								icon : "gears"
+							},
+
+							{
+								classNames : "command-home",
+								data : { id : data.item_id },
+								label : "Toggle",
+								icon : "home"
+							},
+
+							{
+								classNames : "command-delete",
+								data : { id : data.item_id },
+								label : "Trash",
+								icon : "trash-o"
+							}
+
+						]);
+
+					}
+
+				},
+
+				onComplete: function(data) {
 
 					$.each(["#create_parent_id", "#modify_parent_id"], function(index, el) {
 
 						el = $(el);
 						el.children("option[value!=0]").remove();
 
-						$.each(response.rows, function(index, row) {
+						$.each(data.rows, function(index, row) {
 
 							row.level = parseInt(row.level);
 							var indent = Xirt.lead("- ", (row.level) * 5);
@@ -134,115 +244,18 @@ $(function() {
 
 					});
 
-					return response;
-				},
-				converters: {
-
-					identifier: {
-						to: function (value) { return Xirt.pad(value, 5, "0"); }
-					}
-
-				},
-				formatters: {
-
-					"name": function(column, row) {
-
-						var leadingSpaces = Xirt.lead('', row.level * 3);
-						var nameValue = "<span>" + leadingSpaces + (row.level ? "<sup>L</sup>" : "") + row.name + "</span>";
-						return (row.home == 1) ? nameValue + "<i><span class=\"fa indicator fa-home\"></span></i>" : nameValue;
-
-					},
-
-					"ordering": function(column, row) {
-
-						return XCMS.createButtons([
-
-							{
-								classNames : "command-order-down",
-								data : { id : row.item_id },
-								icon : "arrow-down",
-							},
-
-							{
-								classNames : "command-order-up",
-								data : { id : row.item_id },
-								icon : "arrow-up",
-							}
-
-						]);
-
-					},
-
-					"published": function(column, row) {
-
-						return	XCMS.createButtons([
-
-							{
-								classNames : "command-published " + ((row.published == 1) ? "active" : "inactive"),
-								data : { id : row.item_id },
-								icon : "globe",
-							}
-
-						]);
-
-					},
-
-					"sitemap": function(column, row) {
-
-						return	XCMS.createButtons([
-
-							{
-								classNames : "command-sitemap " + ((row.sitemap == 1) ? "active" : "inactive"),
-								data : { id : row.item_id },
-								icon : "sitemap",
-							}
-
-						]);
-
-					},
-
-					"commands": function(column, row) {
-
-						return XCMS.createButtons([
-
-							{
-								classNames : "command-edit",
-								data : { id : row.item_id },
-								icon : "pencil",
-							},
-
-							{
-								classNames : "command-config",
-								data : { id : row.item_id },
-								icon : "gears",
-							},
-
-							{
-								classNames : "command-home",
-								data : { id : row.item_id },
-								icon : "home",
-							},
-
-							{
-								classNames : "command-delete",
-								data : { id : row.item_id },
-								icon : "trash-o",
-							}
-
-						]);
-
-					}
+					that._onload();
 
 				}
 
-			}).on("loaded.rs.jquery.bootgrid", $.proxy(this._onload, this));
+			});
 
 			return this;
 
 		},
 
 		reload: function() {
-			this.element.bootgrid("reload");
+			this.element.xgrid("reload");
 		},
 
 		_onload: function() {
