@@ -327,7 +327,7 @@ $(function() {
 
 			publishModal.load({
 
-				url	: "backend/article/view/" + $(this).data("id"),
+				url	: "backend/article/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-publish"), json, { prefix : "article_", converters: {
