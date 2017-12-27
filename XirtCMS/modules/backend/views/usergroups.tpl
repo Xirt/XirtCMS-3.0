@@ -13,7 +13,12 @@
 <tbody></tbody>
 <tfoot>
 <tr>
-	<td><button class="btn btn-sm btn-success btn-create">Create usergroup</button></td>
+	<td>
+		<button class="btn btn-sm btn-success btn-create">
+			<i class="fa fa-plus-square"></i>
+			New usergroup
+		</button>
+	</td>
 </tr>
 </tfoot>
 </table>

@@ -13,7 +13,12 @@
 <tbody></tbody>
 <tfoot>
 <tr>
-	<td><button class="btn btn-sm btn-success btn-create">Create route</button></td>
+	<td>
+		<button class="btn btn-sm btn-success btn-create">
+			<i class="fa fa-plus-square"></i>
+			New route
+		</button>
+	</td>
 </tr>
 </tfoot>
 </table>

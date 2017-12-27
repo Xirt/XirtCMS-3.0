@@ -11,11 +11,6 @@
 	</tr>
 </thead>
 <tbody></tbody>
-<tfoot>
-<tr>
-	<td><button class="btn btn-sm btn-success btn-create">Create template</button></td>
-</tr>
-</tfoot>
 </table>
 
 <div id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">

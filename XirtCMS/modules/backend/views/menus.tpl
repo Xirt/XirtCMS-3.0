@@ -13,7 +13,12 @@
 <tbody></tbody>
 <tfoot>
 <tr>
-	<td><button class="btn btn-sm btn-success btn-create">Create menu</button></td>
+	<td>
+		<button class="btn btn-sm btn-success btn-create">
+			<i class="fa fa-plus-square"></i>
+			New menu
+		</button>
+	</td>
 </tr>
 </tfoot>
 </table>
