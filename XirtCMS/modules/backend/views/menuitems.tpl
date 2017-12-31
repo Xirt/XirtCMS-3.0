@@ -65,7 +65,7 @@
 
 				<div class="col-sm-4">
 
-					<button class="btn btn-info btn-edit-status">
+					<button class="btn btn-info btn-edit-status" disabled>
 						<i class="far fa-calendar-alt fa-5x" aria-hidden="true"></i>
 						<p>Schedule publishing</p>
 					</button>
