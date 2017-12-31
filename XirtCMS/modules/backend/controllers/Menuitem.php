@@ -265,19 +265,27 @@ class MenuItem extends XCMS_Controller {
 
     /**
      * "Set home"-functionality for this controller
-     *
-     * @param   int         $id             The ID of the affected menuitem
      */
-    public function set_home($id = 0) {
+    public function set_home() {
 
         // Validate given item ID
+        $id = $this->input->post("homepage_item");
         if (!is_numeric($id) || !$this->menuitem->load($id)) {
+
+            XCMS_JSON::validationFailureMessage();
             return;
+
         }
 
+        // Save item details
         MenuHelper::unsetHome();
         $this->menuitem->set("home", "1");
         $this->menuitem->save();
+
+        // Inform user
+        XCMS_JSON::modificationSuccessMessage(
+            "The new homepage has been configured succesfully."
+        );
 
     }
 
