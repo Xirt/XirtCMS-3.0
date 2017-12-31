@@ -140,7 +140,7 @@ $(function() {
 								classNames : "command-published " + ((data.published == 1) ? "active" : "inactive"),
 								data : { id : data.id },
 								label : "Toggle",
-								icon : "globe",
+								icon : "fas fa-globe",
 							}
 
 						]);
@@ -155,14 +155,14 @@ $(function() {
 								classNames : "command-order-down",
 								data : { id : data.id },
 								label : "Move",
-								icon : "arrow-down",
+								icon : "fas fa-arrow-alt-circle-down",
 							},
 
 							{
 								classNames : "command-order-up",
 								data : { id : data.id },
 								label : "Move",
-								icon : "arrow-up",
+								icon : "fas fa-arrow-alt-circle-up",
 							}
 
 						]);
@@ -177,14 +177,14 @@ $(function() {
 								classNames : "command-edit",
 								data : { id : data.id },
 								label : "Modify",
-								icon : "pencil",
+								icon : "far fa-edit",
 							},
 
 							{
 								classNames : "command-delete",
 								data : { id : data.id },
 								label : "trash",
-								icon : "trash-o",
+								icon : "far fa-trash-alt",
 							}
 
 						]);

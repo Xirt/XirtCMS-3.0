@@ -135,7 +135,7 @@ $(function() {
 								additionalAttributes : (data.default == 1) ? "disabled" : "",
 								data : { id : data.id },
 								label: "Toggle",
-								icon : "globe"
+								icon : "fas fa-globe"
 							}
 
 						]);
@@ -150,14 +150,14 @@ $(function() {
 								classNames : "command-edit",
 								data : { id : data.id },
 								label: "Modify",
-								icon : "pencil"
+								icon : "far fa-edit"
 							},
 
 							{
 								classNames : "command-delete",
 								data : { id : data.id },
 								label: "Trash",
-								icon : "trash-o"
+								icon : "far fa-trash-alt"
 							}
 
 						]);

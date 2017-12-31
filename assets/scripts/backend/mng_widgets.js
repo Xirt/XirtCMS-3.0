@@ -151,7 +151,7 @@ $(function() {
 
 							{
 								classNames : "command-published " + ((data.published == 1) ? "active" : "inactive"),
-								icon : (data.published == 1) ? "eye" : "eye-slash",
+								icon : (data.published == 1) ? "fas fa-eye" : "far fa-eye-slash",
 								data : { id : data.id },
 								label : "Toggle",
 							}
@@ -168,14 +168,14 @@ $(function() {
 								classNames : "command-edit",
 								data : { id : data.id },
 								label: "Modify",
-								icon : "pencil",
+								icon : "far fa-edit",
 							},
 
 							{
 								classNames : "command-delete",
 								data : { id : data.id },
 								label: "Trash",
-								icon : "trash-o",
+								icon : "far fa-trash-alt",
 							}
 
 						]);
@@ -296,11 +296,7 @@ $(function() {
 
 			var el = $(this);
 			$.get("backend/widget/toggle_published/" + el.data("id"), function () {
-
-				el.find("span").toggleClass("fa-eye-slash");
-				el.find("span").toggleClass("fa-eye");
 				el.toggleClass("inactive active");
-
 			});
 
 		},

@@ -132,7 +132,7 @@ $(function() {
 								classNames : "command-published " + ((data.published == 1) ? "active" : "inactive"),
 								data : { id : data.id },
 								label: "Toggle",
-								icon : "globe"
+								icon : "fas fa-globe"
 							}
 
 						]);
@@ -147,7 +147,7 @@ $(function() {
 								classNames : "command-edit",
 								data : { id : data.id },
 								label : "Modify",
-								icon : "pencil"
+								icon : "far fa-edit"
 							},
 
 							{
@@ -155,7 +155,7 @@ $(function() {
 								classNames : "command-delete",
 								data : { id : data.id },
 								label : "Trash",
-								icon : "trash-o"
+								icon : "far fa-trash-alt"
 							}
 
 						]);

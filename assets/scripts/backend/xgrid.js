@@ -32,8 +32,8 @@
 
 			// Toolbar templates
 			"toolbarContainer" : '<div class="xgrid-toolbar"></div>',
-			"toolbarSearch"    : '<div class="input-group"><span class="icon fa input-group-addon fa-search"></span><input class="search-field form-control form-control-sm" placeholder="Search..." type="text"></div>',
-			"toolbarConfig"    : '<button class="btn btn-primary btn-sm config"><span class="fa fa-gears"></span><span class="label">Filters</span></button>'
+			"toolbarSearch"    : '<div class="input-group"><span class="icon input-group-addon"><span class="icon fas fa-search"></span></span><input class="search-field form-control form-control-sm" placeholder="Search..." type="text"></div>',
+			"toolbarConfig"    : '<button class="btn btn-primary btn-sm config"><span class="fas fa-cogs"></span><span class="label">Filters</span></button>'
 
 		};
 
@@ -170,14 +170,14 @@
 				.appendTo(cell);
 
 			var arrow = $(document.createElement("span"))
-				.addClass("icon fa")
+				.addClass("icon")
 				.appendTo(button);
 
 			if (options.isSortable) {
 
 				 button.addClass("sortable");
 				 if (this.ordering[options.id]) {
-					 arrow.addClass("fa-sort-" + this.ordering[options.id]);
+					 arrow.addClass("far fa-sort-amount-" + (this.ordering[options.id] == "desc") ? "up" : "down");
 				 }
 
 				 var that = this;

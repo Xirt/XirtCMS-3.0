@@ -115,7 +115,7 @@ $(function() {
 								classNames : "command-edit",
 								data : { id : data.id },
 								label : "Modify",
-								icon : "pencil",
+								icon : "far fa-edit",
 							},
 
 							{
@@ -123,7 +123,7 @@ $(function() {
 								classNames : "command-delete",
 								data : { id : data.id },
 								label : "Trash",
-								icon : "trash-o",
+								icon : "far fa-trash-alt",
 							}
 
 						]);

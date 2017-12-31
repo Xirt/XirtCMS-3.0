@@ -79,7 +79,7 @@ $(function() {
 								classNames : "command-edit",
 								data : { name : data.name },
 								label : "modify",
-								icon : "pencil"
+								icon : "far fa-edit"
 							}
 
 						]);
