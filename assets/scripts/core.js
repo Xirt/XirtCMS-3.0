@@ -12,10 +12,10 @@ $(document).ready(function() {
 });
 
 
-/*********************************************************
-*		  XIRT - Utility Library for XirtCMS			*
-*			  (version 2.0 - 12.01.2014)				*
-**********************************************************/
+/********************************************************
+*		  XIRT - Utility Library for XirtCMS	*
+*			  (version 2.0 - 12.01.2014)	*
+*********************************************************/
 var Xirt = {
 
 	activate : function() {
@@ -118,11 +118,11 @@ var XCMS = (function(){
 			var result = "";
 
 			$.each(buttons, function(key, button) {
-				
+
 				if ($.type(button.label) == "undefined") {
-					button.label = "";					
+					button.label = "";
 				}
-				
+
 				result = result + " " + XCMS.createButton(button.classNames, button.icon, button.data, button.additionalAttributes, button.label);
 			});
 
@@ -265,7 +265,7 @@ Form.validate = function (targetForm, options) {
 
 	});
 
-	
+
 	// Show dialog and return to given modal
 	function _showDialogAndReturn(type, triggerModal, nextModal, title, message) {
 
@@ -285,7 +285,7 @@ Form.validate = function (targetForm, options) {
 
 	}
 
-	
+
 	// Show dialog and show overview (list)
 	function _showDialogAndList(type, triggerModal, grid, title, message) {
 
@@ -306,10 +306,10 @@ Form.validate = function (targetForm, options) {
 
 }
 
-/*********************************************************
-*		FORM.REQUEST - Default Form Submit (AJAX)	   *
-*				(version 1.0 - 13.01.2014)			  *
-**********************************************************/
+/************************************************************
+*		FORM.REQUEST - Default Form Submit (AJAX)   *
+*				(version 1.0 - 13.01.2014)  *
+************************************************************/
 Form.Request = function(form, options) {
 
 	// Allows for inclusion of disabled fields
@@ -589,9 +589,9 @@ Form.Request = function(form, options) {
 			return this;
 
 		},
-		
+
 		getElement: function() {
-			return this.element;			
+			return this.element;
 		}
 
 	};
