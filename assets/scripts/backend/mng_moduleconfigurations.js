@@ -113,6 +113,8 @@ $(function() {
 
 		init: function() {
 
+			var that = this;
+
 			this.element.xgrid({
 
 				rowCount: [10, 15, 20, 50, -1],
