@@ -26,6 +26,7 @@ class Menuitems extends XCMS_Controller {
         // Load modules
         $this->load->model("ModuleTypesModel", "modules");
         $this->load->model("ArticlesModel", "articles");
+        $this->load->model("MenusModel", "menus");
         $this->load->model("MenuModel", "menu");
 
     }
@@ -53,6 +54,13 @@ class Menuitems extends XCMS_Controller {
             $articles[$article->get("id")] = $article->get("title");
         }
 
+        // Load all menus
+        $menus = array();
+        $this->menus->load();
+        foreach ($this->menus->toArray() as $menu) {
+            $menus[$menu->get("id")] = $menu->get("name");
+        }
+
         // Add page scripts
         XCMS_Page::getInstance()->addScript(array(
             "assets/scripts/backend/mng_menuitems.js"
@@ -68,7 +76,8 @@ class Menuitems extends XCMS_Controller {
             "moduleTypes" => $this->modules->toArray(),
             "menu_name"   => htmlspecialchars($this->menu->get("name")),
             "menu_id"     => $this->menu->get("menu_id"),
-            "articles"    => $articles
+            "articles"    => $articles,
+            "menus"       => $menus
         ));
 
     }

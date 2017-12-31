@@ -15,6 +15,20 @@ class MenusModel extends XCMS_Model {
      * @var array
      */
     private $_list = array();
+    
+    
+    /**
+     * CONSTRUCTOR
+     * Instantiates controller with required helpers, libraries and models
+     */
+    public function __construct() {
+        
+        parent::__construct();
+        
+        // Load models
+        $this->load->model("MenuModel", false);
+        
+    }
 
 
     /**
@@ -26,7 +40,7 @@ class MenusModel extends XCMS_Model {
 
         $query = $this->_buildQuery()->get(XCMS_Tables::TABLE_MENUS);
         foreach ($query->result() as $row) {
-            $this->_list[] = $row;
+            $this->_list[] = (new MenuModel())->set((array)$row);
         }
 
         return $this;

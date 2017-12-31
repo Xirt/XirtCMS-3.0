@@ -72,9 +72,9 @@ class Menus extends XCMS_Controller {
         foreach ($menus->toArray() as $menu) {
 
             $gridIO->addRow([
-                "id"      => $menu->id,
-                "name"    => $menu->name,
-                "sitemap" => $menu->sitemap
+                "id"      => $menu->get("id"),
+                "name"    => $menu->get("name"),
+                "sitemap" => $menu->get("sitemap")
             ]);
 
         }

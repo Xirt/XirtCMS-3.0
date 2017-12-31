@@ -158,7 +158,7 @@ class Widgets extends XCMS_Controller {
 
             $entries = array();
 
-            $menuObject = MenuHelper::getMenuTree($menu->id);
+            $menuObject = MenuHelper::getMenuTree($menu->get("id"));
             foreach ($menuObject->toArray() as $node) {
 
                 $entries[] = (object) [
@@ -168,7 +168,7 @@ class Widgets extends XCMS_Controller {
 
             }
 
-            $list[$menu->id] = $entries;
+            $list[$menu->get("id")] = $entries;
 
         }
 
