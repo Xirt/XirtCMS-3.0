@@ -84,7 +84,7 @@ $(function() {
 			homeModal    = new $.XirtModal($("#homeModal")).init();
 			createModal  = new $.XirtModal($("#createModal")).init();
 			optionsModal = new $.XirtModal($("#optionsModal")).init();
-			modifyModal	 = new $.XirtModal($("#modifyModal")).init();
+			modifyModal  = new $.XirtModal($("#modifyModal")).init();
 			configModal  = new $.XirtModal($("#configModal"), {resetForms:	false }).init();
 
 		},
@@ -136,7 +136,7 @@ $(function() {
 				$.ajax("backend/menuitems/view/" + $(this).val(), {
 
 					method: "POST",
-					success : that.populateHomeSelection
+					success : $.proxy(that.populateHomeSelection, that)
 
 				});
 
