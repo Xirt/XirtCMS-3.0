@@ -214,12 +214,12 @@ footer {
 	height: 100%;
 }
 
-#optionsModal .modal-body .btn i {
-	padding: 0.5rem 0;
+#optionsModal .modal-body .btn svg {
+	padding: 1rem 0;
 }
 
 #optionsModal .modal-body .btn p {
-	margin-bottom: 0.5rem;
+	margin-bottom: 0;
 }
 
 #optionsModal .modal-footer {
@@ -254,16 +254,22 @@ form .datepicker-panel > ul > li.picked:hover {
 	font-weight: bold;
 }
 
-form button .fa {
-	visibility: hidden;
-	width: 0;
+form button .svg-inline--fa,
+tfoot button .svg-inline--fa {
+	margin-right: 8px;
+	margin-top: -2px;
 }
 
-form button.spinner .fa {
-	width: auto;
-	visibility: visible;
-	margin-right: 10px;
-	margin-top: -2px;
+form button .fa-spinner {
+	display: none;
+}
+
+form button.spinner .fa-spinner {
+	display: inline-block;
+}
+
+form button.spinner .fa-save {
+	display: none;
 }
 
 form .box-notify {

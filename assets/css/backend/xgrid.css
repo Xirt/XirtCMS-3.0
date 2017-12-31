@@ -101,6 +101,9 @@
 	cursor: pointer;
 }
 
+.xgrid-table tbody button svg {
+	color: #808080;
+}
 
 .xgrid-table button b {
 	display: block;
