@@ -140,8 +140,16 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Create user</button>
-					<button type="button" class="btn btn-sm btn-default btn-close">Cancel</button>
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Create
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
 
 				</div>
 
@@ -223,11 +231,18 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-default btn-close">Cancel</button>
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
 
 				</div>
-
 			</div>
 
 		</form>
@@ -276,8 +291,16 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-default btn-close">Cancel</button>
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
 
 				</div>
 
@@ -345,8 +368,16 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-default btn-close">Cancel</button>
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
 
 				</div>
 
