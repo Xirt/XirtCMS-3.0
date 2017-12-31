@@ -207,7 +207,7 @@ $(function() {
 					},
 
 					"published": function(data) {
-						return (data.published == 1) ? "<i class=\"fa fa-check\"></i>" : "";
+						return (data.published == 1) ? "<i class=\"fas fa-check\"></i>" : "";
 					},
 
 					"commands": function(data) {
@@ -218,14 +218,14 @@ $(function() {
 								classNames : "command-edit",
 								data : { id : data.id },
 								label : "Modify",
-								icon : "pencil",
+								icon : "far fa-edit",
 							},
 
 							{
 								classNames : "command-delete",
 								data : { id : data.id },
 								label : "Trash",
-								icon : "trash-o",
+								icon : "far fa-trash-alt",
 							}
 
 						]);
