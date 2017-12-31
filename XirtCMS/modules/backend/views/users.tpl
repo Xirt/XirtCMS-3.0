@@ -42,7 +42,7 @@
 				<div class="col-sm-4">
 
 					<button class="btn btn-info btn-edit-main">
-						<i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i>
+						<i class="fas fa-user fa-5x" aria-hidden="true"></i>
 						<p>Modify user</p>
 					</button>
 
@@ -51,7 +51,7 @@
 				<div class="col-sm-4">
 
 					<button class="btn btn-info btn-edit-attributes">
-						<i class="fa fa-address-card-o fa-5x" aria-hidden="true"></i>
+						<i class="far fa-address-card fa-5x" aria-hidden="true"></i>
 						<p>Modify attributes</p>
 					</button>
 
@@ -60,7 +60,7 @@
 				<div class="col-sm-4">
 
 					<button class="btn btn-info btn-edit-password">
-						<i class="fa fa-unlock-alt fa-5x" aria-hidden="true"></i>
+						<i class="fas fa-unlock-alt fa-5x" aria-hidden="true"></i>
 						<p>Change password</p>
 					</button>
 

@@ -43,7 +43,7 @@
 				<div class="col col-sm-4">
 
 					<button class="btn btn-info btn-edit-main">
-						<i class="fa fa-list-alt fa-5x" aria-hidden="true"></i>
+						<i class="far fa-edit fa-5x" aria-hidden="true"></i>
 						<p>Modify appearance</p>
 					</button>
 
@@ -52,7 +52,7 @@
 				<div class="col col-sm-4">
 
 					<button class="btn btn-info btn-edit-attributes">
-						<i class="fa fa-gears fa-5x" aria-hidden="true"></i>
+						<i class="fas fa-cogs fa-5x" aria-hidden="true"></i>
 						<p>Modify configuration</p>
 					</button>
 
@@ -60,8 +60,8 @@
 
 				<div class="col col-sm-4">
 
-					<button class="btn btn-info btn-edit-priorities">
-						<i class="fa fa-gears fa-5x" aria-hidden="true"></i>
+					<button class="btn btn-info btn-edit-priorities" disabled>
+						<i class="fas fa-cogs fa-5x" aria-hidden="true"></i>
 						<p>Modify priorities</p>
 					</button>
 
@@ -235,9 +235,9 @@
 
 								<?php foreach ($menus as $menu): ?>
 
-									<optgroup label="<?php echo $menu->name; ?>">
+									<optgroup label="<?php echo $menu->get("name"); ?>">
 
-									<?php foreach ($menuEntries[$menu->id] as $entry): ?>
+									<?php foreach ($menuEntries[$menu->get("id")] as $entry): ?>
 									<option value="<?php echo $entry->value; ?>"><?php echo $entry->label; ?></option>
 									<?php endforeach; ?>
 

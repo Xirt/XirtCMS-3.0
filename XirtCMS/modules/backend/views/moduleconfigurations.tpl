@@ -40,7 +40,7 @@
 				<div class="col-sm-6">
 
 					<button class="btn btn-info btn-edit-main">
-						<i class="fa fa-list-alt fa-5x" aria-hidden="true"></i>
+						<i class="far fa-edit fa-5x" aria-hidden="true"></i>
 						<p>Modify appearance</p>
 					</button>
 
@@ -49,7 +49,7 @@
 				<div class="col-sm-6">
 
 					<button class="btn btn-info btn-edit-config">
-						<i class="fa fa-gears fa-5x" aria-hidden="true"></i>
+						<i class="fas fa-cogs fa-5x" aria-hidden="true"></i>
 						<p>Modify configuration</p>
 					</button>
 

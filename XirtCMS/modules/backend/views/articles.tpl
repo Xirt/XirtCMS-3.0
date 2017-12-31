@@ -41,7 +41,7 @@
 				<div class="col-sm-3">
 
 					<button class="btn btn-info btn-edit-content">
-						<i class="fa fa-pencil fa-5x" aria-hidden="true"></i>
+						<i class="far fa-edit fa-5x" aria-hidden="true"></i>
 						<p>Modify content</p>
 					</button>
 
@@ -50,7 +50,7 @@
 				<div class="col-sm-3">
 
 					<button class="btn btn-info btn-edit-properties">
-						<i class="fa fa-gears fa-5x" aria-hidden="true"></i>
+						<i class="fas fa-cogs fa-5x" aria-hidden="true"></i>
 						<p>Modify properties</p>
 					</button>
 
@@ -59,7 +59,7 @@
 				<div class="col-sm-3">
 
 					<button class="btn btn-info btn-edit-status">
-						<i class="fa fa-calendar  fa-5x" aria-hidden="true"></i>
+						<i class="far fa-calendar-alt fa-5x" aria-hidden="true"></i>
 						<p>Schedule publishing</p>
 					</button>
 
