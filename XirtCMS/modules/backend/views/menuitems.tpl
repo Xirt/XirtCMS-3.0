@@ -15,14 +15,142 @@
 <tfoot>
 <tr>
 	<td>
+
+		<button class="btn btn-sm btn-primary btn-home">
+			<i class="fa fa-home"></i>
+			Set homepage
+		</button>
+
 		<button class="btn btn-sm btn-success btn-create">
 			<i class="fa fa-plus-square"></i>
 			New menu item
 		</button>
+
 	</td>
 </tr>
 </tfoot>
 </table>
+
+<div id="optionsModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<div class="modal-content">
+
+			<div class="modal-header">
+
+				<h5 class="modal-title">What do you want to do?</h5>
+
+			</div>
+
+			<div class="modal-body row">
+
+				<div class="col-sm-4">
+
+					<button class="btn btn-info btn-edit-properties">
+						<i class="far fa-edit fa-5x" aria-hidden="true"></i>
+						<p>Modify properties</p>
+					</button>
+
+				</div>
+
+				<div class="col-sm-4">
+
+					<button class="btn btn-info btn-edit-routing">
+						<i class="far fa-dot-circle fa-5x" aria-hidden="true"></i>
+						<p>Modify target</p>
+					</button>
+
+				</div>
+
+				<div class="col-sm-4">
+
+					<button class="btn btn-info btn-edit-status">
+						<i class="far fa-calendar-alt fa-5x" aria-hidden="true"></i>
+						<p>Schedule publishing</p>
+					</button>
+
+				</div>
+
+			</div>
+
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-sm btn-default btn-close">Cancel</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+<div id="homeModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<form id="form-home" action="backend/menuitem/set_home" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title">Set homepage</h5>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group row">
+
+						<label for="homepage_menu" class="col-sm-4 col-form-label col-form-label-sm">Menu</label>
+						<div class="col-sm-8">
+
+							<select class="form-control form-control-sm" id="homepage_menu" name="homepage_menu" required>
+							<?php foreach ($menus as $id => $name): ?>
+								<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+							<?php endforeach; ?>
+							</select>
+
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label for="homepage_item" class="col-sm-4 col-form-label col-form-label-sm">Item</label>
+						<div class="col-sm-8">
+							<select class="form-control form-control-sm select-menuitem" id="homepage_item" name="homepage_item" required>
+							</select>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
 
 <div id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -66,8 +194,16 @@
 
 					<input type="hidden" name="menu_id" value="" />
 
-					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Create item</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Create item
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
 
 				</div>
 
@@ -128,8 +264,16 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
 
 				</div>
 
@@ -303,8 +447,16 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success"><span class="fa fa-refresh fa-spin fa-1x fa-fw"></span>Save changes</button>
-					<button type="button" class="btn btn-sm btn-primary btn-close">Close</button>
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
 
 				</div>
 
