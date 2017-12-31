@@ -2,14 +2,6 @@ var Form = Form ? Form : [];
 
 $(document).ready(function() {
 
-	if (typeof BootstrapDialog != 'undefined') {
-
-		BootstrapDialog.configDefaultOptions({
-			btnsOrder: BootstrapDialog.BUTTONS_ORDER_OK_CANCEL
-		});
-
-	}
-
 	// Trims form input on blur
 	$("input").change(function() {
 		$(this).val($(this).val().trim());
@@ -20,30 +12,9 @@ $(document).ready(function() {
 });
 
 
-(function ($) {
-
-	$.fn.notification = function(text, options) {
-
-		var settings = $.extend({
-			position: "bottom",
-			type: "info"
-		}, options);
-
-		var alert = $("<div class='alert alert-" + settings.type + " alert-dismissable'>")
-			.append("<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>")
-			.append(text);
-
-		return (settings.position == "top") ? this.prepend(alert) : this.append(alert);
-
-	};
-
-}(jQuery));
-
-
-
 /*********************************************************
-*          XIRT - Utility Library for XirtCMS            *
-*              (version 2.0 - 12.01.2014)                *
+*		  XIRT - Utility Library for XirtCMS			*
+*			  (version 2.0 - 12.01.2014)				*
 **********************************************************/
 var Xirt = {
 
@@ -59,36 +30,11 @@ var Xirt = {
 
 	},
 
-	notification : function (target, text, options) {
-		$(target).notification(text, options);
-	},
-
-	removeNotifications : function() {
-		$(".alert").hide();
-	},
-
-
-
-
-
-
-
-
-
-
-
 
 	noAJAX : function() {
 		alert("Request failed");
 	},
 
-	error : function(text) {
-		$.jGrowl(text, { themeState : "error" });
-	},
-
-	notice : function(text) {
-		$.jGrowl(text);
-	},
 
 	populateForm : function(form, data, optionsOverride) {
 
@@ -172,7 +118,12 @@ var XCMS = (function(){
 			var result = "";
 
 			$.each(buttons, function(key, button) {
-				result = result + " " + XCMS.createButton(button.classNames, button.icon, button.data, button.additionalAttributes);
+				
+				if ($.type(button.label) == "undefined") {
+					button.label = "";					
+				}
+				
+				result = result + " " + XCMS.createButton(button.classNames, button.icon, button.data, button.additionalAttributes, button.label);
 			});
 
 			return result;
@@ -180,7 +131,7 @@ var XCMS = (function(){
 		},
 
 		// Current method (replaced once BootGrid has been rewritten)
-		createButton : function(classNames, icon, data, attributes) {
+		createButton : function(classNames, icon, data, attributes, label) {
 
 			var dataString = "";
 			$.each(data, function(key, value) {
@@ -189,34 +140,7 @@ var XCMS = (function(){
 
 			attributes = (typeof attributes == "undefined") ? "" : attributes;
 
-			return "<button type=\"button\" class=\"btn btn-xs btn-default " + classNames + "\"" + dataString + " " + attributes + "><span class=\"fa fa-" + icon + "\"></span></button>";
-
-		},
-
-		// Future method (once BootGrid has been rewritten)
-		triggerDeletion : function(id, url) {
-
-			BootstrapDialog.confirm({
-
-				backdrop: false,
-				title: "Confirm deletion",
-				message: "Are you sure that you want to permanently delete item #" + Xirt.pad(id.toString(), 5, "0") + "?",
-				type: BootstrapDialog.TYPE_WARNING,
-				callback: function(result) {
-
-					if (result) {
-
-						$.ajax({
-							url: url + id,
-						}).done(function() {
-							$("#grid-basic").bootgrid("reload");
-						});
-
-					}
-
-				}
-
-			});
+			return "<button type=\"button\" class=\"btn btn-sm btn-default " + classNames + "\"" + dataString + " " + attributes + "><span class=\"" + icon + "\"></span><b>" + label + "</b></button>";
 
 		},
 
@@ -254,58 +178,31 @@ Form.validate = function (targetForm, options) {
 
 	$(targetForm).validate({
 
-		rules: options.rules,
-		messages: options.messages,
-		onfocusout: function (element) { return $(element).valid(); },
-		onfocusin: function (element) { return $(element).valid(); },
-		onkeyup: function (element) { return $(element).valid(); },
+		rules      : options.rules,
+		messages   : options.messages,
+		onfocusout : function (element) { return $(element).valid(); },
+		onfocusin  : function (element) { return $(element).valid(); },
+		onkeyup    : function (element) { return $(element).valid(); },
 
-		showErrors: function (errorMap, errorList) {
+		showErrors : function (errorMap, errorList) {
 
-			$(targetForm).find( "input, select, textarea, [contenteditable]").each(function (i, candidate) {
+			// Remove obsolete messages
+			$.each(this.validElements(), function(i, el) {
+				$(el).popover("dispose");
+			});
 
-				candidate = $(candidate);
+			// Create / modify relevant messages
+			$.each(errorList, function(i, item) {
 
-				var error = false;
-				for (var key in errorList) {
+				$(item.element).popover({
+					content: item.message,
+					placement: "right",
+					trigger: "manual"
+				}).popover("show");
 
-					if (candidate.is($(errorList[key].element))) {
-						error = errorList[key].message;
-						continue;
-					}
-
-				}
-
-				if (!error) {
-
-					if (candidate.data("bs.popover.body")) {
-
-						candidate.removeData("bs.popover.body");
-						candidate.popover("destroy");
-
-					}
-
-					return;
-
-				}
-
-				if (!candidate.data('bs.popover.body')) {
-
-					candidate.popover({
-						content: error,
-						container: 'body',
-						placement: "right",
-						trigger: "manual"
-					}).popover('show');
-
-				} else if (candidate.data("bs.popover.body") != error) {
-
-					var dataPopover = candidate.data('bs.popover');
-					dataPopover.tip().find('.popover-content').html(error);
-
-				}
-
-				candidate.data("bs.popover.body", error);
+				// Ensure updated text
+				var $popover = $($(item.element).data('bs.popover').getTipElement());
+				$popover.find(".popover-body").html(item.message);
 
 			});
 
@@ -340,16 +237,16 @@ Form.validate = function (targetForm, options) {
 						case "error":
 
 							return _showDialogAndReturn(
-								BootstrapDialog.TYPE_DANGER,
+								"error",
 								options.currentModal,
-								options.targetModal,
+								options.nextModal,
 								data.title,
 								data.message
 							);
 
 						case "info":
 							return _showDialogAndList(
-								BootstrapDialog.TYPE_INFO,
+								"info",
 								options.currentModal,
 								options.grid,
 								data.title,
@@ -369,40 +266,39 @@ Form.validate = function (targetForm, options) {
 	});
 
 	
-
 	// Show dialog and return to given modal
 	function _showDialogAndReturn(type, triggerModal, nextModal, title, message) {
 
 		triggerModal.hide();
-		var that = BootstrapDialog.show({
-			type     : type,
-			title    : title,
+		var that = new $.XirtMessage({
+
+			type	 : type,
+			title	 : title,
 			message  : message,
-			closable : false,
-			onshown  : function(e) {
-				setTimeout(function() {
-					that.close();
-					nextModal.show();
-				}, 2500);
+			callback : function(e) {
+
+				nextModal.show();
+
 			}
+
 		});
 
 	}
 
+	
 	// Show dialog and show overview (list)
 	function _showDialogAndList(type, triggerModal, grid, title, message) {
 
 		triggerModal.hide();
-		var that = BootstrapDialog.show({
-			type     : type,
-			title    : title,
+		var that = new $.XirtMessage({
+
+			type	 : type,
+			title	 : title,
 			message  : message,
-			closable : false,
-			onshown  : function(e) {
-				setTimeout(function() {
-					if (grid) typeof grid.reload == "function" ? grid.reload() : grid.bootgrid("reload");
-					that.close();
-				}, 1000);
+			callback  : function(e) {
+
+				if (grid) typeof grid.reload == "function" ? grid.reload() : grid.bootgrid("reload");
+
 			}
 		});
 
@@ -411,8 +307,8 @@ Form.validate = function (targetForm, options) {
 }
 
 /*********************************************************
-*        FORM.REQUEST - Default Form Submit (AJAX)       *
-*                (version 1.0 - 13.01.2014)              *
+*		FORM.REQUEST - Default Form Submit (AJAX)	   *
+*				(version 1.0 - 13.01.2014)			  *
 **********************************************************/
 Form.Request = function(form, options) {
 
@@ -427,7 +323,6 @@ Form.Request = function(form, options) {
 		method: "POST"
 	}, options);
 
-//console.log($(form).serializeArray());
 	jQuery.ajax({
 		url: options.target,
 		method: options.method,
@@ -442,21 +337,159 @@ Form.Request = function(form, options) {
 };
 
 
-/**********************************************
-*        XirtModal - Default Xirt Modal       *
-*          (version 1.0 - 22.10.2017)         *
-**********************************************/
+/************************************************
+*       XirtModal - Default Xirt Modal          *
+*           (version 1.0 - 22.10.2017)          *
+************************************************/
 (function ($) {
 
-	// Constructor
+	$.XirtModalObject = function(options) {
+
+		return this._createModal(
+			options.type,
+			options.title,
+			options.message,
+			options.buttons
+		);
+
+	};
+
+	$.XirtModalObject.prototype = {
+
+		_createModal: function(type, title, message, buttons) {
+
+			return $('<div class="modal fade" role="dialog"></div>')
+				.append(this._createModalDialog(type, title, message, buttons));
+
+		},
+
+		_createModalDialog: function(type, title, message, buttons) {
+
+			return $('<div class="modal-dialog" role="document"></div>')
+				.append(this._createModalContent(type, title, message, buttons));
+
+		},
+
+		_createModalContent: function(type, title, message, buttons) {
+
+			return $('<div class="modal-content"></div>')
+				.append(title   ? this._createModalHeader(type, title) : $("<div>"))
+				.append(message ? this._createModalBody(message)       : $("<div class='modal-body'>"))
+				.append(buttons ? this._createModalFooter(buttons)     : $("<div>"));
+
+		},
+
+		_createModalHeader: function(type, title) {
+
+			return $("<div class='modal-header'></div>")
+				.append(this._createModalTitle(title))
+				.addClass(type);
+
+		},
+
+		_createModalTitle: function(title) {
+
+			return $("<h5 class='modal-title'></h5>")
+				.text(title);
+
+		},
+
+		_createModalBody: function(message) {
+
+			return $("<div class='modal-body'></div>")
+				.text(message);
+
+		},
+
+		_createModalFooter: function(buttons) {
+
+			var that = this;
+			var $container = $('<div class="modal-footer"></div>');
+
+			$.each(buttons, function(key, options) {
+				$container.append(that._createButton(options.id, options.type, options.label));
+			});
+
+			return $container;
+
+		},
+
+		_createButton(id, type, label) {
+
+			return $('<button type="button" class="btn btn-sm" aria-hidden="true"></button>')
+				.addClass("btn-" + type)
+				.addClass("btn-" + id)
+				.text(label);
+
+
+		}
+
+	};
+
+
+	/*****************
+	 * XIRTCMS MODAL *
+	 *****************/
+	$.XirtMessage = function(options) {
+
+		var $el = new $.XirtModalObject(options);
+		var $modal = (new $.XirtModal($el, options)).init().show();
+
+		setTimeout(function() {
+
+			$el.on('hidden.bs.modal', function (e) {
+				if ($.type(options.callback) == "function") {
+					options.callback();
+				}
+			});
+
+			$modal.hide();
+
+		}, 1500);
+
+	};
+
+
+	$.XirtConfirmation = function(options) {
+
+		options.buttons = [
+
+			{
+				id	: "ok",
+				type	: "warning",
+				label	: "Ok"
+
+			},
+			{
+				id	: "close",
+				type	: "default",
+				label	: "Cancel"
+
+			}
+
+		];
+
+		var $el = new $.XirtModalObject(options);
+		var $modal = (new $.XirtModal($el, options)).init().show();
+
+		// Active button 'Ok'
+		$el.find(".btn").off("click").on("click", function() {
+
+			$modal.hide();
+			options.callback($(this).hasClass("btn-warning"));
+
+		});
+
+	};
+
+
 	$.XirtModal = function(element, options) {
 
 		this.element = (element instanceof $) ? element : $(element);
 		this._options = $.extend({}, {
-			resetForms:	true,
-			editors:	[],
-			backdrop:	false,
-			keyboard:	false
+			backdrop: "static",
+			keyboard: false,
+			show: false
 		}, options);
 
 	};
@@ -470,11 +503,9 @@ Form.Request = function(form, options) {
 			// Create modal
 			$(this.element).modal({
 				backdrop: this._options.backdrop,
-				keyboard: this._options.keyboard
-			}).hide();
-
-			// Fix for slide-effect
-			this.element.modal("hide");
+				keyboard: this._options.keyboard,
+				show: this._options.show
+			});
 
 			// Activate closure button
 			this.element.find(".btn-close").on("click", function() {
@@ -487,12 +518,12 @@ Form.Request = function(form, options) {
 
 				if (isDirty) {
 
-					BootstrapDialog.confirm({
+					new $.XirtConfirmation({
 
 						backdrop: false,
 						title: "Confirm cancellation",
 						message: "Are you sure that you want to close without saving?",
-						type: BootstrapDialog.TYPE_WARNING,
+						type: "warning",
 						callback: function(result) {
 
 							if (result) {
@@ -519,7 +550,7 @@ Form.Request = function(form, options) {
 
 			var that = this;
 			_options = $.extend({
-				url:      "index.php",
+				url:	  "index.php",
 				onLoad:   function() {},
 				autoShow: true
 			}, options);
@@ -557,6 +588,10 @@ Form.Request = function(form, options) {
 			this.element.modal("hide");
 			return this;
 
+		},
+		
+		getElement: function() {
+			return this.element;			
 		}
 
 	};
