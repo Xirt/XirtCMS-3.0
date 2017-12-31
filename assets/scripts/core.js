@@ -174,7 +174,78 @@ var XCMS = (function(){
 
 }());
 
-Form.validate = function (targetForm, options) {
+Form.validate = function (targetForm, overrideOptions) {
+
+	var form = $(targetForm);
+	var options = $.extend(true, {
+
+		requestOptions : {
+
+			timeout : 7500,
+
+			beforeSend: function() {
+
+				$.each(form.find(":button"), function (index, el) {
+					$(el).attr("disabled", true);
+					$(el).addClass("spinner");
+				});
+
+			},
+
+			success : function(data) {
+
+				switch (data.type) {
+
+					case "error":
+
+						return _showDialogAndReturn(
+							"error",
+							options.currentModal,
+							options.nextModal,
+							data.title,
+							data.message
+						);
+
+					case "info":
+
+						return _showDialogAndList(
+							"info",
+							options.currentModal,
+							options.grid,
+							data.title,
+							data.message
+						);
+
+				}
+
+			},
+
+			error : function() {
+
+				new $.XirtMessage({
+					title    : "Communication failure",
+					message  : "The server could not be reached.",
+					type     : "danger"
+				});
+
+			},
+
+			complete: function() {
+
+				$.each(form.find(":button"), function (index, el) {
+					$(el).attr("disabled", false);
+					$(el).removeClass("spinner");
+				});
+
+			}
+
+		},
+
+		submitHandler: null,
+		messages : {},
+		rules : {}
+
+	}, overrideOptions);
 
 	$(targetForm).validate({
 
@@ -210,55 +281,7 @@ Form.validate = function (targetForm, options) {
 
 		submitHandler: ($.type(options.submitHandler)) === "function" ? options.submitHandler: function(form, e) {
 
-			targetForm = $(form);
-			$.each(targetForm.find(":button"), function (index, el) {
-				$(el).attr("disabled", true);
-				$(el).addClass("spinner");
-			});
-
-			setTimeout(function() {
-				$.each(targetForm.find(":button"), function (index, el) {
-					$(el).attr("disabled", false);
-					$(el).removeClass("spinner");
-				});
-			}, 7500);
-
-			new Form.Request(form, {
-
-				onSuccess: function(data) {
-
-					$.each(targetForm.find(":button"), function (index, el) {
-						$(el).attr("disabled", false);
-						$(el).removeClass("spinner");
-					});
-
-					switch (data.type) {
-
-						case "error":
-
-							return _showDialogAndReturn(
-								"error",
-								options.currentModal,
-								options.nextModal,
-								data.title,
-								data.message
-							);
-
-						case "info":
-							return _showDialogAndList(
-								"info",
-								options.currentModal,
-								options.grid,
-								data.title,
-								data.message
-							);
-
-					}
-
-				}
-
-			});
-
+			new Form.Request(form, options.requestOptions);
 			e.preventDefault();
 
 		}
@@ -310,29 +333,18 @@ Form.validate = function (targetForm, options) {
 *		FORM.REQUEST - Default Form Submit (AJAX)   *
 *				(version 1.0 - 13.01.2014)  *
 ************************************************************/
-Form.Request = function(form, options) {
+Form.Request = function(form, overrideOptions) {
 
 	// Allows for inclusion of disabled fields
 	var disabled = $(form).find(":input:disabled").removeAttr("disabled");
 
-	options = $.extend({
-		onSuccess: function() {},
-		onFailure: Xirt.noAJAX,
-		onSend: function() {},
-		target: form.action,
-		method: "POST"
-	}, options);
-
-	jQuery.ajax({
-		url: options.target,
-		method: options.method,
+	var options = $.extend({
 		data: $(form).serializeArray(),
-		beforeSend: options.beforeSend
-	}).done(options.onSuccess)
-	.fail(options.onFailure);
+		method: "POST"
+	}, overrideOptions);
 
-	// Resets disable status
 	disabled.attr("disabled", "disabled");
+	$.ajax(form.action, options);
 
 };
 
