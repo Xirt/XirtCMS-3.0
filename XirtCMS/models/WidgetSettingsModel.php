@@ -308,8 +308,8 @@ class WidgetSettingsModel extends CI_Model {
 
             // Create option...
             $option = new stdClass();
-            $option->name  = $menu->name;
-            $option->value = $menu->id;
+            $option->name  = $menu->get("name");
+            $option->value = $menu->get("id");
 
             // ... and add it
             $options[] = $option;
