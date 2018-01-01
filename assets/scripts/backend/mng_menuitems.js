@@ -14,6 +14,7 @@ $(function() {
 			this._initModals();
 			this._initForms();
 			this._initButtons();
+			this._initDatepickers();
 
 			return this;
 
@@ -76,6 +77,14 @@ $(function() {
 
 			});
 
+			Form.validate("#form-permit", {
+
+				currentModal: permitModal,
+				nextModal: permitModal,
+				grid: this.grid
+
+			});
+
 		},
 
 
@@ -85,6 +94,7 @@ $(function() {
 			createModal  = new $.XirtModal($("#createModal")).init();
 			optionsModal = new $.XirtModal($("#optionsModal")).init();
 			modifyModal  = new $.XirtModal($("#modifyModal")).init();
+			permitModal  = new $.XirtModal($("#permitModal")).init();
 			configModal  = new $.XirtModal($("#configModal"), {resetForms:	false }).init();
 
 		},
@@ -93,6 +103,11 @@ $(function() {
 		_initButtons: function() {
 
 			var that = this;
+
+			// Activate publishing button
+			$("#permit-active").on("change", function() {
+				$(".permit-attr").toggle(this.checked);
+			}).trigger("change");
 
 			// Activate creation button
 			$('.btn-create').click(function(e) {
@@ -126,6 +141,15 @@ $(function() {
 
 			});
 
+			// Active "Edit permit"-option
+			$(".btn-edit-permit").click(function() {
+
+				optionsModal.hide();
+				that.grid.showModifyPermitModal(current);
+
+			});
+
+
 			// Activate tab tracing
 			$('.nav-tabs a').click(function(e) {
 				$("#inp-type").val($(this).attr('id').substr(5));
@@ -139,6 +163,28 @@ $(function() {
 					success : $.proxy(that.populateHomeSelection, that)
 
 				});
+
+			});
+
+		},
+
+		_initDatepickers: function() {
+
+			// Activate fields
+			$(".datepicker").datepicker({
+				weekStart: 1,
+				autoHide: true,
+				autoPick: true,
+				format: "dd/mm/yyyy"
+			}).on('show.datepicker', function (e) {
+				$(this).datepicker("setDate", $(this).val());
+			});
+
+			// Activate icons
+			$(".input-group.date .input-group-addon").on("click", function(e) {
+
+				$(this).siblings("input").datepicker("show");
+				e.stopImmediatePropagation();
 
 			});
 
@@ -375,6 +421,44 @@ $(function() {
 
 		},
 
+		showModifyPermitModal: function(current) {
+
+			permitModal.load({
+
+				url	: "backend/menuitem/view/" + current,
+				onLoad	: function(json) {
+
+					Xirt.populateForm($("#form-permit"), json.permit, { prefix : "menuitem_", converters: {
+
+						dt_publish: function (value) {
+							var dt = new Date(value);
+							return ('0' + dt.getDate()).slice(-2) + "/"
+								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
+								 + dt.getFullYear();
+						},
+
+						dt_unpublish: function (value) {
+
+							var dt = new Date(value);
+							return ('0' + dt.getDate()).slice(-2) + "/"
+								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
+								 + dt.getFullYear();
+						}
+
+					}});
+
+					Xirt.populateForm($("#form-permit"), json, { prefix : "menuitem_" , converters: {
+
+						id: function (value) { return Xirt.pad(value, 5, "0"); }
+
+					}});
+
+				}
+
+			});
+
+		},
+
 		_moveItemUp: function(e) {
 
 			var that = this;
@@ -441,7 +525,7 @@ $(function() {
 	/***********
 	 * TRIGGER *
 	 **********/
-	var createModal, homeModal, optionsModal, modifyModal, configModal;
+	var createModal, homeModal, optionsModal, modifyModal, configModal, permitModal;
 
 	var uri = window.location.href;
 	var menuId = uri.substr(uri.lastIndexOf("/") + 1);
