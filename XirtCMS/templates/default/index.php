@@ -10,10 +10,10 @@
 <?php XCMS_Page::getInstance()->addscript("assets/third-party/bootstrap/js/bootstrap.min.js", true); ?>
 <?php XCMS_Page::getInstance()->addscript("assets/third-party/lightbox/js/lightbox.min.js", true); ?>
 <?php XCMS_Page::getInstance()->addscript("assets/third-party/prism/js/prism.min.js", true); ?>
+<?php XCMS_Page::getInstance()->addscript("assets/third-party/font-awesome/js/fontawesome-all.min.js", true); ?>
 <?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/bootstrap/css/bootstrap.min.css"); ?>
 <?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/lightbox/css/lightbox.min.css"); ?>
 <?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/prism/css/prism.min.css"); ?>
-<?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/font-awesome/css/font-awesome.min.css"); ?>
 <?php XCMS_Page::getInstance()->addStylesheet("assets/css/main.min.css"); ?>
 <?php XCMS_RenderEngine::header(); ?>
 
