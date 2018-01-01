@@ -272,6 +272,10 @@ form button.spinner .fa-save {
 	display: none;
 }
 
+form .toggle.btn-sm {
+	min-width: 75px;
+}
+
 form .box-notify {
 	padding: 5px;
 	margin: 5px 0 0 0;

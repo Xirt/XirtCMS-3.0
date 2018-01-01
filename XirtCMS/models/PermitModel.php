@@ -8,7 +8,7 @@
  * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
-class PermitModal extends XCMS_Model {
+class PermitModel extends XCMS_Model {
 
     /**
      * Attribute array for this model (valid attributes)
@@ -126,6 +126,25 @@ class PermitModal extends XCMS_Model {
             "type" => $this->_data["type"],
             "id" => $this->_data["id"]
         ));
+
+    }
+
+
+    /**
+     * Getter for all model attributes as Object
+     *
+     * @return  Object                      The attributes of the model as Object (or defaults if not present)
+     */
+    public function getObject() {
+
+        return (Object) [
+            "id"         => $this->get("id"),
+            "type"       => $this->get("type"),
+            "dt_start"   => $this->get("dt_start"),
+            "dt_expiry"  => $this->get("dt_expiry"),
+            "access_min" => $this->get("access_min"),
+            "access_max" => $this->get("access_max")
+        ];
 
     }
 
