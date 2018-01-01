@@ -65,9 +65,9 @@
 
 				<div class="col-sm-4">
 
-					<button class="btn btn-info btn-edit-status" disabled>
+					<button class="btn btn-info btn-edit-permit">
 						<i class="far fa-calendar-alt fa-5x" aria-hidden="true"></i>
-						<p>Schedule publishing</p>
+						<p>Accessibility</p>
 					</button>
 
 				</div>
@@ -448,6 +448,111 @@
 				<div class="modal-footer">
 
 					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
+
+<div id="permitModal" class="modal fade" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<form id="form-permit" action="backend/menuitem/modify_permit" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title">Menuitems Permits</h5>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="menuitem_id" required disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="menuitem_name" disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Published</label>
+						<div class="col-sm-8 text-left">
+							<input type="checkbox" name="menuitem_active" id="permit-active" data-on="Yes" data-off="No" data-onstyle="info" data-toggle="toggle" data-size="small" />
+						</div>
+
+					</div>
+
+					<div class="form-group row permit-attr">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Sitemap</label>
+						<div class="col-sm-8 text-left">
+							<input type="checkbox" name="menuitem_sitemap" id="menuitem_sitemap" data-on="Show" data-off="Hide" data-onstyle="info" data-toggle="toggle" data-size="small" checked />
+						</div>
+
+					</div>
+
+					<div class="form-group row permit-attr">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Start date</label>
+						<div class="col-sm-8">
+
+							<div class="input-group date">
+								<input type="text" class="form-control form-control-sm datepicker" name="menuitem_dt_start" id="menuitem_dt_start" maxlength="10" readonly />
+								<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="form-group row permit-attr">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Expiry date</label>
+						<div class="col-sm-8">
+
+							<div class="input-group date">
+								<input type="text" class="form-control form-control-sm datepicker" name="menuitem_dt_expiry" id="menuitem_dt_expiry" maxlength="10" value="31/12/2099" readonly />
+								<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="submit" class="btn btn-sm btn-success" disabled>
 						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
 						<!-- <i class="fas fa-save"></i> //-->
 						Save
