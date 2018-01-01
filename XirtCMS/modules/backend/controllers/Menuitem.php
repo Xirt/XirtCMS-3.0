@@ -33,6 +33,7 @@ class MenuItem extends XCMS_Controller {
         // Loader models
         $this->load->model("MenuitemModel", "menuitem");
         $this->load->model("MenuModel", "menu");
+        $this->load->model("PermitModel", false);
         $this->load->model("RouteModel", false);
 
     }
@@ -50,6 +51,10 @@ class MenuItem extends XCMS_Controller {
             return;
         }
 
+        // Validate given ID
+        $permit = new PermitModel();
+        $permit->load(PermitTypes::MENUITEM, $id);
+
         // Prepare data...
         $data = (object) [
             "id"            => $this->menuitem->get("id"),
@@ -63,7 +68,8 @@ class MenuItem extends XCMS_Controller {
             "uri"           => $this->menuitem->get("uri"),
             "extension"     => $this->menuitem->get("uri"),
             "public_url"    => $this->menuitem->get("public_url"),
-            "target_url"    => $this->menuitem->get("target_url")
+            "target_url"    => $this->menuitem->get("target_url"),
+            "permit"        => $permit->getObject()
         ];
 
         // ...and output it as JSON
