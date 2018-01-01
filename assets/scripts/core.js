@@ -224,8 +224,8 @@ Form.validate = function (targetForm, overrideOptions) {
 
 				new $.XirtMessage({
 					title    : "Communication failure",
-					message  : "The server could not be reached.",
-					type     : "danger"
+					message  : "Unable to retrieve data properly from the server.",
+					type     : "warning"
 				});
 
 			},
