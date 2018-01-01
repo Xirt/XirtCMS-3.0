@@ -1,5 +1,6 @@
 <?php
 
+require APPPATH . "config/PermitTypes.php";
 require APPPATH . "config/XCMS_Tables.php";
 
 /**
