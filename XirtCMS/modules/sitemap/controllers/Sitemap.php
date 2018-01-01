@@ -93,7 +93,7 @@ class Sitemap extends XCMS_Controller {
         foreach ($menus as $index => $menu) {
 
             // Filter hidden menus
-            if (!$menu->sitemap) {
+            if (!$menu->get("sitemap")) {
 
                 unset($menus[$index]);
                 continue;
@@ -103,7 +103,7 @@ class Sitemap extends XCMS_Controller {
             $hidden = array();
             $menu->items = array();
 
-            foreach (MenuHelper::getMenu($menu->id, true) as $item) {
+            foreach (MenuHelper::getMenu($menu->get("id"), true) as $item) {
 
                 if ($item->type != "internal") {
                     continue;

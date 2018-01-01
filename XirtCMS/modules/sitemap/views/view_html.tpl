@@ -8,7 +8,7 @@
 
 <?php foreach ($menus as $menu): ?>
 
-	<h2><?php echo $menu->name; ?></h2>
+	<h2><?php echo $menu->get("name"); ?></h2>
 	<ul>
 		<?php foreach ($menu->items as $item): ?>
 		<li><a href="<?php echo $item->target; ?>"><?php echo $item->name; ?></a></li>
