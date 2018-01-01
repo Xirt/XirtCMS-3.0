@@ -128,6 +128,29 @@ class XCMS_Model extends CI_Model {
 
 
     /**
+     * Returns the internal data for DB insertion
+     *
+     * @return  Array                       The attributes of the model ready for DB insertion (e.g. parsed to rigth format)
+     */
+    protected function _getPreparedData() {
+
+        $result = array();
+        foreach ($this->_data as $attr => $value) {
+
+            if (is_a($value, "DateTime")) {
+                $value = $value->format("Y-m-d H:i:s");
+            }
+
+            $result[$attr] = $value;
+
+        }
+
+        return $result;
+
+    }
+
+
+    /**
      * Validates the internal integrity of the model
      *
      * @return  boolean                     Always true (to be overridden)

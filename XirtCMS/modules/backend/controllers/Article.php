@@ -30,6 +30,7 @@ class Article extends XCMS_Controller {
         $this->load->library("form_validation");
 
         // Load helpers
+        $this->load->model("PermitModal", false);
         $this->load->model("ArticleModel", "article");
         $this->load->model("CategoryModel", "category");
 
@@ -129,7 +130,7 @@ class Article extends XCMS_Controller {
             }
 
             // Set & save new updates
-            $this->article->set("title",   $this->input->post("article_title"));            
+            $this->article->set("title",   $this->input->post("article_title"));
             $this->article->setArticleBlocks((new ArticleBlockModel())->set((object)[
                 "ordering" => 0,
                 "ref_id"   => $id,
@@ -265,6 +266,16 @@ class Article extends XCMS_Controller {
             $dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_unpublish"));
 
             // Set & save new updates
+            (new PermitModal())->set(array(
+                "id"        => $id,
+                "type"      => PermitTypes::ARTICLE,
+                "active"    => is_null($this->input->post("article_published")) ? "0" : "1",
+                "dt_start"  => $dtPublish,
+                "dt_expiry" => $dtUnpublish
+            ))->save();
+
+            // Set & save new updates (obsolete)
+            // TODO :: Remove once permits have been implemented completely
             $this->article->set("published",    is_null($this->input->post("article_published")) ? "0" : "1");
             $this->article->set("dt_publish",   $dtPublish->format("Y-m-d H:i:s"));
             $this->article->set("dt_unpublish", $dtUnpublish->format("Y-m-d H:i:s"));

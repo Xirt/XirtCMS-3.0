@@ -23,6 +23,7 @@ class XCMS_Tables {
 	const TABLE_CONFIGURATION		 = "xcms_configuration";
 	const TABLE_MENUS				 = "xcms_menus";
 	const TABLE_MODULES				 = "xcms_modules";
+	const TABLE_PERMITS	             = "xcms_permits";
 	const TABLE_ROUTES				 = "xcms_routes";
 	const TABLE_MODULES_SETTINGS	 = "xcms_modules_settings";
 	const TABLE_WIDGETS				 = "xcms_widgets";
