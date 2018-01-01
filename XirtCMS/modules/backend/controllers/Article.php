@@ -30,7 +30,7 @@ class Article extends XCMS_Controller {
         $this->load->library("form_validation");
 
         // Load helpers
-        $this->load->model("PermitModal", false);
+        $this->load->model("PermitModel", false);
         $this->load->model("ArticleModel", "article");
         $this->load->model("CategoryModel", "category");
 
@@ -266,7 +266,7 @@ class Article extends XCMS_Controller {
             $dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_unpublish"));
 
             // Set & save new updates
-            (new PermitModal())->set(array(
+            (new PermitModel())->set(array(
                 "id"        => $id,
                 "type"      => PermitTypes::ARTICLE,
                 "active"    => is_null($this->input->post("article_published")) ? "0" : "1",
