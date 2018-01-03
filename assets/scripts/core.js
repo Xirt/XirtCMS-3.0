@@ -267,7 +267,7 @@ Form.validate = function (targetForm, overrideOptions) {
 
 				$(item.element).popover({
 					content: item.message,
-					placement: "right",
+					placement: ($(window).width() < 576) ? "top" : "right",
 					trigger: "manual"
 				}).popover("show");
 
