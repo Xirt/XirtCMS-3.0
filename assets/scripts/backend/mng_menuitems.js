@@ -39,7 +39,6 @@ $(function() {
 					menuitem_name: { required: true, maxlength: 128 }
 				}
 
-
 			});
 
 			Form.validate("#form-home", {
@@ -81,7 +80,17 @@ $(function() {
 
 				currentModal: permitModal,
 				nextModal: permitModal,
-				grid: this.grid
+				grid: this.grid,
+				submitHandler: function(form, e) {
+
+					new Form.Request(form);
+					e.preventDefault();
+
+					// TODO :: Replace with AJAX call (include target value)
+					var current = parseInt($(form).find("input[name=menuitem_id]").val());
+					$.get("backend/menuitem/toggle_sitemap/" + current);
+
+				}
 
 			});
 
@@ -472,15 +481,6 @@ $(function() {
 
 			var that = this;
 			$.get("backend/menuitem/move_down/" + $(e.currentTarget).data("id"), function () {
-				that.reload();
-			});
-
-		},
-
-		_toggleHome: function(e) {
-
-			var that = this;
-			$.get("backend/menuitem/set_home/" +  $(e.currentTarget).data("id"), function() {
 				that.reload();
 			});
 
