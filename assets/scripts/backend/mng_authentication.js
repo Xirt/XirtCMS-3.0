@@ -50,9 +50,20 @@ $(function() {
 			// Activate "Request"-GUI
 			Form.validate("#form-request", {
 
-				currentModal: modifyModal,
-				nextModal: modifyModal,
-				grid: this.grid,
+				requestOptions : {
+
+					success: function(data) {
+
+						new $.XirtMessage({
+							title    : data.title,
+							message  : data.message,
+							type     : data.type
+						});
+
+					},
+
+				},
+
 				rules: {
 					request_name: { required: true },
 					request_email: { required: true, email: true }
