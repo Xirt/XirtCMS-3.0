@@ -181,17 +181,6 @@ Form.validate = function (targetForm, overrideOptions) {
 
 		requestOptions : {
 
-			timeout : 7500,
-
-			beforeSend: function() {
-
-				$.each(form.find(":button"), function (index, el) {
-					$(el).attr("disabled", true);
-					$(el).addClass("spinner");
-				});
-
-			},
-
 			success : function(data) {
 
 				switch (data.type) {
@@ -218,44 +207,33 @@ Form.validate = function (targetForm, overrideOptions) {
 
 				}
 
-			},
-
-			error : function() {
-
-				new $.XirtMessage({
-					title    : "Communication failure",
-					message  : "Unable to retrieve data properly from the server.",
-					type     : "warning"
-				});
-
-			},
-
-			complete: function() {
-
-				$.each(form.find(":button"), function (index, el) {
-					$(el).attr("disabled", false);
-					$(el).removeClass("spinner");
-				});
-
 			}
 
 		},
 
-		submitHandler: null,
+		submitHandler: function(form, e) {
+
+			new Form.Request(form, options.requestOptions);
+			e.preventDefault();
+
+		},
+
 		messages : {},
+
 		rules : {}
 
 	}, overrideOptions);
 
 	$(targetForm).validate({
 
-		rules      : options.rules,
-		messages   : options.messages,
-		onfocusout : function (element) { return $(element).valid(); },
-		onfocusin  : function (element) { return $(element).valid(); },
-		onkeyup    : function (element) { return $(element).valid(); },
+		rules         : options.rules,
+		messages      : options.messages,
+		submitHandler : options.submitHandler,
+		onfocusout    : function (element) { return $(element).valid(); },
+		onfocusin     : function (element) { return $(element).valid(); },
+		onkeyup       : function (element) { return $(element).valid(); },
 
-		showErrors : function (errorMap, errorList) {
+		showErrors    : function (errorMap, errorList) {
 
 			// Remove obsolete messages
 			$.each(this.validElements(), function(i, el) {
@@ -276,13 +254,6 @@ Form.validate = function (targetForm, overrideOptions) {
 				$popover.find(".popover-body").html(item.message);
 
 			});
-
-		},
-
-		submitHandler: ($.type(options.submitHandler)) === "function" ? options.submitHandler: function(form, e) {
-
-			new Form.Request(form, options.requestOptions);
-			e.preventDefault();
 
 		}
 
@@ -335,16 +306,49 @@ Form.validate = function (targetForm, overrideOptions) {
 ************************************************************/
 Form.Request = function(form, overrideOptions) {
 
+	var form = $(form);
+
 	// Allows for inclusion of disabled fields
-	var disabled = $(form).find(":input:disabled").removeAttr("disabled");
+	var disabled = form.find(":input:disabled").removeAttr("disabled");
 
 	var options = $.extend({
-		data: $(form).serializeArray(),
-		method: "POST"
+
+		method: "POST",
+		timeout : 7500,
+		data: form.serializeArray(),
+
+		beforeSend: function() {
+
+			$.each(form.find(":button"), function (index, el) {
+				$(el).attr("disabled", true);
+				$(el).addClass("spinner");
+			});
+
+		},
+
+		error : function() {
+
+			new $.XirtMessage({
+				title    : "Communication failure",
+				message  : "Unable to retrieve data properly from the server.",
+				type     : "warning"
+			});
+
+		},
+
+		complete: function() {
+
+			$.each(form.find(":button"), function (index, el) {
+				$(el).attr("disabled", false);
+				$(el).removeClass("spinner");
+			});
+
+		}
+
 	}, overrideOptions);
 
 	disabled.attr("disabled", "disabled");
-	$.ajax(form.action, options);
+	$.ajax(form.attr("action"), options);
 
 };
 
