@@ -94,7 +94,7 @@
 
 		<button type="button" class="btn btn-sm btn-primary btn-login">
 			<!-- <i class="fas fa-1x fa-undo"></i> //-->
-			Request Password
+			Cancel
 		</button>
 
 	</div>
