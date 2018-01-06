@@ -167,6 +167,8 @@
 
 				<div class="modal-footer">
 
+					<input type="hidden" class="form-control form-control-sm" name="article_id" />
+
 					<button type="submit" class="btn btn-sm btn-success">
 						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
 						<!-- <i class="fas fa-save"></i> //-->
