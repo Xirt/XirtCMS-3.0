@@ -439,16 +439,16 @@ $(function() {
 
 					Xirt.populateForm($("#form-permit"), json.permit, { prefix : "menuitem_", converters: {
 
-						dt_publish: function (value) {
-							var dt = new Date(value);
+						dt_start: function (value) {
+							var dt = value ? new Date(value) : new Date();
 							return ('0' + dt.getDate()).slice(-2) + "/"
 								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
 								 + dt.getFullYear();
 						},
 
-						dt_unpublish: function (value) {
+						dt_expiry: function (value) {
 
-							var dt = new Date(value);
+							var dt = value ? new Date(value) : new Date("December 31, 2099 23:59:99");
 							return ('0' + dt.getDate()).slice(-2) + "/"
 								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
 								 + dt.getFullYear();
