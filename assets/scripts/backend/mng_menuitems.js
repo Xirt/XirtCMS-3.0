@@ -81,14 +81,28 @@ $(function() {
 				currentModal: permitModal,
 				nextModal: permitModal,
 				grid: this.grid,
-				submitHandler: function(form, e) {
+				extSubmitHandler: function(form, e) {
 
-					new Form.Request(form);
-					e.preventDefault();
+					var disabled = $(form).find(":input:disabled").removeAttr("disabled");
+					$.ajax("backend/menuitem/modify_sitemap", {
 
-					// TODO :: Replace with AJAX call (include target value)
-					var current = parseInt($(form).find("input[name=menuitem_id]").val());
-					$.get("backend/menuitem/toggle_sitemap/" + current);
+						method: "POST",
+						timeout : 7500,
+						data: $("#form-permit").serializeArray(),
+
+						error : function() {
+
+							new $.XirtMessage({
+								title    : "Communication failure",
+								message  : "Unable to retrieve data properly from the server.",
+								type     : "warning"
+							});
+
+						}
+
+					});
+
+					disabled.attr("disabled", "disabled");
 
 				}
 
@@ -298,33 +312,11 @@ $(function() {
 					},
 
 					"published": function(data) {
-
-						return	XCMS.createButtons([
-
-							{
-								classNames : "command-published " + ((data.published == 1) ? "active" : "inactive"),
-								data : { id : data.item_id },
-								label : "Toggle",
-								icon : "fas fa-globe"
-							}
-
-						]);
-
+						return (data.published == 1) ? "<i class=\"fas fa-check\"></i>" : "";
 					},
 
 					"sitemap": function(data) {
-
-						return	XCMS.createButtons([
-
-							{
-								classNames : "command-sitemap " + ((data.sitemap == 1) ? "active" : "inactive"),
-								data : { id : data.item_id },
-								label : "Toggle",
-								icon : "fas fa-sitemap"
-							}
-
-						]);
-
+						return (data.sitemap == 1) ? "<i class=\"fas fa-check\"></i>" : "";
 					},
 
 					"commands": function(data) {
@@ -376,7 +368,6 @@ $(function() {
 			this.element.find(".command-order-down").on("click", $.proxy(this._moveItemDown, this));
 			this.element.find(".command-home").on("click", this._modifyHomeModal);
 			this.element.find(".command-sitemap").on("click", this._toggleSitemap);
-			this.element.find(".command-published").on("click", this._togglePublished);
 			this.element.find(".command-delete").on("click", $.proxy(this._deleteItemModal, this));
 
 		},

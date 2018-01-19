@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class MenuItem extends XCMS_Controller {
@@ -54,6 +54,7 @@ class MenuItem extends XCMS_Controller {
         // Validate given ID
         $permit = new PermitModel();
         $permit->load(PermitTypes::MENUITEM, $id);
+        $permit->setParameter("sitemap", $this->menuitem->get("sitemap"));
 
         // Prepare data...
         $data = (object) [
@@ -69,7 +70,7 @@ class MenuItem extends XCMS_Controller {
             "extension"     => $this->menuitem->get("uri"),
             "public_url"    => $this->menuitem->get("public_url"),
             "target_url"    => $this->menuitem->get("target_url"),
-            "permit"        => $permit->getObject()
+            "permit"        => $permit->getObject("Y-m-d H:i:s")
         ];
 
         // ...and output it as JSON
@@ -270,6 +271,69 @@ class MenuItem extends XCMS_Controller {
 
 
     /**
+     * "Modify sitemap"-functionality for this controller
+     */
+    public function modify_sitemap() {
+
+        // Validate given item ID
+        $id = $this->input->post("id");
+        if (!is_numeric($id) || !$this->menuitem->load($id)) {
+            return;
+        }
+
+        $this->menuitem->set("sitemap", $this->input->post("menuitem_sitemap") ? 1 : 0);
+        $this->menuitem->save();
+
+    }
+
+
+    /**
+     * "Modify settings"-functionality for this controller
+     */
+    public function modify_permit() {
+
+        // Validate given item ID
+        $id = $this->input->post("id");
+        if (!is_numeric($id) || !$this->menuitem->load($id)) {
+
+            XCMS_JSON::validationFailureMessage();
+            return;
+
+        }
+
+        try {
+
+            // Retrieve permit
+            $permit = new PermitModel();
+            $permit->load(PermitTypes::MENUITEM, $id);
+
+            // Prepare data
+            $dtPublish   = DateTime::createFromFormat("d/m/Y", $this->input->post("menuitem_dt_start"));
+            $dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("menuitem_dt_expiry"));
+
+            // Save permit details
+            $permit->set("id",          $id);
+            $permit->set("type",        PermitTypes::MENUITEM);
+            $permit->set("dt_start",    $dtPublish->format("Y-m-d H:i:s"));
+            $permit->set("dt_expiry",   $dtUnpublish->format("Y-m-d H:i:s"));
+            $permit->set("active",      $this->input->post("menuitem_active") ? 1 : 0);
+            //$permit->set("access_max",  $this->input->post("menuitem_access_min"));
+            //$permit->set("access_min",  $this->input->post("menuitem_access_max"));
+            $permit->save();
+
+            // Inform user
+            XCMS_JSON::modificationSuccessMessage();
+
+        } catch (Exception $e) {
+
+            XCMS_JSON::validationFailureMessage($e->getMessage());
+
+        }
+
+    }
+
+
+    /**
      * "Set home"-functionality for this controller
      */
     public function set_home() {
@@ -297,47 +361,11 @@ class MenuItem extends XCMS_Controller {
 
 
     /**
-     * "Toggle sitemap"-functionality for this controller
-     *
-     * @param   int         $id             The ID of the affected menuitem
-     */
-    public function toggle_sitemap($id) {
-
-        // Validate given item ID
-        if (!is_numeric($id) || !$this->menuitem->load($id)) {
-            return;
-        }
-
-        $this->menuitem->set("sitemap", $this->menuitem->get("sitemap") ? "0" : "1");
-        $this->menuitem->save();
-
-    }
-
-
-    /**
-     * "Toggle published"-functionality for this controller
-     *
-     * @param   int         $id             The ID of the affected menuitem
-     */
-    public function toggle_published($id) {
-
-        // Validate given item ID
-        if (!is_numeric($id) || !$this->menuitem->load($id)) {
-            return;
-        }
-
-        $this->menuitem->set("published", $this->menuitem->get("published") ? "0" : "1");
-        $this->menuitem->save();
-
-    }
-
-
-    /**
      * "Change ordering (move up)"-functionality for this controller
      *
      * @param   int         $id             The ID of the affected menuitem
      */
-    public function move_up($id) {
+    public function move_up($id = 0) {
         $this->_changeOrdering($id, 1);
     }
 
@@ -347,7 +375,7 @@ class MenuItem extends XCMS_Controller {
      *
      * @param   int         $id             The ID of the affected menuitem
      */
-    public function move_down($id) {
+    public function move_down($id = 0) {
         $this->_changeOrdering($id, -1);
     }
 
@@ -357,7 +385,7 @@ class MenuItem extends XCMS_Controller {
      *
      * @param   int         $id             The ID of the affected menuitem
      */
-    public function remove($id) {
+    public function remove($id = 0) {
 
         // Validate given item ID
         if (!is_numeric($id) || !$this->menuitem->load($id)) {

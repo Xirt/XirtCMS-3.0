@@ -22,12 +22,14 @@ class Menuitems extends XCMS_Controller {
         $this->load->helper("grid");
         $this->load->helper("route");
         $this->load->helper("menu");
+        $this->load->helper("permit");
 
         // Load modules
         $this->load->model("ModuleTypesModel", "modules");
         $this->load->model("ArticlesModel", "articles");
         $this->load->model("MenusModel", "menus");
         $this->load->model("MenuModel", "menu");
+        $this->load->model("PermitModel", false);
 
     }
 
@@ -105,6 +107,7 @@ class Menuitems extends XCMS_Controller {
         foreach (MenuHelper::getMenuTree($id, false)->toArray() as $node) {
 
             $node->item_id = $node->node_id;
+            $node->published = PermitHelper::getPermit(PermitTypes::MENUITEM, $node->node_id)->isValid();
             unset($node->node_id);
             $gridIO->addRow($node);
 

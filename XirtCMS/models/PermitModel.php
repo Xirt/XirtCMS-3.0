@@ -18,6 +18,12 @@ class PermitModel extends XCMS_Model {
         "type", "id", "dt_start", "dt_expiry", "access_min", "access_max", "active"
     );
 
+    /**
+     * Additional (non-saved) attributes for this model
+     * @var array
+     */
+    protected $_ext = array();
+
 
     /**
      * Setter for model attributes
@@ -28,7 +34,7 @@ class PermitModel extends XCMS_Model {
      * @throws  Exception                   On validation error
      * @return  Object                      Always this instance
      */
-    public function set($attr, $value = null, $validate = true) {
+    public function set($attr, $value = null, bool $validate = true) {
 
         // Ensure Array input
         if (is_object($attr) || !is_array($attr)) {
@@ -42,31 +48,70 @@ class PermitModel extends XCMS_Model {
 
 
     /**
+     * Setter for model parameters (non-saved attributes)
+     *
+     * @param   mixed       $attr           The key of the attribute to be set or array/object with attributes (key/value)
+     * @param   mixed       $value          The value for the attribute to be set
+     * @return  Object                      Always this instance
+     */
+    public function setParameter(String $attr, $value) {
+
+        $this->_ext[$attr] = $value;
+        return $this;
+
+    }
+
+
+    /**
+     * Getter for single model parameter
+     *
+     * @param   String      $key            The key of the attribute value to be retrieved
+     * @param   mixed       $fallback       The value to return in case the value was not found
+     * @return  mixed                       The attribute, its value or the fallback value if not found
+     */
+    public function getParameter(String $key, $fallback = null) {
+
+        // Check  normal attributes
+        if (array_key_exists($key, $this->_ext)) {
+            return $this->_ext[$key];
+        }
+
+        return $fallback;
+
+    }
+
+
+    /**
      * Validates the internal integrity of the model
      *
-     * @param   mixed       $attr           Array with attributes to check (key/value)
+     * @param   Array       $attr           Array with attributes to check (key/value)
      * @throws  Exception                   On validation error
      * @return  boolean                     Always true
      */
-    public function validateAttributes($attr) {
+    public function validateAttributes(array &$attr) {
 
-        foreach ($attr as $key => $value) {
+        foreach ($attr as $key => &$value) {
 
             // VALIDATION :: DateTime
             if (in_array($key, array("dt_start", "dt_expiry")) && !is_a($value, "DateTime")) {
 
                 // Convert to DateTime if possible
                 if ($value = DateTime::createFromFormat("Y-m-d G:i:s", $value)) {
-                    break;
+                    continue;
                 }
 
                 throw new InvalidArgumentException("Value for attr '$key' must be DateTime.");
 
             }
 
-            // VALIDATION :: Integers
-            if (in_array($key, array("id", "access_min", "access_max", "active")) && !is_numeric($value)) {
+            // VALIDATION :: Mandatory Integers
+            if (in_array($key, array("id", "active")) && !is_numeric($value)) {
                 throw new InvalidArgumentException("Value for attr '$key' must be numeric.");
+            }
+
+            // VALIDATION :: Optional Integers
+            if (in_array($key, array("access_min", "access_max")) && $value && !is_numeric($value)) {
+                throw new InvalidArgumentException("Value for optional attr '$key' must be numeric.");
             }
 
             // VALIDATION :: Strings
@@ -88,7 +133,7 @@ class PermitModel extends XCMS_Model {
      * @param   int         id              The ID for which to load the permit
      * @return  mixed                       This instance on success, null otherwise
      */
-    public function load($type, int $id) {
+    public function load(String $type, int $id) {
 
         // Retrieve data from DB
         $result = $this->_buildQuery($type, $id)->get(XCMS_Tables::TABLE_PERMITS);
@@ -133,18 +178,53 @@ class PermitModel extends XCMS_Model {
     /**
      * Getter for all model attributes as Object
      *
+     * @param   mixed                       String with requested DateTime format (or null to retrieve as DateTime)
      * @return  Object                      The attributes of the model as Object (or defaults if not present)
      */
-    public function getObject() {
+    public function getObject(String $dtFormat = null) {
 
-        return (Object) [
+        return (Object) array_merge($this->_ext, [
             "id"         => $this->get("id"),
             "type"       => $this->get("type"),
-            "dt_start"   => $this->get("dt_start"),
-            "dt_expiry"  => $this->get("dt_expiry"),
+            "active"     => $this->get("active"),
+            "dt_start"   => $format ? $this->get("dt_start")->format($dtFormat)  : $this->get("dt_start"),
+            "dt_expiry"  => $format ? $this->get("dt_expiry")->format($dtFormat) : $this->get("dt_expiry"),
             "access_min" => $this->get("access_min"),
             "access_max" => $this->get("access_max")
-        ];
+        ]);
+
+    }
+
+
+    /**
+     * Checks whether the current instance is a valid permit (e.g. shown content)
+     *
+     * @return  boolean                     True if valid, false otherwise
+     */
+    public function isValid() {
+
+        if ($this->get("active")) {
+
+            // Check permit start / expiry
+            if (new DateTime() <= $this->get("dt_start") || new DateTime() >= $this->get("dt_expiry")) {
+                return false;
+            }
+
+            // Check access rights
+            if (!XCMS_Config::get("XCMS_BACKEND")) {
+
+                $level = XCMS_Authentication::getUserModel()->get("usergroup_id");
+                if ($this->get("access_min") < $level || $this->get("access_max") > $level) {
+                    return false;
+                }
+
+            }
+
+            return true;
+
+        }
+
+        return false;
 
     }
 
@@ -152,10 +232,11 @@ class PermitModel extends XCMS_Model {
     /**
      * Creates query (using CI QueryBuilder) for retrieving model content (permit)
      *
-     * @param   int         $id             The id of the permit to load
+     * @param   String      type            The type for which to load the permit
+     * @param   int         id              The ID for which to load the permit
      * @return  Object                      CI Database Instance for chaining purposes
      */
-    protected function _buildQuery($type, $id) {
+    protected function _buildQuery(String $type, int $id) {
 
         $this->db->where("type", $type);
         $this->db->where("id", $id);
