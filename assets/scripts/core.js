@@ -176,7 +176,6 @@ var XCMS = (function(){
 
 Form.validate = function (targetForm, overrideOptions) {
 
-	var form = $(targetForm);
 	var options = $.extend(true, {
 
 		requestOptions : {
@@ -213,6 +212,10 @@ Form.validate = function (targetForm, overrideOptions) {
 
 		submitHandler: function(form, e) {
 
+			if ($.type(options.extSubmitHandler) == "function") {
+				options.extSubmitHandler(form, e);
+			}
+			
 			new Form.Request(form, options.requestOptions);
 			e.preventDefault();
 
@@ -264,7 +267,7 @@ Form.validate = function (targetForm, overrideOptions) {
 	function _showDialogAndReturn(type, triggerModal, nextModal, title, message) {
 
 		triggerModal.hide();
-		var that = new $.XirtMessage({
+		new $.XirtMessage({
 
 			type	 : type,
 			title	 : title,
@@ -284,7 +287,7 @@ Form.validate = function (targetForm, overrideOptions) {
 	function _showDialogAndList(type, triggerModal, grid, title, message) {
 
 		triggerModal.hide();
-		var that = new $.XirtMessage({
+		new $.XirtMessage({
 
 			type	 : type,
 			title	 : title,
