@@ -375,7 +375,9 @@
 
 							<div class="input-group date">
 								<input type="text" class="form-control form-control-sm datepicker" name="article_dt_publish" id="article_dt_publish" maxlength="10" readonly />
-								<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+								<div class="input-group-append">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        						</div>
 							</div>
 
 						</div>
@@ -389,7 +391,9 @@
 
 							<div class="input-group date">
 								<input type="text" class="form-control form-control-sm datepicker" name="article_dt_unpublish" id="article_dt_unpublish" maxlength="10" readonly />
-								<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+								<div class="input-group-append">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        						</div>
 							</div>
 
 						</div>

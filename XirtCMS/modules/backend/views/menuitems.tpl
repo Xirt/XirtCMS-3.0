@@ -107,7 +107,7 @@
 						<label for="homepage_menu" class="col-sm-4 col-form-label col-form-label-sm">Menu</label>
 						<div class="col-sm-8">
 
-							<select class="form-control form-control-sm" id="homepage_menu" name="homepage_menu" required>
+							<select class="form-control form-control-sm custom-select" id="homepage_menu" name="homepage_menu" required>
 							<?php foreach ($menus as $id => $name): ?>
 								<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
 							<?php endforeach; ?>
@@ -121,7 +121,7 @@
 
 						<label for="homepage_item" class="col-sm-4 col-form-label col-form-label-sm">Item</label>
 						<div class="col-sm-8">
-							<select class="form-control form-control-sm select-menuitem" id="homepage_item" name="homepage_item" required>
+							<select class="form-control form-control-sm select-menuitem custom-select" id="homepage_item" name="homepage_item" required>
 							</select>
 						</div>
 
@@ -181,7 +181,7 @@
 
 						<label for="create_parent_id" class="col-sm-4 col-form-label col-form-label-sm">Parent</label>
 						<div class="col-sm-8">
-							<select class="form-control form-control-sm" id="create_parent_id" name="menuitem_parent_id">
+							<select class="form-control form-control-sm custom-select" id="create_parent_id" name="menuitem_parent_id">
 								<option value="0">ROOT</option>
 							</select>
 						</div>
@@ -253,7 +253,7 @@
 
 						<label for="modify_parent_id" class="col-sm-4 col-form-label col-form-label-sm">Parent</label>
 						<div class="col-sm-8">
-							<select class="form-control form-control-sm" id="modify_parent_id" name="menuitem_parent_id">
+							<select class="form-control form-control-sm custom-select" id="modify_parent_id" name="menuitem_parent_id">
 								<option value="0">ROOT</option>
 							</select>
 						</div>
@@ -488,7 +488,7 @@
 
 						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control form-control-sm input-info" name="menuitem_id" required disabled="disabled" />
+							<input type="text" class="form-control form-control-sm input-info" name="id" required disabled="disabled" />
 						</div>
 
 					</div>
@@ -497,7 +497,7 @@
 
 						<label class="col-sm-4 col-form-label col-form-label-sm">Name</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control form-control-sm input-info" name="menuitem_name" disabled="disabled" />
+							<input type="text" class="form-control form-control-sm input-info" name="name" disabled="disabled" />
 						</div>
 
 					</div>
@@ -527,7 +527,9 @@
 
 							<div class="input-group date">
 								<input type="text" class="form-control form-control-sm datepicker" name="menuitem_dt_start" id="menuitem_dt_start" maxlength="10" readonly />
-								<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+								<div class="input-group-append">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        						</div>
 							</div>
 
 						</div>
@@ -541,7 +543,9 @@
 
 							<div class="input-group date">
 								<input type="text" class="form-control form-control-sm datepicker" name="menuitem_dt_expiry" id="menuitem_dt_expiry" maxlength="10" value="31/12/2099" readonly />
-								<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+								<div class="input-group-append">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        						</div>
 							</div>
 
 						</div>
@@ -552,7 +556,7 @@
 
 				<div class="modal-footer">
 
-					<button type="submit" class="btn btn-sm btn-success" disabled>
+					<button type="submit" class="btn btn-sm btn-success">
 						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
 						<!-- <i class="fas fa-save"></i> //-->
 						Save
