@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class XCMS_Model extends CI_Model {
@@ -30,7 +30,7 @@ class XCMS_Model extends CI_Model {
      * @param   array       $attr           The attributes for initialization (optional)
      * @return  Object                      Always this instance
      */
-    public function reset($attr = array()) {
+    public function reset(array $attr = array()) {
 
         $this->_data = array();
         return $this->set($attr);
@@ -46,7 +46,7 @@ class XCMS_Model extends CI_Model {
      * @param   boolean     $validate       Toggles validation against allowed model attributes
      * @return  Object                      Always this instance
      */
-    public function set($attr, $value = null, $validate = true) {
+    public function set($attr, $value = null, bool $validate = true) {
 
         // Ensure Array input
         if (is_object($attr) || !is_array($attr)) {
@@ -80,7 +80,7 @@ class XCMS_Model extends CI_Model {
      * @param   mixed       $fallback       The value to return in case the value was not found
      * @return  mixed                       The attribute, its value or the fallback value if not found
      */
-    public function get($key, $fallback = null) {
+    public function get(String $key, $fallback = null) {
 
         // Check  normal attributes
         if (array_key_exists($key, $this->_data)) {
@@ -98,7 +98,7 @@ class XCMS_Model extends CI_Model {
      * @param   boolean     $validate       Toggles validation against allowed model attributes
      * @return  array                       The attributes of the model as Array
      */
-    public function getArray($validate = false) {
+    public function getArray(bool $validate = false) {
 
         if (($list = $this->_data) && $validate) {
 
