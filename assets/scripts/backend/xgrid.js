@@ -527,7 +527,7 @@
 		_renderCountSelector: function(container, $grid) {
 
 			var elementContainer = ModalHelper.getFormElementContainer("count", "Rows per page");
-			var groupContainer = $(document.createElement("select")).addClass("form-control");
+			var groupContainer = $(document.createElement("select")).addClass("form-control  custom-select");
 			$.each($grid.options.rowCount, function(key, count) {
 
 				var item = $(document.createElement("option"))
