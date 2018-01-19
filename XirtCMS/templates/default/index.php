@@ -10,7 +10,6 @@
 <?php XCMS_Page::getInstance()->addscript("assets/third-party/bootstrap/js/bootstrap.min.js", true); ?>
 <?php XCMS_Page::getInstance()->addscript("assets/third-party/lightbox/js/lightbox.min.js", true); ?>
 <?php XCMS_Page::getInstance()->addscript("assets/third-party/prism/js/prism.min.js", true); ?>
-<?php XCMS_Page::getInstance()->addscript("assets/third-party/font-awesome/js/fontawesome-all.min.js", true); ?>
 <?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/bootstrap/css/bootstrap.min.css"); ?>
 <?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/lightbox/css/lightbox.min.css"); ?>
 <?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/prism/css/prism.min.css"); ?>
@@ -61,7 +60,7 @@
 		</div>
 
 		<div class="box-bottom">
-			XirtCMS 3.0 - Copyright &copy; 2017. All rights reserved.
+			XirtCMS - Copyright &copy; 2018. All rights reserved.
 			<span class="no-mobile"> | <a href="http://www.gnu.org/licenses/gpl.html" title="GNU General Public License v3.0" class="external">GNU General Public License v3.0</a></span>
 
 			<?php XCMS_RenderEngine::widget("menu_bottom"); ?>
