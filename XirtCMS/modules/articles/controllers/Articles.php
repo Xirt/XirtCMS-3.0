@@ -141,7 +141,7 @@ class Articles extends XCMS_Controller {
      * @param   Object      $category       The CategoryModel for which to retrieve the object
      * @return  Object                      The created Object
      */
-    private function _retrieveSummary($category = null, $rss = false) {
+    private function _retrieveSummary($category = null) {
 
         return (object) [
 
@@ -212,10 +212,9 @@ class Articles extends XCMS_Controller {
     /**
      * Retrieves the description for the current request
      *
-     * @param   Object      $category       The CategoryModel for which to retrieve the object
      * @return  String                      The description for the current request
      */
-    private function _getPageDescription($category = null) {
+    private function _getPageDescription() {
         return XCMS_Config::get("WEBSITE_DESCRIPTION");
     }
 

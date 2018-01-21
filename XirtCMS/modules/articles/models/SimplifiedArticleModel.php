@@ -47,10 +47,9 @@ class SimplifiedArticleModel {
     /**
      * Returns current article details as object for the given output format
      *
-     * @param   boolean     $rss            Toggless between regular and RSS format output
      * @return  Object                      The created Object
      */
-    public function toObject($rss = false) {
+    public function toObject() {
 
         return (object) [
             "title" => $this->_getTitle(),
