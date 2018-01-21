@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class Article extends XCMS_Controller {
@@ -273,14 +273,6 @@ class Article extends XCMS_Controller {
                 "dt_start"  => $dtPublish,
                 "dt_expiry" => $dtUnpublish
             ))->save();
-
-            // Set & save new updates (obsolete)
-            // TODO :: Remove once permits have been implemented completely
-            $this->article->set("published",    is_null($this->input->post("article_published")) ? "0" : "1");
-            $this->article->set("dt_publish",   $dtPublish->format("Y-m-d H:i:s"));
-            $this->article->set("dt_unpublish", $dtUnpublish->format("Y-m-d H:i:s"));
-            $this->article->validate();
-            $this->article->save();
 
             // Inform user
             XCMS_JSON::modificationSuccessMessage();
