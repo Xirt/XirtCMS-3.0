@@ -43,21 +43,21 @@ class UserHelper {
     /**
      * Returns the UserModel for the requested user
      *
-     * @param   boolean     $skipCheck      Toggle skipping of the authentication check
+     * @param   int         $id             The ID of the requested user (or empty for default user)
      * @return  mixed                       Returns the UserModel for reqested user or null on failure
      */
-    public static function getUser($id) {
+    public static function getUser($id = null) {
         
         $CI = get_instance();
-        $CI->load->model("UserModel", false);   
+        $CI->load->model("UserModel", false);
 
-        $model = new UserModel();
-        if ($model->load($id)) {
-            return $model;
+        $user = new UserModel();
+        if (is_null($id) || $user->load($id)) {
+            return $user;
         }
-        
-        return null;
 
+        return null;
+        
     }
 
 }
