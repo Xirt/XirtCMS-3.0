@@ -183,12 +183,22 @@ class PermitModel extends XCMS_Model {
      */
     public function getObject(String $format = null) {
 
+        // Prepare start date
+        if ($dtStart = $this->get("dt_start") && $format) {
+            $dtStart = $this->get("dt_start")->format($format);
+        }
+
+        // Prepare expiry date
+        if ($dtExpiry = $this->get("dt_expiry") && $format) {
+            $dtExpiry = $this->get("dt_expiry")->format($format);
+        }
+
         return (Object) array_merge($this->_ext, [
             "id"         => $this->get("id"),
             "type"       => $this->get("type"),
             "active"     => $this->get("active"),
-            "dt_start"   => $format ? $this->get("dt_start")->format($format)  : $this->get("dt_start"),
-            "dt_expiry"  => $format ? $this->get("dt_expiry")->format($format) : $this->get("dt_expiry"),
+            "dt_start"   => $dtStart,
+            "dt_expiry"  => $dtExpiry,
             "access_min" => $this->get("access_min"),
             "access_max" => $this->get("access_max")
         ]);
