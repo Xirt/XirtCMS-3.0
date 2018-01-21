@@ -86,12 +86,12 @@ class XCMS_Authentication {
    /**
      * Returns the username of the currently authenticated user
      *
-     * @param   boolean     $skipCheck      Toggle skipping of the authentication check
+     * @param   boolean     $skipAuthCheck  Toggle skipping of the authentication check
      * @return  mixed                       Returns the username or null if not available
      */
-    public static function getUsername($skipCheck = false) {
+    public static function getUsername($skipAuthCheck = false) {
         
-        if ($skipCheck && !XCMS_Authentication::check()) {
+        if ($skipAuthCheck && !XCMS_Authentication::check()) {
             return null;
         }
 
@@ -103,15 +103,16 @@ class XCMS_Authentication {
     /**
      * Returns the UserModel for the currently authenticated user
      *
-     * @param   boolean     $skipCheck      Toggle skipping of the authentication check
+     * @param   boolean     $skipAuthCheck  Toggle skipping of the authentication check
      * @return  mixed                       Returns the UserModel or null if not available
      */
-    public static function getUserModel($skipCheck = false) {
+    public static function getUserModel($skipAuthCheck = false) {
         
-        if ($skipCheck && !XCMS_Authentication::check()) {
+        if ($skipAuthCheck && !XCMS_Authentication::check()) {
             return null;
         }
 
+        self::$CI->load->helper("user");
         return self::_getUserModel();
 
     }
