@@ -317,8 +317,8 @@ class MenuItem extends XCMS_Controller {
             $permit->set("dt_start",    $dtPublish->format("Y-m-d H:i:s"));
             $permit->set("dt_expiry",   $dtUnpublish->format("Y-m-d H:i:s"));
             $permit->set("active",      $this->input->post("menuitem_active") ? 1 : 0);
-            //$permit->set("access_max",  $this->input->post("menuitem_access_min"));
-            //$permit->set("access_min",  $this->input->post("menuitem_access_max"));
+            $permit->set("access_min",  $this->input->post("menuitem_access_max"));
+            $permit->set("access_max",  $this->input->post("menuitem_access_min"));
             $permit->save();
 
             // Inform user
