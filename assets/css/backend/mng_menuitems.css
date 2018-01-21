@@ -14,12 +14,8 @@
 	width: 75px;
 }
 
-
+.table-row-commands,
 .table-row-ordering {
-	width: 125px;
-}
-
-.table-row-commands {
 	width: 125px;
 }
 
@@ -30,12 +26,8 @@
 		width: 100px;
 	}
 
-
+	.table-row-commands,
 	.table-row-ordering {
-		width: 225px;
-	}
-
-	.table-row-commands {
 		width: 225px;
 	}
 
