@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class UserModel extends XCMS_Model {
@@ -80,7 +80,7 @@ class UserModel extends XCMS_Model {
      * @param   String      $username       The username of the user to load
      * @return  mixed                       This instance on success, null otherwise
      */
-    public function loadByUsername($username) {
+    public function loadByUsername(String $username) {
         return $this->load($username);
     }
 
@@ -93,7 +93,7 @@ class UserModel extends XCMS_Model {
      * @param   mixed       $isComplex      Toggles allowance of complex (array / object) values
      * @return  Object                      Always this instance
      */
-    public function set($attr, $value = null, $isComplex = false) {
+    public function set($attr, $value = null, bool $isComplex = false) {
 
         if ($attr == "password") {
 
@@ -169,7 +169,7 @@ class UserModel extends XCMS_Model {
      * @param   mixed       $fallback       The value to return in case the value was not found
      * @return  mixed                       The attribute, its value or null if not found
      */
-    public function getAttribute($key, $valueOnly = false, $fallback = null) {
+    public function getAttribute(String $key, bool $valueOnly = false, $fallback = null) {
         return $this->attributes->get($key, $valueOnly, $fallback);
     }
 
@@ -188,10 +188,10 @@ class UserModel extends XCMS_Model {
      * Setter for model attributes
      *
      * @param   String      $attr           The name of the attribute to be set
-     * @param   String      $value          The value for the attribute to be set
+     * @param   mixed       $value          The value for the attribute to be set
      * @return  boolean                     True on success, false otherwise
      */
-    public function setAttribute($attr, $value) {
+    public function setAttribute(String $attr, $value) {
         return $this->attributes->set($attr, $value);
     }
 
