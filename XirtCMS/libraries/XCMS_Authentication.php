@@ -15,13 +15,6 @@ class XCMS_Authentication {
      * Internal reference to CI
      */
     private static $CI;
-
-    
-    /**
-     * @var Object
-     * Internal reference to UserModel for authorized user
-     */
-    private static $_model;
     
     
     /**
@@ -239,45 +232,9 @@ class XCMS_Authentication {
             self::REF_HASH => $sessionHash
         ));
 
-        self::_track($user, true);
         return true;
 
     }
-
-
-   /**
-    * Update account to track (failed) login attempts
-    *
-    * @param    UserModel   $user           The user to authenticate
-    * @param    boolean     $resetCounter   Toggles resetting of the tracker (default: false)
-    */
-   private static function _track(UserModel $user, bool $resetCounter = false) {
-      global $xDb;
-
-      if ($resetCounter) {
-
-         // Reset the counter (login success)
-         $query = "UPDATE #__users                         " .
-                  "SET dt_login = NOW(),                   " .
-                  "    login_attempts = 0                  " .
-                  "WHERE username LIKE BINARY :username    ";
-
-      } else {
-
-         // Update the counter (login failure)
-         $query = "UPDATE #__users                         " .
-                  "SET dt_login = NOW(),                   " .
-                  "    login_attempts = login_attempts + 1 " .
-                  "WHERE username LIKE BINARY :username    ";
-
-      }
-
-      // Query execution
-      //$stmt = $xDb->prepare($query);
-      //$stmt->bindParam(":username", $user->get("username"), PDO::PARAM_STR);
-      //$stmt->execute();
-
-   }
 
 
     /**
