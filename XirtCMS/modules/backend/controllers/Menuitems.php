@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class Menuitems extends XCMS_Controller {
@@ -106,10 +106,14 @@ class Menuitems extends XCMS_Controller {
         $gridIO = new GridHelper();
         foreach (MenuHelper::getMenuTree($id, false)->toArray() as $node) {
 
-            $node->item_id = $node->node_id;
-            $node->published = PermitHelper::getPermit(PermitTypes::MENUITEM, $node->node_id)->isValid();
-            unset($node->node_id);
-            $gridIO->addRow($node);
+            $gridIO->addRow([
+                "item_id"   => $node->node_id,
+                "home"      => $node->home,
+                "level"     => $node->level,
+                "name"      => $node->name,
+                "sitemap"   => $node->sitemap,
+                "published" => PermitHelper::validPermitExists(PermitTypes::MENUITEM, $node->node_id)
+            ]);
 
         }
 

@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class MenuitemsModel extends XCMS_Model {
@@ -24,8 +24,12 @@ class MenuitemsModel extends XCMS_Model {
     public function __construct() {
 
         parent::__construct();
+        
+        // Load helper
+        $this->load->helper("permit");
 
         // Load models
+        $this->load->model("PermitModel", false);
         $this->load->model("MenuitemModel", false);
 
     }
@@ -45,7 +49,7 @@ class MenuitemsModel extends XCMS_Model {
         $query = $this->_buildQuery($id)->get(XCMS_Tables::TABLE_MENUITEMS);
         foreach ($query->result() as $row) {
 
-            if (!$activeOnly || $row->published) {
+            if (!$activeOnly || PermitHelper::getPermit(PermitTypes::MENUITEM, $row->id)->isValid()) {
                 $this->_list[] = (new MenuitemModel())->set((array)$row);
             }
 

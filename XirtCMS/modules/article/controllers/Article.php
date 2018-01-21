@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class Article extends XCMS_Controller {
@@ -19,6 +19,7 @@ class Article extends XCMS_Controller {
         parent::__construct();
 
         // Load helpers
+        $this->load->helper("permit");
         $this->load->helper("article");
 
         // Load models
@@ -87,9 +88,9 @@ class Article extends XCMS_Controller {
         }
 
         // Check article publish status
-        if (!ArticleHelper::isPublished($this->article)) {
+        if (!PermitHelper::getPermit(PermitTypes::ARTICLE, $this->article->get("id"))->isValid()) {
 
-            log_message("info", "[XCMS] Requested article '{$id}' has been unpublished.");
+            log_message("info", "[XCMS] Requested article '{$id}' has no valid permit.");
             return false;
 
         }

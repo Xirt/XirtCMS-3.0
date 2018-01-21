@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     1.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class xwidget_articles extends XCMS_Widget {
@@ -24,6 +24,7 @@ class xwidget_articles extends XCMS_Widget {
 
         // Load helpers
         $this->load->helper("route");
+        $this->load->helper("permit");
         $this->load->helper("article");
         $this->load->helper("category");
 
@@ -37,11 +38,15 @@ class xwidget_articles extends XCMS_Widget {
         $articles = array();
         foreach ($this->_retrieveArticles() as $article) {
 
-            // Enrich article
-            $data = $article->getObject();
-            $data->link = $this->_getLink($data->id);
-            $data->date = $this->_getDate($article);
-            $articles[] = $data;
+            if (PermitHelper::validPermitExists(PermitTypes::ARTICLE, $article->get("id"))) {
+            
+                // Enrich article
+                $data = $article->getObject();
+                $data->link = $this->_getLink($data->id);
+                $data->date = $this->_getDate($article);
+                $articles[] = $data;
+            
+            }
 
         }
 

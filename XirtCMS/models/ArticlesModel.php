@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class ArticlesModel extends XCMS_Model {
@@ -166,15 +166,6 @@ class ArticlesModel extends XCMS_Model {
      * @return  Object                      CI Database Instance for chaining purposes
      */
     protected function _buildArticleQuery($filterOnly = false) {
-
-        // Front-end filter for unpublished items
-        if (!XCMS_Config::get("XCMS_BACKEND")) {
-
-            $this->db->where("published", 1)
-                ->where("dt_unpublish >", "NOW()", false)
-                ->where("dt_publish <" , "NOW()", false);
-
-        }
 
         // Hook for customized filtering
         XCMS_Hooks::execute("articles.build_article_query", array(

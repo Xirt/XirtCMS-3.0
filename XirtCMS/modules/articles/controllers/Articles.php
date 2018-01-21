@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class Articles extends XCMS_Controller {
@@ -28,6 +28,7 @@ class Articles extends XCMS_Controller {
         // Load helpers
         $this->load->helper("url");
         $this->load->helper("route");
+        $this->load->helper("permit");
         $this->load->helper("article");
 
         // Load models
@@ -122,7 +123,11 @@ class Articles extends XCMS_Controller {
         // Prepare output
         $articles = array();
         foreach ($model->toArray() as $article) {
-            $articles[] = (new SimplifiedArticleModel($article))->toObject();
+
+            if (PermitHelper::validPermitExists(PermitTypes::ARTICLE, $article->get("id"))) {
+                $articles[] = (new SimplifiedArticleModel($article))->toObject();
+            }
+
         }
 
         return $articles;

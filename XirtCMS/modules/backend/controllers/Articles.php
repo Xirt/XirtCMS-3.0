@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class Articles extends XCMS_Controller {
@@ -20,6 +20,7 @@ class Articles extends XCMS_Controller {
 
         // Load helpers
         $this->load->helper("grid");
+        $this->load->helper("permit");
 
         // Load models
         $this->load->model("ArticlesModel", false);
@@ -78,13 +79,10 @@ class Articles extends XCMS_Controller {
         foreach ($articles->toArray() as $article) {
 
             $gridIO->addRow([
-                "id"           => $article->get("id"),
-                "title"        => $article->get("title"),
-                "dt_created"   => $article->get("dt_created"),
-                "dt_publish"   => $article->get("dt_publish"),
-                "dt_unpublish" => $article->get("dt_unpublish"),
-                "published"    => $article->get("published"),
-                "author"       => $article->getAuthor()->get("username")
+                "id"        => $article->get("id"),
+                "title"     => $article->get("title"),
+                "author"    => $article->getAuthor()->get("username"),
+                "published" => PermitHelper::validPermitExists(PermitTypes::ARTICLE, $article->get("id"))
             ]);
 
         }
