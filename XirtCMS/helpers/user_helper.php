@@ -16,14 +16,14 @@ class UserHelper {
      * @param   UserModel   $user           The recipient (user) for this notification
      * @param   String      $password       The new password for the given user
      */
-    public static function commmunicatePassword($user, $password) {
+    public static function commmunicatePassword($user, String $password) {
 
         $CI = get_instance();
         $CI->load->library("email");
         $email = $CI->email->initialize(
             array("mailtype" => "html"
         ));
-		
+
         // Set e-mail headers
         $email->from(XCMS_Config::get("EMAIL_SENDER_EMAIL"), XCMS_Config::get("EMAIL_SENDER_NAME"))
             ->subject("Your new password")
@@ -46,8 +46,8 @@ class UserHelper {
      * @param   int         $id             The ID of the requested user (or empty for default user)
      * @return  mixed                       Returns the UserModel for reqested user or null on failure
      */
-    public static function getUser($id = null) {
-        
+    public static function getUser(int $id = null) {
+
         $CI = get_instance();
         $CI->load->model("UserModel", false);
 
@@ -57,7 +57,7 @@ class UserHelper {
         }
 
         return null;
-        
+
     }
 
 }
