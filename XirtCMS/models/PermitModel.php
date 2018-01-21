@@ -181,14 +181,14 @@ class PermitModel extends XCMS_Model {
      * @param   mixed                       String with requested DateTime format (or null to retrieve as DateTime)
      * @return  Object                      The attributes of the model as Object (or defaults if not present)
      */
-    public function getObject(String $dtFormat = null) {
+    public function getObject(String $format = null) {
 
         return (Object) array_merge($this->_ext, [
             "id"         => $this->get("id"),
             "type"       => $this->get("type"),
             "active"     => $this->get("active"),
-            "dt_start"   => $format ? $this->get("dt_start")->format($dtFormat)  : $this->get("dt_start"),
-            "dt_expiry"  => $format ? $this->get("dt_expiry")->format($dtFormat) : $this->get("dt_expiry"),
+            "dt_start"   => $format ? $this->get("dt_start")->format($format)  : $this->get("dt_start"),
+            "dt_expiry"  => $format ? $this->get("dt_expiry")->format($format) : $this->get("dt_expiry"),
             "access_min" => $this->get("access_min"),
             "access_max" => $this->get("access_max")
         ]);
@@ -214,7 +214,11 @@ class PermitModel extends XCMS_Model {
             if (!XCMS_Config::get("XCMS_BACKEND")) {
 
                 $level = XCMS_Authentication::getUserModel()->get("usergroup_id");
-                if ($this->get("access_min") < $level || $this->get("access_max") > $level) {
+                if ($minLevel = $this->get("access_min") && $minLevel < $level) {
+                    return false;
+                }
+
+                if ($maxLevel = $this->get("access_min") && $maxLevel > $level) {
                     return false;
                 }
 
