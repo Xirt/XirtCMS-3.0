@@ -9,6 +9,51 @@
  * @package     XirtCMS
  */
 class PermitHelper {
+    
+    /**
+     * Retrieves all valid permits for the request
+     * TODO :: Refacture code
+     * 
+     * @return  Array                       All valid permits
+     */
+    public static function getValidPermits() {
+
+        if ($permits = XCMS_Cache::get("permits")) {            
+            return $permits;
+        }
+        
+        // Prerequisites
+        $CI =& get_instance();
+            
+        $currentLevel = XCMS_Authentication::getUserModel()->get("usergroup_id");
+        $currentDateTime = (new DateTime())->format("Y-m-d G:i:s");
+        
+        $CI->db->where("active", 1)       
+            ->where("dt_start <=", $currentDateTime)
+            ->where("dt_expiry >=", $currentDateTime)
+            ->group_start()
+                ->where("access_min IS NULL")
+                ->or_where("access_min >=", $currentLevel)
+            ->group_end()
+            ->group_start()
+                ->where("access_max IS NULL")
+                ->or_where("access_max <=", $currentLevel)
+            ->group_end();
+        
+        // Hook for customized filtering
+        XCMS_Hooks::execute("permits.build_query", array(
+            &$CI, &$CI->db
+        ));
+        
+        $permits = array();
+        foreach ($CI->db->get(XCMS_Tables::TABLE_PERMITS)->result() as $permit) {
+            $permits[$permit->type][$permit->id] = (new PermitModel())->set($permit);
+        }
+
+        XCMS_Cache::set("permits", $permits);
+        return $permits;
+
+    }
 
     /**
      * Returns a new default permit for given parameters
@@ -32,7 +77,6 @@ class PermitHelper {
 
     /**
      * Returns requested permit (loaded from DB or defaulted not found)
-     * TODO :: Build in caching of permits to improve performance in case of many requests (likely scenario)
      *
      * @param   String      type            The type for which to retrieve the permit
      * @param   int         id              The ID for which to retrieve the permit
@@ -45,9 +89,9 @@ class PermitHelper {
         $CI->load->model("PermitModel", false);
 
         // Retrieve permit
-        $permit = new PermitModel();
-        if ($permit->load($type, $id)) {
-            return $permit;
+        $permits = PermitHelper::getValidPermits();
+        if (isset($permits[$type][$id])) {
+            return $permits[$type][$id];
         }
 
         return PermitHelper::createPermit($type, $id);
@@ -64,5 +108,6 @@ class PermitHelper {
     public static function validPermitExists(String $type, int $id) {
         return PermitHelper::getPermit($type, $id)->isValid();
     }
+
 }
 ?>
