@@ -43,7 +43,7 @@ class UserHelper {
     /**
      * Attempts to retrieve the UserModel for the current user
      *
-     * @param   boolean     $authCheck  	Toggle skipping of the authentication check
+     * @param   boolean     $authCheck      Toggle skipping of the authentication check
      * @return  mixed                       Returns the UserModel for the reqested user or null on failure
      */
     public static function getCurrentUser($authCheck = false) {
@@ -51,11 +51,21 @@ class UserHelper {
         $CI = get_instance();
         $CI->load->model("UserModel", false);
 
-		if ($id = XCMS_Authentication::getUserId()) {
-			return UserHelper::getUser($id);
-		}
+        if ($id = XCMS_Authentication::getUserId()) {
 
-		return $authCheck ? null : new UserModel();
+            // Attempt using cache (performance optimization)
+            if ($user = XCMS_Cache::get("user.current")) {
+                return $user;
+            }
+
+            $user = UserHelper::getUser($id);
+            XCMS_Cache::set("user.current", $user);
+
+            return $user;
+
+        }
+
+        return $authCheck ? null : new UserModel();
 
     }
 
@@ -84,34 +94,34 @@ class UserHelper {
     /**
      * Returns the authorization level for the given or current user
      *
-     * @param   object    	$user           The UserModel for which to retrieve the authorization level
+     * @param   object      $user           The UserModel for which to retrieve the authorization level
      * @return  mixed                       Returns the requested authorization level
      */
     public static function getAuthorizationLevel($user = null) {
 
-		$user = $user ? $user : UserHelper::getCurrentUser();
-		if (($id = $user->get("usergroup_id")) && $usergroup = UserHelper::getUserGroup($id)) {
-			return $usergroup->get("authorization_level");
-		}
+        $user = $user ? $user : UserHelper::getCurrentUser();
+        if (($id = $user->get("usergroup_id")) && $usergroup = UserHelper::getUserGroup($id)) {
+            return $usergroup->get("authorization_level");
+        }
 
-		return 1;
+        return 1;
 
     }
 
     /**
      * Attempts to retrieve the requested UsergroupModel
      *
-	 * @param	id 			$id				The id of the requested usergroup
-     * @return  mixed                 		The requested UsergroupModel or null on failure
+     * @param    int        $id             The id of the requested usergroup
+     * @return  mixed                       The requested UsergroupModel or null on failure
      */
     public static function getUserGroup(int $id) {
 
         $usergroups = UserHelper::_getUserGroups();
         if (array_key_exists($id, $usergroups)) {
-			return $usergroups[$id];
-		}
+            return $usergroups[$id];
+        }
 
-		return null;
+        return null;
 
     }
 
@@ -127,12 +137,12 @@ class UserHelper {
         $CI =& get_instance();
         $CI->load->model("UsergroupsModel", false);
 
-		// Attempt using cache (performance optimization)
+        // Attempt using cache (performance optimization)
         if ($usergroups = XCMS_Cache::get("usergroups")) {
             return $usergroups;
         }
 
-		$usergroups = array();
+        $usergroups = array();
         foreach ((new UsergroupsModel())->load()->toArray() as $usergroup) {
             $usergroups[$usergroup->get("id")] = $usergroup;
         }
