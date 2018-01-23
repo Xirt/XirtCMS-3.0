@@ -24,8 +24,8 @@ class PermitHelper {
         
         // Prerequisites
         $CI =& get_instance();
-            
-        $currentLevel = XCMS_Authentication::getUserModel()->get("usergroup_id");
+
+		$currentLevel = UserHelper::getAuthorizationLevel();	
         $currentDateTime = (new DateTime())->format("Y-m-d G:i:s");
         
         $CI->db->where("active", 1)       
