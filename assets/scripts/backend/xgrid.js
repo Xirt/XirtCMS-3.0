@@ -32,7 +32,7 @@
 
 			// Toolbar templates
 			"toolbarContainer" : '<div class="xgrid-toolbar"></div>',
-			"toolbarSearch"    : '<div class="input-group"><span class="icon input-group-addon"><span class="icon fas fa-search"></span></span><input class="search-field form-control form-control-sm" placeholder="Search..." type="text"></div>',
+			"toolbarSearch"    : '<div class="input-group"><div class="input-group-prepend"><div class="input-group-text"><i class="fas fa-search"></i></div></div><input class="search-field form-control form-control-sm" placeholder="Search..." type="text"></div>',
 			"toolbarConfig"    : '<button class="btn btn-primary btn-sm config"><span class="fas fa-cogs"></span><span class="label">Filters</span></button>'
 
 		};
