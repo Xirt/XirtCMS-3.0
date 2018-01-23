@@ -5,44 +5,44 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class XCMS_Authentication {
 
     /**
-     * @var Object
      * Internal reference to CI
+     * @var Object
      */
     private static $CI;
-    
-    
+
+
     /**
-     * @var String
      * Reference used to save / retrieve user ID for authentication session
+     * @var String
      */
     const REF_ID = "USER_ID";
-    
-    
+
+
     /**
-     * @var String
      * Reference used to save / retrieve username for authentication session
+     * @var String
      */
     const REF_NAME = "USER_NAME";
-    
-    
+
+
     /**
-     * @var String
      * Reference used to save / retrieve session hash for authentication session
+     * @var String
      */
-    const REF_HASH = "USER_HASH";   
+    const REF_HASH = "USER_HASH";
 
 
     /**
-     * @var String
      * Regular Expression to validate password strength
+     * @var String
      */
-    const PW_REGEX = "/(?=^.{6,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*()]*$/";    
+    const PW_REGEX = "/(?=^.{6,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*()]*$/";
 
 
     /**
@@ -62,12 +62,12 @@ class XCMS_Authentication {
     /**
      * Returns the ID of the currently authenticated user
      *
-     * @param   boolean     $skipCheck      Toggle skipping of the authentication check
+     * @param   boolean     $skipAuthCheck  Toggle skipping of the authentication check
      * @return  mixed                       Returns the user ID or null if not available
      */
-    public static function getUserId($skipCheck = false) {
-        
-        if ($skipCheck && !XCMS_Authentication::check()) {
+    public static function getUserId(bool $skipAuthCheck = false) {
+
+        if (!$skipAuthCheck && !XCMS_Authentication::check()) {
             return null;
         }
 
@@ -82,9 +82,9 @@ class XCMS_Authentication {
      * @param   boolean     $skipAuthCheck  Toggle skipping of the authentication check
      * @return  mixed                       Returns the username or null if not available
      */
-    public static function getUsername($skipAuthCheck = false) {
-        
-        if ($skipAuthCheck && !XCMS_Authentication::check()) {
+    public static function getUsername(bool $skipAuthCheck = false) {
+
+        if (!$skipAuthCheck && !XCMS_Authentication::check()) {
             return null;
         }
 
@@ -96,20 +96,37 @@ class XCMS_Authentication {
     /**
      * Returns the UserModel for the currently authenticated user
      *
+	 * @deprecated
      * @param   boolean     $skipAuthCheck  Toggle skipping of the authentication check
      * @return  mixed                       Returns the UserModel or null if not available
      */
-    public static function getUserModel($skipAuthCheck = false) {
-        
-        if ($skipAuthCheck && !XCMS_Authentication::check()) {
+    public static function getUserModel(bool $skipAuthCheck = false) {
+
+        if (!$skipAuthCheck && !XCMS_Authentication::check()) {
             return null;
         }
 
-        self::$CI->load->helper("user");
         return self::_getUserModel();
 
     }
 
+
+	/**
+     * Returns the authorization level for the given user (or current user in case of no input)
+     *
+	 * @deprecated
+	 * @param   object	$user 				The user for which to retrieve the authorization level
+     * @return  int                       	Returns the authorization level or level '1' if not authorized
+     */
+    public static function getAuthorizationLevel($user = null) {
+
+		if ($user || $user = UserHelper::getCurrentUser(true)) {
+			return UserHelper::getUsergroup($user->get("usergroup_id"))->get("authorization_level");
+		}
+
+		return 1;
+
+	}
 
     /**
      * Returns the ID of the currently authenticated user
@@ -150,7 +167,7 @@ class XCMS_Authentication {
      * @return  UserModel                   Returns the UserModel for current user
      */
     private static function _getUserModel() {
-        
+
         self::$CI->load->helper("user");
         return UserHelper::getUser(self::_getUserId(true));
 
@@ -201,7 +218,7 @@ class XCMS_Authentication {
     * @param    boolean     $cookies        Toggles the use of cookies (defaults to false)
     * @return   int                         1 on success, error code otherwise
     */
-    public static function create(UserModel $user, string $password, bool $cookies = false) {
+    public static function create(UserModel $user, String $password, bool $cookies = false) {
 
         self::destroy();
 
@@ -264,7 +281,7 @@ class XCMS_Authentication {
      * @param   String      $password       String containing the password
      * @return  int                         User ID on success, error code otherwise
      */
-    public static function _verify($user, $password) {
+    public static function _verify(String $user, String $password) {
 
         /**************************
          * METHOD 1 :: DB Details *
@@ -284,7 +301,7 @@ class XCMS_Authentication {
      * @param   String      $salt           The salt to use for the hash (optional)
      * @return  String                      The generated hash
      */
-    public static function hash($password, $salt = null) {
+    public static function hash(String $password, String $salt = null) {
 
         $salt = $salt ? $salt : self::generateSalt();
 
@@ -297,7 +314,7 @@ class XCMS_Authentication {
         }
 
         // Return hash using Blowfish (preferred)
-        return crypt($password, "$2a$08$" . $salt . "$");        
+        return crypt($password, "$2a$08$" . $salt . "$");
 
     }
 
@@ -308,7 +325,7 @@ class XCMS_Authentication {
      * @param   int         $length         The length of the password (optional, defaults 8)
      * @return  String                      The created password
      */
-    public static function generatePassword($length = 8) {
+    public static function generatePassword(int $length = 8) {
 
         $charset = array();
         $charset[] = range("a", "z");
