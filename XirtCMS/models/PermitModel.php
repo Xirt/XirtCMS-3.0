@@ -26,6 +26,20 @@ class PermitModel extends XCMS_Model {
 
 
     /**
+     * CONSTRUCTOR
+     * Instantiates controller with required helpers, libraries and models
+     */
+    public function __construct() {
+
+        parent::__construct();
+
+        // Load helpers
+        $this->load->helper("user");
+
+    }
+
+
+    /**
      * Setter for model attributes
      *
      * @param   mixed       $attr           The key of the attribute to be set or array/object with attributes (key/value)
@@ -223,7 +237,7 @@ class PermitModel extends XCMS_Model {
             // Check access rights
             if (!XCMS_Config::get("XCMS_BACKEND")) {
 
-                $level = XCMS_Authentication::getUserModel()->get("usergroup_id");
+				$level = $currentLevel = UserHelper::getAuthorizationLevel();			
                 if ($minLevel = $this->get("access_min") && $minLevel < $level) {
                     return false;
                 }
