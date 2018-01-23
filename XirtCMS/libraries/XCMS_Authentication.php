@@ -275,13 +275,13 @@ class XCMS_Authentication {
 
 
     /**
-     * Verifies a username / password combination
+     * Verifies a user / password combination
      *
-     * @param   String      $user           String containing the username
+     * @param   object      $user           User to be checked
      * @param   String      $password       String containing the password
      * @return  int                         User ID on success, error code otherwise
      */
-    public static function _verify(String $user, String $password) {
+    public static function _verify(UserModel $user, String $password) {
 
         /**************************
          * METHOD 1 :: DB Details *
