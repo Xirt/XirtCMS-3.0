@@ -90,21 +90,26 @@ class CategoryHelper {
         $CI =& get_instance();
         $CI->load->model("CategoriesModel", false);
 
-        // Retrieve data
-        $tree = new XCMS_Tree();
-        foreach ((new CategoriesModel())->load()->toArray() as $category) {
+        if (!$tree = XCMS_Cache::get("categories")) {
 
-            $tree->add(new XCMS_Node((object)[
-                "node_id"   => $category->get("id"),
-                "name"      => $category->get("name"),
-                "level"     => $category->get("level"),
-                "ordering"  => $category->get("ordering"),
-                "published" => $category->get("published"),
-                "parent_id" => $category->get("parent_id")
-            ]));
+            // Retrieve data
+            $tree = new XCMS_Tree();
+            foreach ((new CategoriesModel())->load()->toArray() as $category) {
+
+                $tree->add(new XCMS_Node((object)[
+                    "node_id"   => $category->get("id"),
+                    "name"      => $category->get("name"),
+                    "level"     => $category->get("level"),
+                    "ordering"  => $category->get("ordering"),
+                    "published" => $category->get("published"),
+                    "parent_id" => $category->get("parent_id")
+                ]));
+
+            }
 
         }
 
+        XCMS_Cache::set("categories", $tree);
         return $tree;
 
     }
