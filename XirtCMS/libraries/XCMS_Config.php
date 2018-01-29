@@ -52,6 +52,11 @@ class XCMS_Config {
             self::set($metaInfo->name, $metaInfo->value);
         }
 
+        // Update CodeIgniter configuration
+        if ($dir = self::get("FOLDER_CACHE")) {
+            $this->CI->config->set_item("cache_path", FCPATH . $dir);
+        }
+
     }
 
 
