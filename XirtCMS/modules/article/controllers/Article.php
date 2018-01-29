@@ -45,7 +45,7 @@ class Article extends XCMS_Controller {
     public function view($id = 0) {
 
         // Attempt to load content
-        if (!$this->_loadArticle($id)) {
+        if (!is_numeric($id) || !$this->_loadArticle($id)) {
             return show_404();
         }
 
@@ -69,10 +69,23 @@ class Article extends XCMS_Controller {
      * @param   mixed      $id              The ID of the requested article (non validated)
      * @return  boolean                     True on success, false otherwise
      */
-    private function _loadArticle($id) {
+    private function _loadArticle(int $id) {
+
+        // Check article publish status
+        if (!PermitHelper::getPermit(PermitTypes::ARTICLE, $id)->isValid()) {
+
+            log_message("info", "[XCMS] Requested article '{$id}' has no valid permit.");
+            return false;
+
+        }
 
         // Attempt to retrieve article
-        if (!is_numeric($id) || !$this->article->load($id)) {
+        if ($ttl = XCMS_Config::get("CACHE.TIME_ARTICLES") && $content = $this->cache->get("article." . $id)) {
+
+            $this->article = unserialize($content);
+            return true;
+
+        } else if (!$this->article->load($id)) {
 
             log_message("info", "[XCMS] Failed loading article '{$id}'.");
             return false;
@@ -87,14 +100,7 @@ class Article extends XCMS_Controller {
 
         }
 
-        // Check article publish status
-        if (!PermitHelper::getPermit(PermitTypes::ARTICLE, $this->article->get("id"))->isValid()) {
-
-            log_message("info", "[XCMS] Requested article '{$id}' has no valid permit.");
-            return false;
-
-        }
-
+        $this->cache->save("article." . $id, serialize($this->article), $ttl);
         return true;
 
     }
