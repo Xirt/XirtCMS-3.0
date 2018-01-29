@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class ArticleModel extends XCMS_Model {
@@ -48,6 +48,9 @@ class ArticleModel extends XCMS_Model {
 
         parent::__construct();
 
+        // Load helpers
+        $this->load->helper("user");
+
         // Load models
         $this->load->model("UserModel", false);
         $this->load->model("AttributesModel", false);
@@ -84,7 +87,7 @@ class ArticleModel extends XCMS_Model {
 
                 // Load additional data
                 $this->_attributes->load($this->get("id"));
-                $this->_author->load($this->get("author_id"));
+                $this->_author = UserHelper::getUser($this->get("author_id"));
                 $this->_loadCategories();
 
             }
