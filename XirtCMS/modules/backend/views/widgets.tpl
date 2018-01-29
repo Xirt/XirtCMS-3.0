@@ -261,6 +261,15 @@
 
 					</div>
 
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm" id="widget_cache">Cache Expiry</label>
+						<div class="col-sm-8 text-left">
+							<input type="text" class="form-control form-control-sm" name="widget_cache" id="widget_cache" placeholder="" style="width: 50px; text-align: center;" required value="" />
+						</div>
+
+					</div>
+
 				</div>
 
 				<div class="modal-footer">

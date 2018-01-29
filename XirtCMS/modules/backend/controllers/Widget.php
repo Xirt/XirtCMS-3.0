@@ -49,6 +49,7 @@ class Widget extends XCMS_Controller {
         $data = (Object) [
             "id"           => $this->widget->get("id"),
             "name"         => $this->widget->get("name"),
+            "cache"        => $this->widget->get("cache"),
             "page_all"     => $this->widget->get("page_all"),
             "page_default" => $this->widget->get("page_default"),
             "page_module"  => $this->widget->get("page_module"),
@@ -129,6 +130,7 @@ class Widget extends XCMS_Controller {
             // Set & save new updates
             $this->widget->set("name",         $this->input->post("widget_name"));
             $this->widget->set("pages",        $this->input->post("widget_pages"));
+            $this->widget->set("cache",        $this->input->post("widget_cache"));
             $this->widget->set("position",     $this->input->post("widget_position"));
             $this->widget->set("page_all",     (int)!is_null($this->input->post("widget_page_all")));
             $this->widget->set("page_default", (int)!is_null($this->input->post("widget_page_default")));

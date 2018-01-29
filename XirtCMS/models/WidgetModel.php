@@ -5,7 +5,7 @@
  *
  * @author      A.G. Gideonse
  * @version     3.0
- * @copyright   XirtCMS 2016 - 2017
+ * @copyright   XirtCMS 2016 - 2018
  * @package     XirtCMS
  */
 class WidgetModel extends XCMS_Model {
@@ -15,7 +15,7 @@ class WidgetModel extends XCMS_Model {
      * @var array
      */
     protected $_attr = array(
-        "id", "name", "type", "ordering", "published", "position", "page_all", "page_default", "page_module", "pages", "settings"
+        "id", "name", "type", "ordering", "cache", "published", "position", "page_all", "page_default", "page_module", "pages", "settings"
     );
 
 
