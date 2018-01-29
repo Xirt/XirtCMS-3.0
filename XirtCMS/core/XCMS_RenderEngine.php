@@ -95,13 +95,16 @@ class XCMS_RenderEngine {
             if ($ttl = $widget->cache) {
 
                 if ($content = $CI->cache->get("module." . $widget->id)) {
-                    return print($content);
+                    
+                    print($content);
+                    continue;
+                    
                 }
 
                 ob_start();
                 self::_widget($widget->type, $widget->settings);
                 $CI->cache->save("module." . $widget->id, ob_get_contents(), $ttl);
-                return ob_end_flush();
+                continue;
 
             }
 
