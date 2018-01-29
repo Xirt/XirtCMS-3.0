@@ -90,12 +90,40 @@ class XCMS_RenderEngine {
         foreach(WidgetHelper::retrieve($position) as $widget) {
 
             log_message("info", "[XCMS] Loading widget '{$widget->type}' on '{$position}'.");
-            include_once(APPPATH . "widgets/" . $widget->type . "/index.php");
 
-            $className = "xwidget_" . $widget->type;
-            (new $className($widget->settings))->show();
+            // Loading widget using cache
+            if ($ttl = $widget->cache) {
+
+                if ($content = $CI->cache->get("module." . $widget->id)) {
+                    return print($content);
+                }
+
+                ob_start();
+                self::_widget($widget->type, $widget->settings);
+                $CI->cache->save("module." . $widget->id, ob_get_contents(), $ttl);
+                return ob_end_flush();
+
+            }
+
+            // Regular loading
+            self::_widget($widget->type, $widget->settings);
 
         }
+
+    }
+
+
+    /**
+     * Shows given widget
+     *
+     * @param $String       $type       The type of the widget to load
+     * @param Object        $settings   The settings for the given widget
+     */
+    private static function _widget(String $type, $settings) {
+
+        include_once(APPPATH . "widgets/" . $type . "/index.php");
+        $className = "xwidget_" . $type;
+        (new $className($settings))->show();
 
     }
 
