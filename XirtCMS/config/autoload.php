@@ -65,6 +65,7 @@ $autoload['libraries'] = array(
     "XCMS_Cache",
     "XCMS_Hooks",
     "database",
+    "driver",
     "session"
 );
 
