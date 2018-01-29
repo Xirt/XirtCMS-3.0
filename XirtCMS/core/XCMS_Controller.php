@@ -33,6 +33,7 @@ class XCMS_Controller extends CI_Controller {
         XCMS_Hooks::init($isBackend);
         $this->load->helper("exception");
         $this->load->library("XCMS_Authentication");
+        $this->load->library("cache", array('adapter' => 'file'));
 
         if ($auth_level && !XCMS_Authentication::check()) {
 
