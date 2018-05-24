@@ -43,6 +43,7 @@
 
 .btn-remove {
 	position: absolute;
-	right: 10px;
+	right: 20px;
+	width: auto !important;
 	padding: 0 5px;
 }
