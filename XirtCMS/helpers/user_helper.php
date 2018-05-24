@@ -81,12 +81,65 @@ class UserHelper {
         $CI = get_instance();
         $CI->load->model("UserModel", false);
 
-        $user = new UserModel();
-        if (is_null($id) || $user->load($id)) {
+        // Attempt using cache (performance optimization)
+        if ($id && $user = XCMS_Cache::get("user." . $id)) {
             return $user;
         }
 
+        $user = new UserModel();
+        if (is_null($id) || $user->load($id)) {
+
+            XCMS_Cache::set("user." .  $id, $user);
+            return $user;
+
+        }
+
         return null;
+
+    }
+    
+    
+    /**
+     * Attempts to retrieve the all requestede UserModels
+     * TODO :: Finalize logic
+     *
+     * @param   array       $identifiers    The IDs of the requested users
+     * @return  array                       The resulting list of UserModels
+     */
+    public static function getUsers($identifiers = array()) {
+
+        $list = array();
+
+        $CI = get_instance();
+        $CI->load->model("UserModel", false);
+
+        // Retrieve users from cache
+        foreach ($identifiers as $key => $id) {
+
+            // Attempt using cache (performance optimization)
+            if ($user = XCMS_Cache::get("user." . $id)) {
+
+                unset($identifiers[$key]);
+                $list[$id] = $user;
+ 
+            }
+
+        }
+
+        // Retrieve users from database
+        foreach ($identifiers as $id) {
+
+            $user = new UserModel();
+            if (is_null($id) || $user->load($id)) {
+
+                XCMS_Cache::set("user." .  $id, $user);
+                $list[$id] = $user;
+
+            }
+
+        }
+
+        return $list;
 
     }
 
