@@ -75,6 +75,7 @@ class XCMS_Router extends MX_Router {
 
         if (isset($segments[0]) && $segments[0] == "backend") {
 
+            array_shift($segments);
             Modules::$locations = array(
                 APPPATH.'modules/backend/' => '../modules/backend/',
                 APPPATH.'modules/shared/' => '../modules/shared/'
