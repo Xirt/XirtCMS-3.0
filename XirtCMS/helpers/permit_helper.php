@@ -80,21 +80,30 @@ class PermitHelper {
      *
      * @param   String      type            The type for which to retrieve the permit
      * @param   int         id              The ID for which to retrieve the permit
-     * @return  Object                      The requested permit
+     * @param   bool        forceResponse   Toggles retrieving of default permit on failure
+     * @return  mixed                       The requested permit or null on failure
      */
-    public static function getPermit(String $type, int $id) {
+    public static function getPermit(String $type, int $id, bool $useCache = true) {
         
         // Prerequisites
         $CI =& get_instance();
         $CI->load->model("PermitModel", false);
 
-        // Retrieve permit
-        $permits = PermitHelper::getValidPermits();
-        if (isset($permits[$type][$id])) {
-            return $permits[$type][$id];
+        // Use cache if requested
+        if ($useCache && $permits = PermitHelper::getValidPermits()) {
+            
+            if (isset($permits[$type][$id])) {
+                return $permits[$type][$id];
+            }
+            
         }
 
-        return PermitHelper::createPermit($type, $id);
+        // Otherwise attempt custom load or creation
+        if (!$permit = (new PermitModel())->load($type, $id)) {
+            $permit = self::createPermit($type, $id);
+        }
+        
+        return $permit;
 
     }
     
