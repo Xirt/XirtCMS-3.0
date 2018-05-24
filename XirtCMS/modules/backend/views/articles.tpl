@@ -329,7 +329,7 @@
 
 	<div class="modal-dialog" role="document">
 
-		<form id="form-publish" action="backend/article/modify_publish" method="post" data-toggle="validator">
+		<form id="form-permit" action="backend/article/modify_publish" method="post" data-toggle="validator">
 
 			<div class="modal-content">
 
@@ -363,7 +363,7 @@
 
 						<label class="col-sm-4 col-form-label col-form-label-sm">Published</label>
 						<div class="col-sm-8 text-left">
-							<input type="checkbox" name="article_published" id="article_published" data-on="Yes" data-off="No" data-onstyle="info" data-toggle="toggle" data-size="small" />
+							<input type="checkbox" name="article_active" id="article_active" data-on="Yes" data-off="No" data-onstyle="info" data-toggle="toggle" data-size="small" />
 						</div>
 
 					</div>
@@ -374,7 +374,7 @@
 						<div class="col-sm-8">
 
 							<div class="input-group date">
-								<input type="text" class="form-control form-control-sm datepicker" name="article_dt_publish" id="article_dt_publish" maxlength="10" readonly />
+								<input type="text" class="form-control form-control-sm datepicker" name="article_dt_start" id="article_dt_start" maxlength="10" readonly />
 								<div class="input-group-append">
 									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
         						</div>
@@ -390,7 +390,7 @@
 						<div class="col-sm-8">
 
 							<div class="input-group date">
-								<input type="text" class="form-control form-control-sm datepicker" name="article_dt_unpublish" id="article_dt_unpublish" maxlength="10" readonly />
+								<input type="text" class="form-control form-control-sm datepicker" name="article_dt_expiry" id="article_dt_expiry" maxlength="10" readonly />
 								<div class="input-group-append">
 									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
         						</div>

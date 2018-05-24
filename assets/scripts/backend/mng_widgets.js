@@ -1,5 +1,54 @@
 $(function() {
 
+	/*****************
+	 * CONFIGURATION *
+	 *****************/
+	var cacheExpiryOptions = [{
+			label	: "Never",
+			seconds	: 0
+		}, {
+			label	: "5 seconds",
+			seconds	: 5
+		}, {
+			label	: "15 seconds",
+			seconds	: 15
+		}, {
+			label	: "30 seconds",
+			seconds	: 30
+		}, {
+			label	: "1 minute",
+			seconds	: 60
+		}, {
+			label	: "5 minutes",
+			seconds	: 300
+		}, {
+			label	: "15 minutes",
+			seconds	: 900
+		}, {
+			label	: "30 minutes",
+			seconds	: 1800
+		}, {
+			label	: "1 hour",
+			seconds	: 3600
+		}, {
+			label	: "6 hours",
+			seconds	: 21600
+		}, {
+			label	: "12 hours",
+			seconds	: 43200
+		}, {
+			label	: "1 day",
+			seconds	: 86400
+		}, {
+			label	: "7 days",
+			seconds	: 604800
+		}, {
+			label	: "30 days",
+			seconds	: 2592000
+		}
+	];
+
+	
 	/****************
 	 * PAGE MANAGER *
 	 ****************/
@@ -14,7 +63,19 @@ $(function() {
 			this._initModals();
 			this._initForms();
 			this._initButtons();
+			this._initDatepickers();
 
+			$("#widget_cache_slider").on("change input", function() {
+
+				var display = $("#" + $(this).attr("data-display"));
+				var holder = $("#" + $(this).attr("data-holder"));
+				
+				display.val(cacheExpiryOptions[$(this).val()].label);
+				holder.val(cacheExpiryOptions[$(this).val()].seconds);				
+				
+			}).trigger("change");
+			
+			
 			return this;
 
 		},
@@ -65,11 +126,12 @@ $(function() {
 
 		_initModals: function(initializedEditors) {
 
-			createModal = new $.XirtModal($("#createModal")).init();
-			modifyModal = new $.XirtModal($("#modifyModal")).init();
-			configModal = new $.XirtModal($("#configModal")).init();
-			optionsModal = new $.XirtModal($("#optionsModal")).init();
-			priorityModal = new $.XirtModal($("#priorityModal")).init();
+			createModal	= new $.XirtModal($("#createModal")).init();
+			modifyModal	= new $.XirtModal($("#modifyModal")).init();
+			configModal	= new $.XirtModal($("#configModal")).init();
+			optionsModal	= new $.XirtModal($("#optionsModal")).init();
+			publishModal	= new $.XirtModal($("#publishModal")).init();
+			priorityModal	= new $.XirtModal($("#priorityModal")).init();
 
 		},
 
@@ -77,6 +139,11 @@ $(function() {
 		_initButtons: function() {
 
 			var that = this;
+
+			// Activate publishing button
+			$("#widget_published").on("change", function() {
+				$(".publish-dates").toggle(this.checked);
+			});
 
 			// Activate creation button
 			$(".btn-create").click(function(e) {
@@ -110,6 +177,36 @@ $(function() {
 
 				optionsModal.hide();
 				that.grid.modifyPrioritiesModal(current);
+
+			});
+
+			// Active "Edit publishing schedule"-option
+			$(".btn-edit-status").click(function() {
+
+				optionsModal.hide();
+				that.grid.showModifyPublicationModal(current);
+
+			});
+
+		},
+
+		_initDatepickers: function() {
+
+			// Activate fields
+			$(".datepicker").datepicker({
+				weekStart: 1,
+				autoHide: true,
+				autoPick: true,
+				format: "dd/mm/yyyy"
+			}).on('show.datepicker', function (e) {
+				$(this).datepicker("setDate", $(this).val());
+			});
+
+			// Activate icons
+			$(".input-group.date .input-group-addon").on("click", function(e) {
+
+				$(this).siblings("input").datepicker("show");
+				e.stopImmediatePropagation();
 
 			});
 
@@ -266,6 +363,40 @@ $(function() {
 
 		},
 
+		showModifyPublicationModal: function() {
+
+			publishModal.load({
+
+				url	: "backend/widget/view/" + current,
+				onLoad	: function(json) {
+
+					Xirt.populateForm($("#form-publish"), json, { prefix : "widget_", converters: {
+
+						id: function (value) { return Xirt.pad(value, 5, "0"); },
+
+						dt_publish: function (value) {
+							var dt = new Date(value);
+							return ('0' + dt.getDate()).slice(-2) + "/"
+								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
+								 + dt.getFullYear();
+						},
+
+						dt_unpublish: function (value) {
+
+							var dt = new Date(value);
+							return ('0' + dt.getDate()).slice(-2) + "/"
+								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
+								 + dt.getFullYear();
+						}
+
+					}});
+
+				}
+
+			});
+
+		},
+
 		_moveItemUp: function() {
 
 			new $.XirtMessage({
@@ -323,7 +454,7 @@ $(function() {
 	 * TRIGGER *
 	 **********/
 	var current;
-	var optionsModal, createModal, modifyModal, configModal, priorityModal;
+	var optionsModal, createModal, modifyModal, configModal, publishModal, priorityModal;
 	(new $.PageManager()).init();
 
 });

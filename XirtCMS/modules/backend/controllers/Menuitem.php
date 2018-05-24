@@ -303,23 +303,25 @@ class MenuItem extends XCMS_Controller {
 
         try {
 
-            // Retrieve permit
-            $permit = new PermitModel();
-            $permit->load(PermitTypes::MENUITEM, $id);
+            // Validate provided input
+            if (!$this->form_validation->run()) {
+                throw new UnexpectedValueException(null);
+            }
 
             // Prepare data
             $dtPublish   = DateTime::createFromFormat("d/m/Y", $this->input->post("menuitem_dt_start"));
             $dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("menuitem_dt_expiry"));
 
-            // Save permit details
-            $permit->set("id",          $id);
-            $permit->set("type",        PermitTypes::MENUITEM);
-            $permit->set("dt_start",    $dtPublish->format("Y-m-d H:i:s"));
-            $permit->set("dt_expiry",   $dtUnpublish->format("Y-m-d H:i:s"));
-            $permit->set("active",      $this->input->post("menuitem_active") ? 1 : 0);
-            $permit->set("access_min",  $this->input->post("menuitem_access_max"));
-            $permit->set("access_max",  $this->input->post("menuitem_access_min"));
-            $permit->save();
+            // Set & save new updates
+            (new PermitModel())->set([
+                "id"         => $id,
+                "type"       => PermitTypes::MENUITEM,
+                "dt_start"   => $dtPublish->format("Y-m-d H:i:s"),
+                "dt_expiry"  => $dtUnpublish->format("Y-m-d H:i:s"),
+                "active"     => $this->input->post("menuitem_active") ? 1 : 0,
+                "access_min" => $this->input->post("menuitem_access_max"),
+                "access_max" => $this->input->post("menuitem_access_min")
+                ])->save();
 
             // Inform user
             XCMS_JSON::modificationSuccessMessage();

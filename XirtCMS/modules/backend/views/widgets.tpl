@@ -40,7 +40,7 @@
 
 			<div class="modal-body row">
 
-				<div class="col col-sm-4">
+				<div class="col col-sm-3">
 
 					<button class="btn btn-info btn-edit-main">
 						<i class="far fa-edit fa-5x" aria-hidden="true"></i>
@@ -49,7 +49,7 @@
 
 				</div>
 
-				<div class="col col-sm-4">
+				<div class="col col-sm-3">
 
 					<button class="btn btn-info btn-edit-attributes">
 						<i class="fas fa-cogs fa-5x" aria-hidden="true"></i>
@@ -58,11 +58,20 @@
 
 				</div>
 
-				<div class="col col-sm-4">
+				<div class="col col-sm-3">
 
 					<button class="btn btn-info btn-edit-priorities" disabled>
 						<i class="fas fa-cogs fa-5x" aria-hidden="true"></i>
 						<p>Modify priorities</p>
+					</button>
+
+				</div>
+
+				<div class="col-sm-3">
+
+					<button class="btn btn-info btn-edit-status">
+						<i class="far fa-calendar-alt fa-5x" aria-hidden="true"></i>
+						<p>Schedule publishing</p>
 					</button>
 
 				</div>
@@ -263,10 +272,14 @@
 
 					<div class="form-group row">
 
-						<label class="col-sm-4 col-form-label col-form-label-sm" id="widget_cache">Cache Expiry</label>
-						<div class="col-sm-8 text-left">
-							<input type="text" class="form-control form-control-sm" name="widget_cache" id="widget_cache" placeholder="" style="width: 50px; text-align: center;" required value="" />
-						</div>
+						<label class="col-sm-4 col-form-label col-form-label-sm" for="widget_cache_slider">Caching</label>
+						<div class="col-sm-5">
+							<input type="range" min="0" max="13" value="0" class="form-control form-control-sm" name="widget_cache_slider" id="widget_cache_slider" placeholder="" style="width: 100%;" data-display="cache_display" data-holder="widget_cache" required value="" />
+							<input type="hidden" value="0" name="widget_cache" id="widget_cache" />
+                        </div>
+						<div class="col-sm-3">
+							<input type="text" class="form-control form-control-sm input-info" id="cache_display" style="width: 100%;" disabled />
+                        </div>
 
 					</div>
 
@@ -391,6 +404,106 @@
 					</div>
 
 					<div id="settingsBox"></div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
+
+<div id="publishModal" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<form id="form-publish" action="backend/article/modify_publish" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title">Publishing</h5>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="widget_id" required disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="widget_name" disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Published</label>
+						<div class="col-sm-8 text-left">
+							<input type="checkbox" name="widget_published" id="widget_published" data-on="Yes" data-off="No" data-onstyle="info" data-toggle="toggle" data-size="small" />
+						</div>
+
+					</div>
+
+					<div class="form-group row publish-dates">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Publish date</label>
+						<div class="col-sm-8">
+
+							<div class="input-group date">
+								<input type="text" class="form-control form-control-sm datepicker" name="widget_dt_publish" id="widget_dt_publish" maxlength="10" readonly />
+								<div class="input-group-append">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        						</div>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="form-group row publish-dates">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Unpublish date</label>
+						<div class="col-sm-8">
+
+							<div class="input-group date">
+								<input type="text" class="form-control form-control-sm datepicker" name="widget_dt_unpublish" id="widget_dt_unpublish" maxlength="10" readonly />
+								<div class="input-group-append">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        						</div>
+							</div>
+
+						</div>
+
+					</div>
 
 				</div>
 

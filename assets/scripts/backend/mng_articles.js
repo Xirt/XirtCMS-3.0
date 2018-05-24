@@ -80,7 +80,7 @@ $(function() {
 
 			});
 
-			Form.validate("#form-publish", {
+			Form.validate("#form-permit", {
 
 				currentModal: publishModal,
 				nextModal: publishModal,
@@ -168,7 +168,7 @@ $(function() {
 			});
 
 			// Activate icons
-			$(".input-group.date .input-group-addon").on("click", function(e) {
+			$(".input-group.date .input-group-append").on("click", function(e) {
 
 				$(this).siblings("input").datepicker("show");
 				e.stopImmediatePropagation();
@@ -330,24 +330,28 @@ $(function() {
 				url	: "backend/article/view/" + current,
 				onLoad	: function(json) {
 
-					Xirt.populateForm($("#form-publish"), json, { prefix : "article_", converters: {
+					Xirt.populateForm($("#form-permit"), json.permit, { prefix : "article_", converters: {
 
-						id: function (value) { return Xirt.pad(value, 5, "0"); },
-
-						dt_publish: function (value) {
+						dt_start: function (value) {
 							var dt = new Date(value);
 							return ('0' + dt.getDate()).slice(-2) + "/"
 								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
 								 + dt.getFullYear();
 						},
 
-						dt_unpublish: function (value) {
+						dt_expiry: function (value) {
 
 							var dt = new Date(value);
 							return ('0' + dt.getDate()).slice(-2) + "/"
 								 + ('0' + (dt.getMonth() + 1)).slice(-2) + "/"
 								 + dt.getFullYear();
 						}
+
+					}});
+
+					Xirt.populateForm($("#form-permit"), json, { prefix : "article_" , converters: {
+
+						id: function (value) { return Xirt.pad(value, 5, "0"); }
 
 					}});
 

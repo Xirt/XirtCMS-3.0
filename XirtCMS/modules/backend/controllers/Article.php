@@ -24,6 +24,7 @@ class Article extends XCMS_Controller {
         }
 
         // Load helpers
+        $this->load->helper("permit");
         $this->load->helper("article");
 
         // Load libaries
@@ -56,12 +57,10 @@ class Article extends XCMS_Controller {
         $data = (Object)array(
             "id"           => $this->article->get("id"),
             "title"        => $this->article->get("title"),
-            "published"    => $this->article->get("published"),
-            "dt_publish"   => $this->article->get("dt_publish"),
-            "dt_unpublish" => $this->article->get("dt_unpublish"),
             "categories"   => $this->article->getCategories(),
             "attributes"   => $this->article->getAttributes(),
-            "content"      => ArticleHelper::getContent($this->article)
+            "content"      => ArticleHelper::getContent($this->article),
+            "permit"       => PermitHelper::getPermit(PermitTypes::ARTICLE, $id)->getObject("Y-m-d H:i:s")
         );
 
         // ...and output it as JSON
@@ -245,7 +244,7 @@ class Article extends XCMS_Controller {
      */
     public function modify_publish() {
 
-        // Validate given user ID
+        // Validate given item ID
         $id = $this->input->post("article_id");
         if (!is_numeric($id) || !$this->article->load($id)) {
 
@@ -262,17 +261,19 @@ class Article extends XCMS_Controller {
             }
 
             // Prepare data
-            $dtPublish   = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_publish"));
-            $dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_unpublish"));
+            $dtPublish   = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_start"));
+            $dtUnpublish = DateTime::createFromFormat("d/m/Y", $this->input->post("article_dt_expiry"));
 
             // Set & save new updates
-            (new PermitModel())->set(array(
-                "id"        => $id,
-                "type"      => PermitTypes::ARTICLE,
-                "active"    => is_null($this->input->post("article_published")) ? "0" : "1",
-                "dt_start"  => $dtPublish,
-                "dt_expiry" => $dtUnpublish
-            ))->save();
+            (new PermitModel())->set([
+                "id"         => $id,
+                "type"       => PermitTypes::ARTICLE,
+                "dt_start"   => $dtPublish->format("Y-m-d H:i:s"),
+                "dt_expiry"  => $dtUnpublish->format("Y-m-d H:i:s"),
+                "active"     => $this->input->post("article_active") ? 1 : 0,
+                "access_min" => $this->input->post("article_access_max"),
+                "access_max" => $this->input->post("article_access_min")
+                ])->save();
 
             // Inform user
             XCMS_JSON::modificationSuccessMessage();
