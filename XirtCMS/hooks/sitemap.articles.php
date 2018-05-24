@@ -48,14 +48,19 @@ XCMS_Hooks::add("sitemap.add_item", function(&$list, &$item) {
     $moduleConfig = ModuleHelper::getModuleConfiguration($item->module);
     foreach (CategoryHelper::getArticles($categoryId)->toArray() as $article) {
 
-        $list[] = (Object) [
+		$route = RouteList::getByTarget("article/view/" . $article->get("id"), $moduleConfig->getSetting("module_config"));
+		if (PermitHelper::validPermitExists(PermitTypes::ARTICLE, $article->get("id")) && $route) {
+	
+			$list[] = (Object) [
 
-            "type"   => "internal",
-            "target" => RouteList::getByTarget("article/view/" . $article->get("id"), $moduleConfig->getSetting("module_config"))->public_url,
-            "name"   => $article->get("title"),
-            "level"  => $item->level + 1
+				"type"   => "internal",
+				"target" => $route->public_url,
+				"name"   => $article->get("title"),
+				"level"  => $item->level + 1
 
-        ];
+			];
+		
+		}
 
     }
 
