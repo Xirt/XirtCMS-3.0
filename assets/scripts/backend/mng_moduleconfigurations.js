@@ -201,7 +201,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/moduleconfiguration/view/" + current,
+				url	: "backend/moduleconfigurations/moduleconfiguration/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "configuration_", converters: {
@@ -218,7 +218,7 @@ $(function() {
 
 			configModal.load({
 
-				url	: "backend/moduleconfiguration/view/" + current,
+				url	: "backend/moduleconfigurations/moduleconfiguration/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-config"), json, { prefix : "configuration_", converters: {
@@ -238,7 +238,7 @@ $(function() {
 			var that = this;
 			var reference = $(e.currentTarget).data("id");
 
-			$.get("backend/moduleconfiguration/toggle_default/" + reference, function() {
+			$.get("backend/moduleconfigurations/moduleconfiguration/toggle_default/" + reference, function() {
 				that.reload();
 			});
 
@@ -250,7 +250,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/moduleconfiguration/remove/" + reference,
+					"backend/moduleconfigurations/moduleconfiguration/remove/" + reference,
 					reference,
 					this
 				);

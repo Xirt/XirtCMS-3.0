@@ -109,14 +109,14 @@ $(function() {
 							{
 								classNames : "command-order-down",
 								data : { id : data.id },
-								label : "Move up",
+								label : "Move down",
 								icon : "fas fa-arrow-alt-circle-down",
 							},
 
 							{
 								classNames : "command-order-up",
 								data : { id : data.id },
-								label : "Move down",
+								label : "Move up",
 								icon : "fas fa-arrow-alt-circle-up",
 							}
 
@@ -199,7 +199,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/menu/view/" + $(this).data("id"),
+				url	: "backend/menus/menu/view/" + $(this).data("id"),
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "menu_", converters: {
@@ -215,7 +215,7 @@ $(function() {
 		_moveMenuUp: function() {
 
 			var el = $(this);
-			$.get("backend/menu/move_up/" + el.data("id"), function () {
+			$.get("backend/menus/menu/move_up/" + el.data("id"), function () {
 				el.closest("tr").prev().before(el.closest("tr"));
 			});
 
@@ -224,7 +224,7 @@ $(function() {
 		_moveMenuDown: function() {
 
 			var el = $(this);
-			$.get("backend/menu/move_down/" + el.data("id"), function () {
+			$.get("backend/menus/menu/move_down/" + el.data("id"), function () {
 				(el.closest("tr")).next().after(el.closest("tr"));
 			});
 
@@ -233,7 +233,7 @@ $(function() {
 		_toggleSitemap: function() {
 
 			var el = $(this);
-			$.get("backend/menu/toggle_sitemap/" + el.data("id"), function () {
+			$.get("backend/menus/menu/toggle_sitemap/" + el.data("id"), function () {
 				el.toggleClass("inactive active");
 			});
 
@@ -251,7 +251,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/menu/remove/" + reference,
+					"backend/menus/menu/remove/" + reference,
 					reference,
 					this
 				);

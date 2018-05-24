@@ -157,7 +157,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/route/view/" + $(this).data("id"),
+				url	: "backend/routes/route/view/" + $(this).data("id"),
 				onLoad	: function(json) {
 
 					linkCreator.update("route_", json);
@@ -177,7 +177,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/route/remove/" + reference,
+					"backend/routes/route/remove/" + reference,
 					reference,
 					this
 				);

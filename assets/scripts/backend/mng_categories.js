@@ -221,7 +221,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/menu/view/" + $(this).data("id"),
+				url	: "backend/menus/menu/view/" + $(this).data("id"),
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "category_", converters: {
@@ -237,7 +237,7 @@ $(function() {
 		_moveMenuUp: function(e) {
 
 			var that = this;
-			$.get("backend/category/move_up/" + $(e.currentTarget).data("id"), function () {
+			$.get("backend/categories/category/move_up/" + $(e.currentTarget).data("id"), function () {
 				that.reload();
 			});
 
@@ -246,7 +246,7 @@ $(function() {
 		_moveMenuDown: function(e) {
 
 			var that = this;
-			$.get("backend/category/move_down/" + $(e.currentTarget).data("id"), function () {
+			$.get("backend/categories/category/move_down/" + $(e.currentTarget).data("id"), function () {
 				that.reload();
 			});
 
@@ -255,7 +255,7 @@ $(function() {
 		_togglePublished: function() {
 
 			var el = $(this);
-			$.get("backend/menu/toggle_sitemap/" + el.data("id"), function () {
+			$.get("backend/menus/menu/toggle_sitemap/" + el.data("id"), function () {
 				el.toggleClass("inactive active");
 			});
 
@@ -267,7 +267,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/category/remove/" + reference,
+					"backend/categories/category/remove/" + reference,
 					reference,
 					this
 				);

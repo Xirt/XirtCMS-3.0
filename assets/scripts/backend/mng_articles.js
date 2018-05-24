@@ -269,7 +269,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/article/view/" + current,
+				url	: "backend/articles/article/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "article_", converters: {
@@ -291,7 +291,7 @@ $(function() {
 
 			configModal.load({
 
-				url	: "backend/article/view/" + current,
+				url	: "backend/articles/article/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-config"), json, { prefix : "article_", converters: {
@@ -310,7 +310,7 @@ $(function() {
 
 			categoriesModal.load({
 
-				url	: "backend/article/view/" + current,
+				url	: "backend/articles/article/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-categories"), json, { prefix : "article_", converters: {
@@ -327,7 +327,7 @@ $(function() {
 
 			publishModal.load({
 
-				url	: "backend/article/view/" + current,
+				url	: "backend/articles/article/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-permit"), json.permit, { prefix : "article_", converters: {
@@ -367,7 +367,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/article/remove/" + reference,
+					"backend/articles/article/remove/" + reference,
 					reference,
 					this
 				);

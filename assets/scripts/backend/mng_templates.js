@@ -192,7 +192,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/template/view/" + $(this).data("id"),
+				url	: "backend/templates/template/view/" + $(this).data("id"),
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "template_", converters: {
@@ -227,7 +227,7 @@ $(function() {
 			});
 
 			//var el = $(this);
-			//$.get("backend/template/move_up/" + el.data("id"), function () {
+			//$.get("backend/templates/template/move_up/" + el.data("id"), function () {
 			//	el.closest("tr").prev().before(el.closest("tr"));
 			//});
 
@@ -250,7 +250,7 @@ $(function() {
 			});
 
 			//var el = $(this);
-			//$.get("backend/template/move_down/" + el.data("id"), function () {
+			//$.get("backend/templates/template/move_down/" + el.data("id"), function () {
 			//	(el.closest("tr")).next().after(el.closest("tr"));
 			//});
 
@@ -259,7 +259,7 @@ $(function() {
 		_togglePublished: function(e) {
 
 			var that = $(this);
-			$.get("backend/template/toggle_published/" + $(e.currentTarget).data("id"), function () {
+			$.get("backend/templates/template/toggle_published/" + $(e.currentTarget).data("id"), function () {
 				that.reload();
 			});
 
@@ -271,7 +271,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/template/remove/" + reference,
+					"backend/templates/template/remove/" + reference,
 					reference,
 					this
 				);

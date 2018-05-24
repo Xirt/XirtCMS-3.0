@@ -1,0 +1,578 @@
+<h1><?php echo $menu_name; ?></h1>
+
+<table id="grid-basic" class="table table-sm table-hover table-striped xgrid-table" data-toggle="bootgrid">
+<thead>
+	<tr>
+		<th data-column-id="item_id" data-header-css-class="table-row-item_id align-middle text-center" data-css-class="table-row-item_id align-middle text-center">ID #</th>
+		<th data-column-id="name" data-header-css-class="table-row-name align-middle" data-css-class="table-row-name align-middle" data-formatter="name" data-visible-in-selection="false">Name</th>
+		<th data-column-id="ordering" data-header-css-class="table-row-ordering align-middle text-center" data-css-class="table-row-ordering align-middle text-center" data-visible="1000">Ordering</th>
+		<th data-column-id="sitemap" data-header-css-class="table-row-sitemap align-middle text-center" data-css-class="table-row-sitemap align-middle text-center" data-visible="1000">Sitemap</th>
+		<th data-column-id="published" data-header-css-class="table-row-published align-middle text-center" data-css-class="table-row-published align-middle text-center" data-visible="1000">Published</th>
+		<th data-column-id="commands" data-header-css-class="table-row-commands" data-css-class="table-row-commands text-right" data-visible-in-selection="false">&nbsp;</th>
+	</tr>
+</thead>
+<tbody></tbody>
+<tfoot>
+<tr>
+	<td>
+
+		<button class="btn btn-sm btn-primary btn-home">
+			<i class="fa fa-home"></i>
+			Set homepage
+		</button>
+
+		<button class="btn btn-sm btn-success btn-create">
+			<i class="fa fa-plus-square"></i>
+			New menu item
+		</button>
+
+	</td>
+</tr>
+</tfoot>
+</table>
+
+<div id="optionsModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<div class="modal-content">
+
+			<div class="modal-header">
+
+				<h5 class="modal-title">What do you want to do?</h5>
+
+			</div>
+
+			<div class="modal-body row">
+
+				<div class="col-sm-4">
+
+					<button class="btn btn-info btn-edit-properties">
+						<i class="far fa-edit fa-5x" aria-hidden="true"></i>
+						<p>Modify properties</p>
+					</button>
+
+				</div>
+
+				<div class="col-sm-4">
+
+					<button class="btn btn-info btn-edit-routing">
+						<i class="far fa-dot-circle fa-5x" aria-hidden="true"></i>
+						<p>Modify target</p>
+					</button>
+
+				</div>
+
+				<div class="col-sm-4">
+
+					<button class="btn btn-info btn-edit-permit">
+						<i class="far fa-calendar-alt fa-5x" aria-hidden="true"></i>
+						<p>Accessibility</p>
+					</button>
+
+				</div>
+
+			</div>
+
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-sm btn-default btn-close">Cancel</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+<div id="homeModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<form id="form-home" action="backend/menuitems/menuitem/set_home" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title">Set homepage</h5>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group row">
+
+						<label for="homepage_menu" class="col-sm-4 col-form-label col-form-label-sm">Menu</label>
+						<div class="col-sm-8">
+
+							<select class="form-control form-control-sm custom-select" id="homepage_menu" name="homepage_menu" required>
+							<?php foreach ($menus as $id => $name): ?>
+								<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+							<?php endforeach; ?>
+							</select>
+
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label for="homepage_item" class="col-sm-4 col-form-label col-form-label-sm">Item</label>
+						<div class="col-sm-8">
+							<select class="form-control form-control-sm select-menuitem custom-select" id="homepage_item" name="homepage_item" required>
+							</select>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
+
+<div id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<form id="form-create" action="backend/menuitems/menuitem/create" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title">Menuitem Creation</h5>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group row">
+
+						<label for="create_name" class="col-sm-4 col-form-label col-form-label-sm">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm" id="create_name" name="menuitem_name" placeholder="" required />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label for="create_parent_id" class="col-sm-4 col-form-label col-form-label-sm">Parent</label>
+						<div class="col-sm-8">
+							<select class="form-control form-control-sm custom-select" id="create_parent_id" name="menuitem_parent_id">
+								<option value="0">ROOT</option>
+							</select>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<input type="hidden" name="menu_id" value="" />
+
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Create item
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
+
+<div id="modifyModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<form id="form-modify" action="backend/menuitems/menuitem/modify" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title">Menuitem Modification</h5>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="id" required disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label for="modify_name" class="col-sm-4 col-form-label col-form-label-sm">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm" id="modify_name" name="menuitem_name" placeholder="" required />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label for="modify_parent_id" class="col-sm-4 col-form-label col-form-label-sm">Parent</label>
+						<div class="col-sm-8">
+							<select class="form-control form-control-sm custom-select" id="modify_parent_id" name="menuitem_parent_id">
+								<option value="0">ROOT</option>
+							</select>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
+
+<div id="configModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog configuration" role="document">
+
+		<form id="form-config" action="backend/menuitems/menuitem/modify_settings" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title">Menuitem Configuration</h5>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="id" disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="name" disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row tabs">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Link Type</label>
+						<div class="col-sm-8">
+							<ul class="nav nav-tabs" role="tablist">
+								<li class="nav-item"><a href="#box-internal" id="type-internal" class="nav-link" data-toggle="tab" role="tab">Internal</a></li>
+								<li class="nav-item"><a href="#box-external" id="type-external" class="nav-link"data-toggle="tab" role="tab">External</a></li>
+								<li class="nav-item"><a href="#box-anchor"id="type-anchor" class="nav-link"data-toggle="tab" role="tab">Anchor</a></li>
+							</ul>
+						</div>
+
+					</div>
+
+					<div class="tab-content">
+
+						<input type="hidden" name="menuitem_type" id="inp-type" value="" />
+
+						<div id="box-internal" class="tab-pane fade in">
+
+							<div class="form-group row">
+
+								<label for="inp-public_url" class="col-sm-4 col-form-label col-form-label-sm">URI</label>
+								<div class="col-sm-8">
+
+									<input type="text" class="form-control form-control-sm" name="menuitem_public_url" id="inp-public_url" placeholder="" />
+
+									<div class="box-notify bg-info text-white" id="box-relations">
+
+										<i class="fa fa-info-circle text-white"></i>
+										<i>This is an existing URI: any changes to its related target URI will have effect globally.</i>
+
+									</div>
+
+								</div>
+
+							</div>
+
+							<div class="form-group row">
+
+								<label for="txt-int-anchor" class="col-sm-4 col-form-label col-form-label-sm">Anchor Name</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control form-control-sm" id="txt-int-anchor" name="menuitem_extension" placeholder="" />
+								</div>
+
+							</div>
+
+							<div class="form-group row">
+
+								<label for="inp-target_url" class="col-sm-4 col-form-label col-form-label-sm">Target URI</label>
+								<div class="col-sm-8">
+
+									<input type="text" class="form-control form-control-sm" name="menuitem_target_url" id="inp-target_url" placeholder="" disabled="disabled" />
+									<button type="button" class="btn btn-sm btn-sm btn-primary" id="btn-editor">Toggle editor</button>
+
+								</div>
+
+							</div>
+
+							<div id="box-link">
+
+
+								<div class="form-group row">
+
+									<label for="sel-module-type" class="col-sm-4 col-form-label col-form-label-sm">Module Type</label>
+									<div class="col-sm-8">
+
+										<select class="form-control form-control-sm custom-select" name="menuitem_module_type" id="sel-module-type" required>
+
+											<?php foreach ($moduleTypes as $moduleType => $moduleName): ?>
+											<option value="<?php echo $moduleType; ?>"><?php echo $moduleName; ?></option>
+											<?php endforeach; ?>
+
+										</select>
+
+									</div>
+
+								</div>
+
+								<div class="form-group row">
+
+									<label for="sel-module-config" class="col-sm-4 col-form-label col-form-label-sm">Module Configuration</label>
+									<div class="col-sm-8">
+
+										<select class="form-control form-control-sm custom-select" name="menuitem_module_config" id="sel-module-config" required >
+										</select>
+
+									</div>
+
+								</div>
+
+								<div id="box-params"></div>
+
+							</div>
+
+						</div>
+
+						<div id="box-external" class="tab-pane fade in">
+
+							<div class="form-group row">
+
+								<label for="inp-ext_url" class="col-sm-4 col-form-label col-form-label-sm">URI</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control form-control-sm" name="menuitem_uri" id="inp-ext_url" placeholder="e.g. http://www.google.com" />
+								</div>
+
+							</div>
+
+						</div>
+
+						<div id="box-anchor" class="tab-pane fade in">
+
+							<div class="form-group row">
+
+								<label for="txt-anchor" class="col-sm-4 col-form-label col-form-label-sm">Anchor Name</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control form-control-sm" id="txt-anchor" name="menuitem_anchor" placeholder="" />
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>
+
+<div id="permitModal" class="modal fade" role="dialog" aria-hidden="true">
+
+	<div class="modal-dialog" role="document">
+
+		<form id="form-permit" action="backend/menuitems/menuitem/modify_permit" method="post" data-toggle="validator">
+
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h5 class="modal-title">Menuitems Permits</h5>
+
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">ID #</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="id" required disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control form-control-sm input-info" name="name" disabled="disabled" />
+						</div>
+
+					</div>
+
+					<div class="form-group row">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Published</label>
+						<div class="col-sm-8 text-left">
+							<input type="checkbox" name="menuitem_active" id="permit-active" data-on="Yes" data-off="No" data-onstyle="info" data-toggle="toggle" data-size="small" />
+						</div>
+
+					</div>
+
+					<div class="form-group row permit-attr">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Sitemap</label>
+						<div class="col-sm-8 text-left">
+							<input type="checkbox" name="menuitem_sitemap" id="menuitem_sitemap" data-on="Show" data-off="Hide" data-onstyle="info" data-toggle="toggle" data-size="small" checked />
+						</div>
+
+					</div>
+
+					<div class="form-group row permit-attr">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Start date</label>
+						<div class="col-sm-8">
+
+							<div class="input-group date">
+								<input type="text" class="form-control form-control-sm datepicker" name="menuitem_dt_start" id="menuitem_dt_start" maxlength="10" readonly />
+								<div class="input-group-append">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        						</div>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="form-group row permit-attr">
+
+						<label class="col-sm-4 col-form-label col-form-label-sm">Expiry date</label>
+						<div class="col-sm-8">
+
+							<div class="input-group date">
+								<input type="text" class="form-control form-control-sm datepicker" name="menuitem_dt_expiry" id="menuitem_dt_expiry" maxlength="10" value="31/12/2099" readonly />
+								<div class="input-group-append">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        						</div>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="submit" class="btn btn-sm btn-success">
+						<span class="fas fa-spinner fa-spin fa-1x fa-fw"></span>
+						<!-- <i class="fas fa-save"></i> //-->
+						Save
+					</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-close">
+						<!-- <i class="fas fa-1x fa-undo"></i> //-->
+						Cancel
+					</button>
+
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
+
+</div>

@@ -153,7 +153,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/usergroup/view/" + $(this).data("id"),
+				url	: "backend/usergroups/usergroup/view/" + $(this).data("id"),
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "usergroup_", converters: {
@@ -172,7 +172,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/usergroup/remove/" + reference,
+					"backend/usergroups/usergroup/remove/" + reference,
 					reference,
 					this
 				);

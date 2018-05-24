@@ -209,7 +209,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/user/view/" + current,
+				url	: "backend/users/user/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "user_", converters: {
@@ -226,7 +226,7 @@ $(function() {
 
 			attributesModal.load({
 
-				url	: "backend/user/view/" + current,
+				url	: "backend/users/user/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-attr"), json, { prefix : "user_", converters: {
@@ -245,7 +245,7 @@ $(function() {
 
 			passwordModal.load({
 
-				url	: "backend/user/view/" + current,
+				url	: "backend/users/user/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-password"), json, { prefix : "user_", converters: {
@@ -264,7 +264,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/user/remove/" + reference,
+					"backend/users/user/remove/" + reference,
 					reference,
 					this
 				);

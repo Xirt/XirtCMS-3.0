@@ -119,7 +119,7 @@ $.LinkPanel.prototype = {
 	checkLink : function(link, box) {
 
 		var options = {duration : 200};
-		$.post("backend/route/convert_public_url", { uri : link }, function (json) {
+		$.post("backend/routes/route/convert_public_url", { uri : link }, function (json) {
 			json.success ? box.slideDown(options) : box.slideUp(options);
 		}, "json");
 
@@ -154,7 +154,7 @@ $.LinkPanel.prototype = {
 		var target = $("#box-params").empty();
 
 		// Retrieve module menu parameters for given module type
-		$.post("backend/module/view_menu_parameters/" + type, function(json) {
+		$.post("backend/modules/module/view_menu_parameters/" + type, function(json) {
 
 			AttributesManager.createFromJSON(target, json);
 			var parts = that.getModuleTarget().target_url.split("/");

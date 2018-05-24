@@ -314,7 +314,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/widget/view/" + current,
+				url	: "backend/widgets/widget/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "widget_", converters: {
@@ -331,7 +331,7 @@ $(function() {
 
 			configModal.load({
 
-				url	: "backend/widget/view/" + current,
+				url	: "backend/widgets/widget/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-config"), json, { prefix : "widget_", converters: {
@@ -350,7 +350,7 @@ $(function() {
 
 			priorityModal.load({
 
-				url	: "backend/widget/view/" + current,
+				url	: "backend/widgets/widget/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-priorities"), json, { prefix : "widget_", converters: {
@@ -367,7 +367,7 @@ $(function() {
 
 			publishModal.load({
 
-				url	: "backend/widget/view/" + current,
+				url	: "backend/widgets/widget/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-publish"), json, { prefix : "widget_", converters: {
@@ -404,7 +404,7 @@ $(function() {
 			});
 
 			//var el = $(this);
-			//$.get("backend/widget/move_up/" + el.data("id"), function () {
+			//$.get("backend/widgets/widget/move_up/" + el.data("id"), function () {
 			//	el.closest("tr").prev().before(el.closest("tr"));
 			//});
 
@@ -417,7 +417,7 @@ $(function() {
 			});
 
 			//var el = $(this);
-			//$.get("backend/widget/move_down/" + el.data("id"), function () {
+			//$.get("backend/widgets/widget/move_down/" + el.data("id"), function () {
 			//	(el.closest("tr")).next().after(el.closest("tr"));
 			//});
 
@@ -426,7 +426,7 @@ $(function() {
 		_togglePublished: function() {
 
 			var el = $(this);
-			$.get("backend/widget/toggle_published/" + el.data("id"), function () {
+			$.get("backend/widgets/widget/toggle_published/" + el.data("id"), function () {
 				el.toggleClass("inactive active");
 			});
 
@@ -438,7 +438,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/widget/remove/" + reference,
+					"backend/widgets/widget/remove/" + reference,
 					reference,
 					this
 				);

@@ -112,7 +112,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/setting/view/" + $(this).data("name"),
+				url	: "backend/settings/setting/view/" + $(this).data("name"),
 				onLoad	: function(json) {
 					Xirt.populateForm($("#form-modify"), json, { prefix : "setting_" });
 				}

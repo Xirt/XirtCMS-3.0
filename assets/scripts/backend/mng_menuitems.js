@@ -84,7 +84,7 @@ $(function() {
 				extSubmitHandler: function(form, e) {
 
 					var disabled = $(form).find(":input:disabled").removeAttr("disabled");
-					$.ajax("backend/menuitem/modify_sitemap", {
+					$.ajax("backend/menuitems/menuitem/modify_sitemap", {
 
 						method: "POST",
 						timeout : 7500,
@@ -387,7 +387,7 @@ $(function() {
 
 			modifyModal.load({
 
-				url	: "backend/menuitem/view/" + current,
+				url	: "backend/menuitems/menuitem/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-modify"), json, { prefix : "menuitem_", converters: {
@@ -404,7 +404,7 @@ $(function() {
 
 			configModal.load({
 
-				url	: "backend/menuitem/view/" + current,
+				url	: "backend/menuitems/menuitem/view/" + current,
 				onLoad	: function(json) {
 
 					$("#form-config").find("input").val("");
@@ -425,7 +425,7 @@ $(function() {
 
 			permitModal.load({
 
-				url	: "backend/menuitem/view/" + current,
+				url	: "backend/menuitems/menuitem/view/" + current,
 				onLoad	: function(json) {
 
 					Xirt.populateForm($("#form-permit"), json.permit, { prefix : "menuitem_", converters: {
@@ -462,7 +462,7 @@ $(function() {
 		_moveItemUp: function(e) {
 
 			var that = this;
-			$.get("backend/menuitem/move_up/" + $(e.currentTarget).data("id"), function () {
+			$.get("backend/menuitems/menuitem/move_up/" + $(e.currentTarget).data("id"), function () {
 				that.reload();
 			});
 
@@ -471,7 +471,7 @@ $(function() {
 		_moveItemDown: function(e) {
 
 			var that = this;
-			$.get("backend/menuitem/move_down/" + $(e.currentTarget).data("id"), function () {
+			$.get("backend/menuitems/menuitem/move_down/" + $(e.currentTarget).data("id"), function () {
 				that.reload();
 			});
 
@@ -480,7 +480,7 @@ $(function() {
 		_toggleSitemap: function() {
 
 			var that = $(this);
-			$.get("backend/menuitem/toggle_sitemap/" + that.data("id"), function () {
+			$.get("backend/menuitems/menuitem/toggle_sitemap/" + that.data("id"), function () {
 				that.toggleClass("inactive active");
 			});
 
@@ -489,7 +489,7 @@ $(function() {
 		_togglePublished: function() {
 
 			var that = $(this);
-			$.get("backend/menuitem/toggle_published/" + that.data("id"), function () {
+			$.get("backend/menuitems/menuitem/toggle_published/" + that.data("id"), function () {
 				that.toggleClass("inactive active");
 			});
 
@@ -501,7 +501,7 @@ $(function() {
 			if (jQuery.type(reference) != "undefined") {
 
 				confirmRemoval(
-					"backend/menuitem/remove/" + reference,
+					"backend/menuitems/menuitem/remove/" + reference,
 					reference,
 					this
 				);
