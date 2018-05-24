@@ -204,7 +204,7 @@ $(function() {
 			});
 
 			// Activate icons
-			$(".input-group.date .input-group-addon").on("click", function(e) {
+			$(".input-group.date .input-group-append").on("click", function(e) {
 
 				$(this).siblings("input").datepicker("show");
 				e.stopImmediatePropagation();
