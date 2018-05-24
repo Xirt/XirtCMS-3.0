@@ -24,6 +24,12 @@ class ModuleTypesModel extends XCMS_Model {
      */
     public function load() {
 
+        $backup = Modules::$locations;
+        Modules::$locations = array(
+            APPPATH.'modules/frontend/' => '../modules/frontend/',
+            APPPATH.'modules/shared/' => '../modules/shared/'
+        ) + Modules::$locations;
+    
         // Loop through all module master directories
         foreach (Modules::$locations as $location => $offset) {
 
@@ -51,7 +57,8 @@ class ModuleTypesModel extends XCMS_Model {
             }
 
         }
-
+        
+        Modules::$locations = $backup;
         return $this;
 
     }
