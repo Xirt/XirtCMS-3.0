@@ -66,6 +66,35 @@ class XCMS_Router extends MX_Router {
 
 
     /**
+     * Retrieves the location of the requested module (e.g. backend vs. frontend)
+     *
+     * @param	Array		$segments	The segments of the current route
+     * @return  Array                   The segments to use for retrieving module
+     */
+    public function locate($segments) {
+
+        if (isset($segments[0]) && $segments[0] == "backend") {
+
+            Modules::$locations = array(
+                APPPATH.'modules/backend/' => '../modules/backend/',
+                APPPATH.'modules/shared/' => '../modules/shared/'
+            ) + Modules::$locations;
+
+        } else {
+
+            Modules::$locations = array(
+                APPPATH.'modules/frontend/' => '../modules/frontend/',
+                APPPATH.'modules/shared/' => '../modules/shared/'
+            ) + Modules::$locations;
+
+        }
+
+        return parent::locate($segments);
+
+    }
+
+
+    /**
      * Attempts to set internal routing based on request URI information and DB data
      *
      * @return	boolean					True on remapping, false otherwise
