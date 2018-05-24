@@ -38,7 +38,9 @@ h1 {
 }
 
 .btn,
-button {
+button,
+.input-group.date input,
+.input-group.date .input-group-append {
 	cursor: pointer;
 }
 
