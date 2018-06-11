@@ -7,7 +7,7 @@ $(document).ready(function() {
 		$(this).val($(this).val().trim());
 	});
 
-	Xirt.activate();
+	Xirt.markExternalLinks();
 
 });
 
@@ -18,7 +18,7 @@ $(document).ready(function() {
 *********************************************************/
 var Xirt = {
 
-	activate : function() {
+	markExternalLinks : function() {
 
 		// External links
 		$.each($("a[rel*=external]"), function(index, el) {
