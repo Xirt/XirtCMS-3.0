@@ -139,6 +139,19 @@ class GridHelper {
 
     }
 
+
+    /**
+     * Gets the current count of records
+     *
+     * @return  int                         The amount of current records
+     */
+    public function getCurrent() {
+
+        return count($this->_rows);
+
+    }
+
+
     /**
      * Returns Array with request parameters
      *
