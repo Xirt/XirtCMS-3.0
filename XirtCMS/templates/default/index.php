@@ -10,10 +10,15 @@
 <?php XCMS_Page::getInstance()->addscript("assets/third-party/bootstrap/js/bootstrap.min.js", true); ?>
 <?php XCMS_Page::getInstance()->addscript("assets/third-party/lightbox/js/lightbox.min.js", true); ?>
 <?php XCMS_Page::getInstance()->addscript("assets/third-party/prism/js/prism.min.js", true); ?>
-<?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/bootstrap/css/bootstrap.min.css"); ?>
-<?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/lightbox/css/lightbox.min.css"); ?>
-<?php XCMS_Page::getInstance()->addStylesheet("assets/third-party/prism/css/prism.min.css"); ?>
-<?php XCMS_Page::getInstance()->addStylesheet("assets/css/main.min.css"); ?>
+<?php XCMS_Page::getInstance()->addStylesheet(array(
+    "assets/third-party/bootstrap/css/bootstrap.min.css",
+    "assets/third-party/bootstrap/css/bootstrap-theme.min.css",
+    "https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css",
+    "assets/third-party/lightbox/css/lightbox.min.css",
+    "assets/third-party/prism/css/prism.min.css",
+    "assets/css/main.min.css"
+), true); ?>
+
 <?php XCMS_RenderEngine::header(); ?>
 
 <?php XCMS_RenderEngine::widget("head"); ?>
