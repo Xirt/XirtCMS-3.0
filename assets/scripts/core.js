@@ -215,7 +215,7 @@ Form.validate = function (targetForm, overrideOptions) {
 			if ($.type(options.extSubmitHandler) == "function") {
 				options.extSubmitHandler(form, e);
 			}
-			
+
 			new Form.Request(form, options.requestOptions);
 			e.preventDefault();
 
@@ -489,9 +489,16 @@ Form.Request = function(form, overrideOptions) {
 		];
 
 		var $el = new $.XirtModalObject(options);
-		var $modal = (new $.XirtModal($el, options)).init().show();
+		var $modal = (new $.XirtModal($el, options)).init();
+		$modal.element.on('shown.bs.modal', function (e) {
+			$el.find(".btn-ok").focus();
+		});
 
-		// Active button 'Ok'
+		// Give focus / show
+		$(':focus').blur();
+		$modal.show();
+
+		// Activate buttons
 		$el.find(".btn").off("click").on("click", function() {
 
 			$modal.hide();
