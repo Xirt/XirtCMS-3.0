@@ -25,6 +25,16 @@ class XCMS_Model extends CI_Model {
 
 
     /**
+     * Constructs new instance of model
+     */
+    public function __construct() {
+
+	    log_message("info", "Model Class Initialized: " . get_class($this));
+
+	}
+
+
+    /**
      * (Re-)initializes the model with the given attributes
      *
      * @param   array       $attr           The attributes for initialization (optional)
