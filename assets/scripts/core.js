@@ -416,7 +416,7 @@ Form.Request = function(form, overrideOptions) {
 		_createModalBody: function(message) {
 
 			return $("<div class='modal-body'></div>")
-				.text(message);
+				.html(message);
 
 		},
 
