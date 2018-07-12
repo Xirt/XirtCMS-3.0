@@ -71,7 +71,7 @@ class Template extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
+            if (!$this->form_validation->run()) {
                 throw new UnexpectedValueException(null);
             }
 
@@ -110,7 +110,7 @@ class Template extends XCMS_Controller {
         try {
 
             // Validate provided input
-            if ($this->form_validation->run()) {
+            if (!$this->form_validation->run()) {
                 throw new UnexpectedValueException(null);
             }
 

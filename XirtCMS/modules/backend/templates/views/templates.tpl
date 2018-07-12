@@ -116,6 +116,8 @@
 					</div>
 
 					<div class="form-group row">
+					
+						<input type="hidden" id="inp-positions" name="positions_list" />
 
 						<label for="inp-position" class="col-sm-4 col-form-label col-form-label-sm">Positions</label>
 						<div class="col-sm-8">
